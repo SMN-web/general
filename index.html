@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<title>Login via Cloudflare Worker + Firebase</title>
+  <meta charset="UTF-8" />
+  <title>Login via Cloudflare Worker + Firebase</title>
 </head>
 <body>
   <h3>Login</h3>
@@ -14,7 +14,7 @@
     <button type="submit">Login</button>
   </form>
 
-  <pre id="result"></pre>
+  <pre id="msg"></pre>
 
   <script>
     const workerUrl = "https://super-boat-c955.nafil-8895-s.workers.dev"; // Your Worker URL here
@@ -36,13 +36,13 @@
 
         const data = await resp.json();
 
-        if (resp.ok) {
-          document.getElementById("result").textContent = `Success! Welcome ${data.email}`;
+        if (resp.ok && data.email) {
+          document.getElementById("msg").textContent = `Success! Welcome ${data.email}`;
         } else {
-          document.getElementById("result").textContent = `Error: ${data.error}`;
+          document.getElementById("msg").textContent = `Error: ${data.error || 'Invalid credentials'}`;
         }
       } catch (err) {
-        document.getElementById("result").textContent = `Fetch error: ${err.message}`;
+        document.getElementById("msg").textContent = `Fetch error: ${err.message}`;
       }
     });
   </script>
