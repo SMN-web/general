@@ -1,1 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Username/Password Login (Server-side Auth)</title>
+</head>
+<body>
+  <form id="login">
+    <label>Username (email): <input id="email" type="email" required></label><br>
+    <label>Password: <input id="pw" type="password" required></label><br>
+    <button type="submit">Login</button>
+  </form>
+  <pre id="msg"></pre>
+  <script>
+    // ONLY WORKER ADDRESS HERE
+    const WORKER_URL = "https://super-boat-c955.nafil-8895-s.workers.dev";
+
+    document.getElementById("login").onsubmit = async function(e) {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("pw").value;
+
+      const resp = await fetch(WORKER_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
+      document.getElementById("msg").textContent = await resp.text();
+    };
+  </script>
+</body>
+</html>
 
