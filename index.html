@@ -1,32 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Username/Password Login (Server-side Auth)</title>
+<meta charset="UTF-8" />
+<title>Login via Cloudflare Worker + Firebase</title>
 </head>
 <body>
-  <form id="login">
-    <label>Username (email): <input id="email" type="email" required></label><br>
-    <label>Password: <input id="pw" type="password" required></label><br>
+  <h3>Login</h3>
+  <form id="login-form">
+    <input id="email" name="email" type="email" placeholder="Email" required />
+    <br />
+    <input id="password" name="password" type="password" placeholder="Password" required />
+    <br />
     <button type="submit">Login</button>
   </form>
-  <pre id="msg"></pre>
+
+  <pre id="result"></pre>
+
   <script>
-    // ONLY WORKER ADDRESS HERE
-    const WORKER_URL = "https://super-boat-c955.nafil-8895-s.workers.dev";
-
-    document.getElementById("login").onsubmit = async function(e) {
+    const workerUrl = "https://super-boat-c955.nafil-8895-s.workers.dev"; // Your Worker URL here
+    
+    document.getElementById("login-form").addEventListener("submit", async function (e) {
       e.preventDefault();
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("pw").value;
 
-      const resp = await fetch(WORKER_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password })
-      });
-      document.getElementById("msg").textContent = await resp.text();
-    };
+      const email = e.target.email.value;
+      const password = e.target.password.value;
+
+      try {
+        const resp = await fetch(workerUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ email, password }),
+        });
+
+        const data = await resp.json();
+
+        if (resp.ok) {
+          document.getElementById("result").textContent = `Success! Welcome ${data.email}`;
+        } else {
+          document.getElementById("result").textContent = `Error: ${data.error}`;
+        }
+      } catch (err) {
+        document.getElementById("result").textContent = `Fetch error: ${err.message}`;
+      }
+    });
   </script>
 </body>
 </html>
-
