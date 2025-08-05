@@ -1,50 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Login via Cloudflare Worker + Firebase</title>
-</head>
+<html>
 <body>
-  <h3>Login</h3>
-  <form id="login-form">
-    <input id="email" name="email" type="email" placeholder="Email" required />
-    <br />
-    <input id="password" name="password" type="password" placeholder="Password" required />
-    <br />
-    <button type="submit">Login</button>
+  <h3>Setup Initial Admin</h3>
+  <form id="admin-form">
+    <input type="email" id="email" placeholder="Admin email" required />
+    <button type="submit">Set Admin</button>
   </form>
-
-  <pre id="msg"></pre>
+  <pre id="result"></pre>
 
   <script>
-    const workerUrl = "https://super-boat-c955.nafil-8895-s.workers.dev/login"; // Your Worker URL here
-    
-    document.getElementById("login-form").addEventListener("submit", async function (e) {
-      e.preventDefault();
+    const workerUrl = 'https://bold-cake-3772.nafil-8895-s.workers.dev/set-admin';
 
-      const email = e.target.email.value;
-      const password = e.target.password.value;
+    document.getElementById('admin-form').onsubmit = async function(e) {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
 
       try {
-        const resp = await fetch(workerUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ email, password }),
+        const res = await fetch(workerUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
         });
-
-        const data = await resp.json();
-
-        if (resp.ok && data.email) {
-          document.getElementById("msg").textContent = `Success! Welcome ${data.email}`;
-        } else {
-          document.getElementById("msg").textContent = `Error: ${data.error || 'Invalid credentials'}`;
-        }
+        const text = await res.text();
+        document.getElementById('result').textContent = text;
       } catch (err) {
-        document.getElementById("msg").textContent = `Fetch error: ${err.message}`;
+        document.getElementById('result').textContent = 'Error: ' + err.message;
       }
-    });
+    };
   </script>
 </body>
 </html>
