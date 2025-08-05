@@ -1,32 +1,79 @@
 <!DOCTYPE html>
 <html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Role-Based SPA</title>
+  <style>
+    .panel { display: none; }
+  </style>
+</head>
 <body>
-  <h3>Setup Initial Admin</h3>
-  <form id="admin-form">
-    <input type="email" id="email" placeholder="Admin email" required />
-    <button type="submit">Set Admin</button>
-  </form>
-  <pre id="result"></pre>
+  <div id="login-screen">
+    <h2>Login</h2>
+    <form id="login-form">
+      <input id="email" type="email" placeholder="Email" required /><br>
+      <input id="password" type="password" placeholder="Password" required /><br>
+      <button type="submit">Login</button>
+    </form>
+    <pre id="msg"></pre>
+  </div>
+
+  <div id="admin-panel" class="panel">
+    <h2>👑 Admin Panel</h2>
+    <p>You have full control.</p>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <div id="moderator-panel" class="panel">
+    <h2>🛠️ Moderator Panel</h2>
+    <p>You can manage content.</p>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+  <div id="user-panel" class="panel">
+    <h2>👤 User Panel</h2>
+    <p>Welcome, regular user.</p>
+    <button onclick="logout()">Logout</button>
+  </div>
 
   <script>
-    const workerUrl = 'https://bold-cake-3772.nafil-8895-s.workers.dev/set-admin';
+    const workerUrl = "https://summer-poetry-4f26.nafil-8895-s.workers.dev/login"; // Replace with your backend Worker
 
-    document.getElementById('admin-form').onsubmit = async function(e) {
+    function showPanel(role) {
+      document.getElementById("login-screen").style.display = "none";
+      document.getElementById("admin-panel").style.display = (role === "admin") ? "" : "none";
+      document.getElementById("moderator-panel").style.display = (role === "moderator") ? "" : "none";
+      document.getElementById("user-panel").style.display = (role === "user") ? "" : "none";
+    }
+
+    function logout() {
+      location.reload();
+    }
+
+    document.getElementById("login-form").addEventListener("submit", async function (e) {
       e.preventDefault();
-      const email = document.getElementById('email').value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      document.getElementById("msg").textContent = "";
 
       try {
-        const res = await fetch(workerUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email })
+        const resp = await fetch(workerUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
         });
-        const text = await res.text();
-        document.getElementById('result').textContent = text;
+
+        const data = await resp.json();
+
+        if (resp.ok && data.role) {
+          showPanel(data.role);
+        } else {
+          document.getElementById("msg").textContent = `Error: ${data.error || 'Login failed'}`;
+        }
       } catch (err) {
-        document.getElementById('result').textContent = 'Error: ' + err.message;
+        document.getElementById("msg").textContent = `Fetch error: ${err.message}`;
       }
-    };
+    });
   </script>
 </body>
 </html>
