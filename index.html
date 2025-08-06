@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Role-Based Admin SPA</title>
+  <link rel="stylesheet" href="css/shared.css" />
+  <link rel="stylesheet" href="css/login.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+  <link rel="stylesheet" href="css/add-user.css" />
+</head>
+<body>
+
+<!-- 🔐 LOGIN PANEL -->
+<div id="login-panel" class="panel">
+  <h2>Login</h2>
+  <input id="login-email" placeholder="Email" type="email" />
+  <input id="login-password" placeholder="Password" type="password" />
+  <button id="login-btn">Login</button>
+  <p id="login-msg"></p>
+</div>
+
+<!-- 👑 ADMIN PANEL -->
+<div id="admin-panel" class="panel hidden">
+  <h2>Admin Dashboard</h2>
+  <p id="admin-msg"></p>
+  <button id="logout-btn">Logout</button>
+
+  <hr />
+  <h3>All Users</h3>
+  <div id="user-list">Loading...</div>
+
+  <hr />
+  <h3>Add New User</h3>
+  <form id="add-user-form">
+    <input id="new-name" placeholder="Name" />
+    <input id="new-email" placeholder="Email" />
+    <select id="new-role">
+      <option value="user">User</option>
+      <option value="moderator">Moderator</option>
+      <option value="admin">Admin</option>
+    </select>
+    <button type="submit">Add User</button>
+  </form>
+</div>
+
+<script type="module" src="js/main.js"></script>
+<script type="module" src="js/login.js"></script>
+<script type="module" src="js/admin.js"></script>
+<script type="module" src="js/add-user.js"></script>
+</body>
+</html>
