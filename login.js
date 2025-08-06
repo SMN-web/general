@@ -1,5 +1,5 @@
-import { showPanel } from "./main.js";
-import { initAdminPanel } from "./admin.js";
+import { showPanel } from "main.js";
+import { initAdminPanel } from "admin.js";
 
 const LOGIN_WORKER_URL = "https://round-art-2c60.nafil-8895-s.workers.dev"; // replace as needed
 
