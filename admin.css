@@ -1,11 +1,23 @@
 #admin-msg {
-  margin: 1em 0;
+  margin: 1rem 0;
   color: green;
-  font-weight: bold;
+  font-weight: 500;
 }
 
 #user-list p {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  margin: 0.5em 0;
+  margin: 0.6rem 0;
+  padding: 0.5rem 0.75rem;
+  background: #f9fafb;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+
+#user-list select {
+  padding: 0.4rem;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
 }
