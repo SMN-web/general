@@ -36,6 +36,7 @@ export async function initAdminPanel() {
       });
       const d = await res2.json();
       msgBox.textContent = res2.ok && d.success ? "✅ Role updated." : `❌ ${d.error}`;
+initAdminPanel();
     };
 
     row.innerHTML = `${user.name} (${user.email}) `;
