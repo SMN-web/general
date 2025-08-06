@@ -34,7 +34,7 @@ function renderUserList(users) {
     });
 
     roleSelect.onchange = async () => {
-      const res = await fetch("https://modify-role-worker.example.workers.dev", {
+      const res = await fetch("https://mute-snowflake-11b4.nafil-8895-s.workers.dev", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
