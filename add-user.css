@@ -1,0 +1,8 @@
+form#add-user-form input,
+form#add-user-form select,
+form#add-user-form button {
+  width: 100%;
+  margin: 0.5em 0;
+  padding: 0.6em;
+  font-size: 16px;
+}
