@@ -1,0 +1,24 @@
+#admin-panel {
+  font-size: 0.95rem;
+}
+
+#admin-panel h2 {
+  margin-top: 0;
+  text-align: center;
+}
+
+#user-list p {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.5em 0;
+}
+
+#user-list select {
+  width: 120px;
+}
+
+#admin-msg {
+  margin-top: 1em;
+  color: green;
+}
