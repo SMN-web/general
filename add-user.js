@@ -7,7 +7,6 @@ form.onsubmit = async (e) => {
   const name = document.getElementById("new-name").value.trim();
   const email = document.getElementById("new-email").value.trim();
   const role = document.getElementById("new-role").value;
-
   const adminEmail = sessionStorage.getItem("loggedInEmail");
 
   if (!name || !email || !role) {
@@ -15,7 +14,7 @@ form.onsubmit = async (e) => {
     return;
   }
 
-  const res = await fetch("https://fragrant-recipe-072a.nafil-8895-s.workers.dev", {
+  const res = await fetch("https://add-user-worker.example.workers.dev", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ name, email, role, adminEmail })
