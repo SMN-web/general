@@ -1,42 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Set Admin</title>
-</head>
-<body>
-  <h2>Set Initial Admin</h2>
-  <form id="admin-form">
-    <input type="email" id="email" placeholder="Enter admin email" required />
-    <button type="submit">Set Admin</button>
-  </form>
-  <p id="msg"></p>
-
-  <script>
-    document.getElementById("admin-form").onsubmit = async (e) => {
-      e.preventDefault();
-      const msg = document.getElementById("msg");
-      const email = document.getElementById("email").value.trim();
-      if (!email) {
-        msg.textContent = "❌ Please enter a valid email.";
-        return;
-      }
-
-      msg.textContent = "Setting admin...";
-      try {
-        const res = await fetch("https://user-role-check.nafil-8895-s.workers.dev/init", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email })
-        });
-        const data = await res.json();
-        msg.textContent = res.ok
-          ? `✅ Admin set for: ${data.email}`
-          : `❌ Error: ${data.error || "Unknown error"}`;
-      } catch (err) {
-        msg.textContent = "❌ Request failed: " + err.message;
-      }
-    };
-  </script>
-</body>
-</html>
+<form id="admin-form">
+  <input type="email" id="email" placeholder="Admin email" required />
+  <button type="submit">Set Admin</button>
+</form>
+<p id="msg"></p>
+<script>
+  document.getElementById("admin-form").onsubmit = async (e) => {
+    e.preventDefault();
+    const msg = document.getElementById("msg");
+    const email = document.getElementById("email").value.trim();
+    if (!email) { msg.textContent = "❌ Please enter a valid email."; return; }
+    msg.textContent = "Sending...";
+    try {
+      const res = await fetch("https://user-role-check.nafil-8895-s.workers.dev/init", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+      });
+      const data = await res.json();
+      msg.textContent = res.ok && data.email
+        ? `✅ Admin set for: ${data.email}`
+        : `❌ Error: ${data.error || "Unknown error"}`;
+    } catch (err) {
+      msg.textContent = "❌ Request failed: " + err.message;
+    }
+  };
+</script>
