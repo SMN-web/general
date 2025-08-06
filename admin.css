@@ -1,0 +1,10 @@
+#admin-msg {
+  color: green;
+  font-weight: bold;
+}
+
+#user-list p {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5em 0;
+}
