@@ -1,44 +1,45 @@
 export async function initAdminPanel() {
-const email = sessionStorage.getItem("loggedInEmail");
-const list = document.getElementById("user-list");
+  const email = sessionStorage.getItem("loggedInEmail");
+  const msgBox = document.getElementById("admin-msg");
+  const list = document.getElementById("user-list");
+  msgBox.textContent = "";
+  list.textContent = "Loading...";
 
-const res = await fetch(`https://fragrant-recipe-072a.nafil-8895-s.workers.dev/users?email=${email}`);
-const data = await res.json();
+  const res = await fetch(`https://fragrant-recipe-072a.nafil-8895-s.workers.dev/users?email=${email}`);
+  const data = await res.json();
 
-document.getElementById("admin-msg").textContent = "";
-list.innerHTML = "";
+  if (!res.ok || !data.users) {
+    list.textContent = `❌ ${data.error || "Failed to load users."}`;
+    return;
+  }
 
-if (!data || data.error) {
-list.innerHTML = ❌ ${data.error};
-return;
-}
+  list.innerHTML = "";
 
-data.users.forEach(user => {
-const row = document.createElement("p");
-const select = document.createElement("select");
-["user", "moderator", "admin"].forEach(opt => {
-  const o = new Option(opt, opt, false, opt === user.role);
-  select.appendChild(o);
-});
+  data.users.forEach(user => {
+    const row = document.createElement("p");
+    const select = document.createElement("select");
 
-select.onchange = async () => {
-  const update = await fetch("https://mute-snowflake-11b4.nafil-8895-s.workers.dev", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      adminEmail: email,
-      targetEmail: user.email,
-      newRole: select.value
-    })
+    ["user", "moderator", "admin"].forEach(role => {
+      const o = new Option(role, role, false, role === user.role);
+      select.appendChild(o);
+    });
+
+    select.onchange = async () => {
+      const res2 = await fetch("https://mute-snowflake-11b4.nafil-8895-s.workers.dev", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          adminEmail: email,
+          targetEmail: user.email,
+          newRole: select.value
+        })
+      });
+      const d = await res2.json();
+      msgBox.textContent = res2.ok && d.success ? "✅ Role updated." : `❌ ${d.error}`;
+    };
+
+    row.innerHTML = `${user.name} (${user.email}) `;
+    row.appendChild(select);
+    list.appendChild(row);
   });
-
-  const d = await update.json();
-  document.getElementById("admin-msg").textContent =
-    update.ok && d.success ? "✅ Role updated." : `❌ ${d.error}`;
-};
-
-row.textContent = `${user.name} (${user.email}) `;
-row.appendChild(select);
-list.appendChild(row);
-});
 }
