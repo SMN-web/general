@@ -1,155 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Role-Based SPA</title>
-  <style>
-    .panel { display: none; }
-    table { border-collapse: collapse; }
-    td, th { border: 1px solid #ccc; padding: 4px 6px; }
-  </style>
-</head>
-<body>
-
-  <!-- LOGIN SCREEN -->
-  <div id="login-screen">
-    <h2>Login</h2>
-    <form id="login-form">
-      <input id="email" type="email" placeholder="Email" required /><br />
-      <input id="password" type="password" placeholder="Password" required /><br />
-      <button type="submit">Login</button>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Set Admin</title>
+  </head>
+  <body>
+    <h2>Set First Admin</h2>
+    <form id="admin-form">
+      <input type="email" id="email" placeholder="Admin email" required />
+      <button type="submit">Set Admin</button>
     </form>
-    <pre id="msg"></pre>
-  </div>
+    <p id="msg"></p>
 
-  <!-- PANELS -->
-  <div id="admin-panel" class="panel">
-    <h2>👑 Admin Panel</h2>
-    <button onclick="logout()">Logout</button>
-
-    <h3>Add User</h3>
-    <form id="add-user-form">
-      <input id="new-email" type="email" placeholder="New user's email" required />
-      <select id="new-role">
-        <option value="user">User</option>
-        <option value="moderator">Moderator</option>
-        <option value="admin">Admin</option>
-      </select>
-      <button type="submit">Add User</button>
-    </form>
-    <pre id="add-user-result"></pre>
-
-    <h3>All Users</h3>
-    <div id="users-list">Loading...</div>
-  </div>
-
-  <div id="moderator-panel" class="panel">
-    <h2>🛠️ Moderator Panel</h2>
-    <p>You can manage and review content.</p>
-    <button onclick="logout()">Logout</button>
-  </div>
-
-  <div id="user-panel" class="panel">
-    <h2>👤 User Panel</h2>
-    <p>Welcome, regular user.</p>
-    <button onclick="logout()">Logout</button>
-  </div>
-
-<script>
-  const API_BASE = "https://summer-poetry-4f26.nafil-8895-s.workers.dev"; // Replace with your deployed Worker URL
-  let currentUser = { email: "", role: "" }
-
-  function showPanel(role) {
-    document.getElementById("login-screen").style.display = "none";
-    ["admin", "moderator", "user"].forEach(r => {
-      const panelId = `${r}-panel`;
-      document.getElementById(panelId).style.display = (role === r) ? "block" : "none";
-    });
-  }
-
-  function logout() { location.reload(); }
-
-  document.getElementById("login-form").addEventListener("submit", async e => {
-    e.preventDefault();
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    document.getElementById("msg").textContent = "Logging in...";
-
-    try {
-      const res = await fetch(API_BASE + "/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password })
-      });
-      const data = await res.json();
-      if (res.ok && data.role) {
-        currentUser = data;
-        showPanel(data.role);
-        if (data.role === "admin") getUsersList();
-      } else {
-        document.getElementById("msg").textContent = "Login failed: " + (data.error || "Unknown error");
-      }
-    } catch(err) {
-      document.getElementById("msg").textContent = "Error: " + err.message;
-    }
-  });
-
-  async function getUsersList() {
-    const res = await fetch(API_BASE + "/users?email=" + encodeURIComponent(currentUser.email));
-    const data = await res.json();
-    if (res.ok && data.users) {
-      document.getElementById("users-list").innerHTML = `
-        <table>
-          <tr><th>Email</th><th>Role</th><th>Change Role</th></tr>
-          ${data.users.map(user => `
-            <tr>
-              <td>${user.email}</td>
-              <td>${user.role}</td>
-              <td>
-                <select onchange="changeUserRole('${user.email}', this.value)">
-                  <option value="user" ${user.role === "user" ? "selected" : ""}>User</option>
-                  <option value="moderator" ${user.role === "moderator" ? "selected" : ""}>Moderator</option>
-                  <option value="admin" ${user.role === "admin" ? "selected" : ""}>Admin</option>
-                </select>
-              </td>
-            </tr>
-          `).join('')}
-        </table>
-      `;
-    } else {
-      document.getElementById("users-list").textContent = "Failed to load users.";
-    }
-  }
-
-  async function changeUserRole(email, newRole) {
-    await fetch(API_BASE + "/set-role", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ adminEmail: currentUser.email, targetEmail: email, newRole })
-    });
-    getUsersList(); // Refresh list
-  }
-
-  document.getElementById("add-user-form").onsubmit = async function(e) {
-    e.preventDefault();
-    const email = document.getElementById("new-email").value;
-    const role = document.getElementById("new-role").value;
-    document.getElementById("add-user-result").textContent = "Adding user...";
-
-    const res = await fetch(API_BASE + "/add-user", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ adminEmail: currentUser.email, newEmail: email, newRole: role })
-    });
-
-    const data = await res.json();
-    if (res.ok) {
-      document.getElementById("add-user-result").textContent = "User added!";
-      getUsersList();
-    } else {
-      document.getElementById("add-user-result").textContent = "Error: " + (data.error || "Unknown error");
-    }
-  }
-</script>
-</body>
+    <script>
+      document.getElementById("admin-form").onsubmit = async (e) => {
+        e.preventDefault();
+        const email = document.getElementById("email").value;
+        const msg = document.getElementById("msg");
+        msg.textContent = "Sending...";
+        try {
+          const res = await fetch("https://user-role-check.nafil-8895-s.workers.dev/init", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email })
+          });
+          const data = await res.json();
+          msg.textContent = res.ok
+            ? `✅ Admin set for ${data.email}`
+            : `❌ Error: ${data.error || "Unknown error"}`;
+        } catch (err) {
+          msg.textContent = `❌ Request failed: ${err.message}`;
+        }
+      };
+    </script>
+  </body>
 </html>
