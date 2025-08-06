@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Role-Based Admin SPA</title>
+  <title>Admin SPA</title>
   <link rel="stylesheet" href="./shared.css" />
   <link rel="stylesheet" href="./login.css" />
   <link rel="stylesheet" href="./admin.css" />
@@ -10,18 +10,18 @@
 </head>
 <body>
 
-<!-- 🔐 LOGIN PANEL -->
+<!-- LOGIN PANEL -->
 <div id="login-panel" class="panel">
-  <h2>Login</h2>
-  <input id="login-email" placeholder="Email" type="email" />
-  <input id="login-password" placeholder="Password" type="password" />
+  <h2>Admin Login</h2>
+  <input id="login-email" placeholder="Email" />
+  <input id="login-password" type="password" placeholder="Password" />
   <button id="login-btn">Login</button>
   <p id="login-msg"></p>
 </div>
 
-<!-- 👑 ADMIN PANEL -->
+<!-- ADMIN PANEL -->
 <div id="admin-panel" class="panel hidden">
-  <h2>Admin Dashboard</h2>
+  <h2>👑 Admin Dashboard</h2>
   <p id="admin-msg"></p>
   <button id="logout-btn">Logout</button>
 
@@ -30,7 +30,7 @@
   <div id="user-list">Loading...</div>
 
   <hr />
-  <h3>Add New User</h3>
+  <h3>Add User</h3>
   <form id="add-user-form">
     <input id="new-name" placeholder="Name" />
     <input id="new-email" placeholder="Email" />
