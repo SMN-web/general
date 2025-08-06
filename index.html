@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login</title>
+  <link rel="stylesheet" href="css/login.css" />
+</head>
+<body>
+  <!-- 🔐 Login Panel -->
+  <div id="login-panel">
+    <h2>Login</h2>
+    <input id="login-email" placeholder="Email" type="email" />
+    <input id="login-password" placeholder="Password" type="password" />
+    <button id="login-btn">Login</button>
+    <p id="login-msg"></p>
+  </div>
+
+  <!-- 💬 Welcome Message -->
+  <div id="welcome-message" class="hidden">
+    <h2 id="custom-message"></h2>
+    <button onclick="window.location.reload()">Logout</button>
+  </div>
+
+  <script type="module" src="js/login.js"></script>
+</body>
+</html>
