@@ -1,11 +1,5 @@
-#login-panel h2 {
-  margin-top: 0;
-  text-align: center;
-  color: #333;
-}
-
-#login-panel #login-msg {
+#login-msg {
+  margin-top: 1em;
   color: red;
   text-align: center;
-  margin-top: 1em;
 }
