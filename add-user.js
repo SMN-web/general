@@ -21,4 +21,5 @@ document.getElementById("add-user-form").onsubmit = async (e) => {
 
   const data = await res.json();
   msg.textContent = res.ok && data.success ? "✅ User added!" : `❌ ${data.error}`;
+initAdminPanel();
 };
