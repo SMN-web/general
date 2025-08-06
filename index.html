@@ -2,39 +2,58 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Role-Based App</title>
+  <title>Role-Based SPA</title>
   <link rel="stylesheet" href="css/shared.css" />
   <link rel="stylesheet" href="css/login.css" />
   <link rel="stylesheet" href="css/admin.css" />
+  <link rel="stylesheet" href="css/moderator.css" />
+  <link rel="stylesheet" href="css/user.css" />
   <link rel="stylesheet" href="css/transitions.css" />
 </head>
 <body>
-  <div id="app">
-    <!-- login panel -->
-    <div id="login-panel" class="panel active">
+  <div class="app-container">
+
+    <!-- 🔐 Login Panel -->
+    <div id="login-panel" class="panel">
       <h2>Login</h2>
-      <input id="login-email" placeholder="Email" />
+      <input id="login-email" type="email" placeholder="Email" />
       <input id="login-password" type="password" placeholder="Password" />
       <button id="login-btn">Login</button>
       <p id="login-msg"></p>
     </div>
 
-    <!-- admin dashboard -->
+    <!-- 👨‍💼 Admin Panel -->
     <div id="admin-panel" class="panel hidden">
       <h2>Admin Dashboard</h2>
-      <div id="user-list"></div>
-      <h3>Add User</h3>
-      <input id="new-email" placeholder="Email" />
-      <select id="new-role">
-        <option value="user">user</option>
-        <option value="moderator">moderator</option>
-      </select>
-      <button id="add-user-btn">Add User</button>
-      <p id="admin-msg"></p>
+      <button id="logout-btn">Logout</button>
+      <div id="admin-content">
+        <h3>All Users</h3>
+        <div id="user-list">Loading...</div>
+      </div>
     </div>
+
+    <!-- 🧑‍⚖️ Moderator Panel -->
+    <div id="moderator-panel" class="panel hidden">
+      <h2>Moderator Dashboard</h2>
+      <button id="logout-btn-mod">Logout</button>
+      <p>Moderator features coming soon…</p>
+    </div>
+
+    <!-- 🧑 User Panel -->
+    <div id="user-panel" class="panel hidden">
+      <h2>User Dashboard</h2>
+      <button id="logout-btn-user">Logout</button>
+      <p>Welcome! You are logged in as a user.</p>
+    </div>
+
   </div>
 
-  <script src="js/api.js" type="module"></script>
-  <script src="js/main.js" type="module"></script>
+  <!-- ⬇️ JS Modules -->
+  <script type="module" src="js/api.js"></script>
+  <script type="module" src="js/main.js"></script>
+  <script type="module" src="js/login.js"></script>
+  <script type="module" src="js/admin.js"></script>
+  <script type="module" src="js/moderator.js"></script>
+  <script type="module" src="js/user.js"></script>
 </body>
 </html>
