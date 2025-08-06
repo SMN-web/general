@@ -2,7 +2,7 @@ export async function initAdminPanel() {
 const email = sessionStorage.getItem("loggedInEmail");
 const list = document.getElementById("user-list");
 
-const res = await fetch(https://admin-users-worker.example.workers.dev/users?email=${email});
+const res = await fetch(https://fragrant-recipe-072a.nafil-8895-s.workers.dev/users?email=${email});
 const data = await res.json();
 
 document.getElementById("admin-msg").textContent = "";
