@@ -1,50 +1,55 @@
-import { showPanel } from './main.js';
-import { fetchAllUsers } from './api.js';
+import { fetchAllUsers } from "./api.js";
+import { showPanel } from "./main.js";
 
-const adminMsg = document.getElementById("admin-msg");
-const userList = document.getElementById("user-list");
-
-export async function initAdminPanel() {
+export function initAdminPanel() {
   const email = sessionStorage.getItem("loggedInEmail");
-  if (!email) {
-    adminMsg.textContent = "No admin email found in session.";
-    return;
-  }
+  if (!email) return console.error("No admin email found.");
 
-  const res = await fetchAllUsers(email);
-  userList.innerHTML = "";
+  // ✨ Push admin panel to browser history
+  history.pushState({ view: "admin" }, "", "#admin");
 
-  if (res.error) {
-    adminMsg.textContent = `❌ ${res.error}`;
-    return;
-  }
+  document.getElementById("admin-msg").textContent = "";
+  document.getElementById("user-list").innerHTML = "Loading...";
 
-  res.users.forEach(user => {
-    const userP = document.createElement("p");
+  fetchAllUsers(email).then(res => {
+    if (res.error) {
+      document.getElementById("user-list").innerHTML = `❌ ${res.error}`;
+    } else {
+      renderUserList(res.users);
+    }
+  });
+}
+
+function renderUserList(users) {
+  const list = document.getElementById("user-list");
+  list.innerHTML = "";
+
+  users.forEach(user => {
+    const p = document.createElement("p");
     const roleSelect = document.createElement("select");
 
-    ["user", "moderator", "admin"].forEach(role => {
-      const opt = new Option(role, role, false, role === user.role);
+    ["user", "moderator", "admin"].forEach(r => {
+      const opt = new Option(r, r, false, r === user.role);
       roleSelect.appendChild(opt);
     });
 
     roleSelect.onchange = async () => {
-      const r = await fetch("https://modify-role-worker.example.workers.dev", {
+      const res = await fetch("https://modify-role-worker.example.workers.dev", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          adminEmail: email,
+          adminEmail: sessionStorage.getItem("loggedInEmail"),
           targetEmail: user.email,
           newRole: roleSelect.value
         })
       });
-      const d = await r.json();
-      adminMsg.textContent = d.success ? "✅ Role updated" : `❌ ${d.error}`;
+      const data = await res.json();
+      document.getElementById("admin-msg").textContent =
+        data.success ? "✅ Role updated." : `❌ ${data.error}`;
     };
 
-    userP.innerHTML = `<strong>${user.name}</strong> (${user.email}) `;
-    userP.appendChild(roleSelect);
-
-    userList.appendChild(userP);
+    p.innerHTML = `<strong>${user.name}</strong> (${user.email}) `;
+    p.appendChild(roleSelect);
+    list.appendChild(p);
   });
 }
