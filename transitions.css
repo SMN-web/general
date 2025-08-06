@@ -1,9 +1,0 @@
-.panel {
-  transition: all 0.3s ease-in-out;
-  opacity: 1;
-}
-
-.panel.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
