@@ -1,0 +1,12 @@
+#login-panel input, #login-panel button {
+  width: 100%;
+  margin-top: 1em;
+  padding: 0.6em;
+  font-size: 16px;
+}
+
+#login-msg {
+  margin-top: 1em;
+  text-align: center;
+  color: red;
+}
