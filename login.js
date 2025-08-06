@@ -1,7 +1,7 @@
 import { showPanel } from "./main.js";
 import { initAdminPanel } from "./admin.js";
 
-const LOGIN_WORKER_URL = "https://round-art-2c60.nafil-8895-s.workers.dev";
+const LOGIN_WORKER_URL = "https://round-art-2c60.nafil-8895-s.workers.dev"; // CHANGE THIS
 
 document.getElementById("login-btn").onclick = async () => {
   const email = document.getElementById("login-email").value.trim();
@@ -29,7 +29,6 @@ document.getElementById("login-btn").onclick = async () => {
       return;
     }
 
-    // General role match
     const roleMatch = data.message.match(/as (\w+)/i);
     const role = roleMatch?.[1]?.toLowerCase();
 
