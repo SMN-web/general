@@ -1,7 +1,7 @@
-import { showPanel } from "main.js";
-import { initAdminPanel } from "admin.js";
+import { showPanel } from "./main.js";
+import { initAdminPanel } from "./admin.js";
 
-const LOGIN_WORKER_URL = "https://round-art-2c60.nafil-8895-s.workers.dev"; // replace as needed
+const LOGIN_WORKER_URL = "https://round-art-2c60.nafil-8895-s.workers.dev";
 
 document.getElementById("login-btn").onclick = async () => {
   const email = document.getElementById("login-email").value.trim();
@@ -13,30 +13,38 @@ document.getElementById("login-btn").onclick = async () => {
     return;
   }
 
-  const res = await fetch(LOGIN_WORKER_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password })
-  });
+  msg.textContent = "🔐 Logging in...";
 
-  const data = await res.json();
-  if (!res.ok || !data.message) {
-    msg.textContent = data.message || "❌ Login failed";
-    return;
+  try {
+    const res = await fetch(LOGIN_WORKER_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || !data.message) {
+      msg.textContent = data.message || "❌ Login failed";
+      return;
+    }
+
+    // General role match
+    const roleMatch = data.message.match(/as (\w+)/i);
+    const role = roleMatch?.[1]?.toLowerCase();
+
+    if (role !== "admin") {
+      msg.textContent = "❌ Admin only access";
+      return;
+    }
+
+    sessionStorage.setItem("loggedInEmail", email);
+    sessionStorage.setItem("userRole", role);
+
+    history.pushState({ view: "admin" }, "", "#admin");
+    showPanel("admin-panel");
+    initAdminPanel();
+  } catch (err) {
+    msg.textContent = "❌ Network error: " + err.message;
   }
-
-  const roleMatch = data.message.match(/as (admin)/i);
-  const role = roleMatch?.[1];
-
-  if (role !== "admin") {
-    msg.textContent = "❌ Admin only access";
-    return;
-  }
-
-  sessionStorage.setItem("loggedInEmail", email);
-  sessionStorage.setItem("userRole", role);
-
-  history.pushState({ view: "admin" }, "", "#admin");
-  showPanel("admin-panel");
-  initAdminPanel();
 };
