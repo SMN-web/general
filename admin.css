@@ -1,0 +1,25 @@
+#admin-panel h2 {
+  margin-top: 0;
+}
+
+#admin-msg {
+  color: green;
+  margin-bottom: 1em;
+}
+
+#user-list p {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5em 0;
+}
+
+#add-user-form {
+  margin-top: 1em;
+}
+
+#add-user-form input, #add-user-form select {
+  margin: 0.3em 0;
+  width: 100%;
+  padding: 0.6em;
+  font-size: 1em;
+}
