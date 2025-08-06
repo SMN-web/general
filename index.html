@@ -1,27 +1,40 @@
-<form id="admin-form">
-  <input type="email" id="email" placeholder="Admin email" required />
-  <button type="submit">Set Admin</button>
-</form>
-<p id="msg"></p>
-<script>
-  document.getElementById("admin-form").onsubmit = async (e) => {
-    e.preventDefault();
-    const msg = document.getElementById("msg");
-    const email = document.getElementById("email").value.trim();
-    if (!email) { msg.textContent = "❌ Please enter a valid email."; return; }
-    msg.textContent = "Sending...";
-    try {
-      const res = await fetch("https://user-role-check.nafil-8895-s.workers.dev/init", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email })
-      });
-      const data = await res.json();
-      msg.textContent = res.ok && data.email
-        ? `✅ Admin set for: ${data.email}`
-        : `❌ Error: ${data.error || "Unknown error"}`;
-    } catch (err) {
-      msg.textContent = "❌ Request failed: " + err.message;
-    }
-  };
-</script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Role-Based App</title>
+  <link rel="stylesheet" href="css/shared.css" />
+  <link rel="stylesheet" href="css/login.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+  <link rel="stylesheet" href="css/transitions.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- login panel -->
+    <div id="login-panel" class="panel active">
+      <h2>Login</h2>
+      <input id="login-email" placeholder="Email" />
+      <input id="login-password" type="password" placeholder="Password" />
+      <button id="login-btn">Login</button>
+      <p id="login-msg"></p>
+    </div>
+
+    <!-- admin dashboard -->
+    <div id="admin-panel" class="panel hidden">
+      <h2>Admin Dashboard</h2>
+      <div id="user-list"></div>
+      <h3>Add User</h3>
+      <input id="new-email" placeholder="Email" />
+      <select id="new-role">
+        <option value="user">user</option>
+        <option value="moderator">moderator</option>
+      </select>
+      <button id="add-user-btn">Add User</button>
+      <p id="admin-msg"></p>
+    </div>
+  </div>
+
+  <script src="js/api.js" type="module"></script>
+  <script src="js/main.js" type="module"></script>
+</body>
+</html>
