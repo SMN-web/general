@@ -1,19 +1,26 @@
 body {
-  font-family: sans-serif;
-  background: #f4f6f8;
+  font-family: var(--font);
+  background-color: var(--bg);
   margin: 0;
   padding: 0;
+  color: var(--text);
 }
 
 .panel {
   max-width: 600px;
   margin: 3em auto;
-  background: #fff;
-  padding: 2em;
-  border-radius: 10px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  background: var(--card);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
 .hidden {
   display: none;
+}
+
+h2, h3 {
+  margin-top: 0;
+  font-weight: 600;
+  letter-spacing: -0.5px;
 }
