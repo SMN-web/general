@@ -1,5 +1,5 @@
-export const API_LOGIN   = "https://login-worker.example.workers.dev";
-export const API_USERS   = "https://admin-users-worker.example.workers.dev/users";
+export const API_LOGIN   = "https://round-art-2c60.nafil-8895-s.workers.dev";
+export const API_USERS   = "https://fragrant-recipe-072a.nafil-8895-s.workers.dev/users";
 
 // More APIs can be added later (e.g., for moderator, user, etc.)
 
