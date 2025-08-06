@@ -14,7 +14,7 @@ form.onsubmit = async (e) => {
     return;
   }
 
-  const res = await fetch("https://fragrant-recipe-072a.nafil-8895-s.workers.dev", {
+  const res = await fetch("https://green-star-3210.nafil-8895-s.workers.dev", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ name, email, role, adminEmail })
