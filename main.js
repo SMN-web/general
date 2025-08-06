@@ -1,33 +1,53 @@
-import { initLogin } from "./login.js";
-import { initAdmin } from "./admin.js";
+import { apiLogin, apiGetUsers, apiAddUser, apiSetRole } from "./api.js";
 
-export let currentUser = null;
+const loginPanel = document.getElementById("login-panel");
+const adminPanel = document.getElementById("admin-panel");
+const loginBtn = document.getElementById("login-btn");
+const loginMsg = document.getElementById("login-msg");
+const emailInput = document.getElementById("login-email");
+const passInput = document.getElementById("login-password");
 
-export function setPanel(panel) {
-  document.querySelectorAll(".panel").forEach(
-    el => el.classList.remove("active"));
-  const target = document.getElementById(panel);
-  if (target) {
-    target.classList.add("active");
-    target.classList.add("fade-in");
-    setTimeout(() => target.classList.remove("fade-in"), 450);
+loginBtn.onclick = async () => {
+  const email = emailInput.value.trim();
+  const password = passInput.value;
+  loginMsg.textContent = "Logging in...";
+
+  const res = await apiLogin(email, password);
+
+  if (res.role === "admin") {
+    loginPanel.classList.add("hidden");
+    adminPanel.classList.remove("hidden");
+    loadUserList(email);
+  } else {
+    loginMsg.textContent = "Not authorized as admin.";
   }
+};
+
+async function loadUserList(adminEmail) {
+  const { users } = await apiGetUsers(adminEmail);
+  const userList = document.getElementById("user-list");
+  userList.innerHTML = users.map(u => `
+    <p>
+      ${u.email} — 
+      <select onchange="setRole('${adminEmail}', '${u.email}', this.value)">
+        <option ${u.role === 'user' ? 'selected' : ''}>user</option>
+        <option ${u.role === 'admin' ? 'selected' : ''}>admin</option>
+        <option ${u.role === 'moderator' ? 'selected' : ''}>moderator</option>
+      </select>
+    </p>
+  `).join('');
 }
 
-function renderShell() {
-  document.getElementById("app").innerHTML = `
-    <div id="login-panel" class="panel card"></div>
-    <div id="admin-panel" class="panel card"></div>
-    <div id="user-panel" class="panel card"></div>
-    <div id="moderator-panel" class="panel card"></div>
-  `;
-}
+window.setRole = async (adminEmail, targetEmail, newRole) => {
+  await apiSetRole(adminEmail, targetEmail, newRole);
+  alert("Updated role!");
+};
 
-renderShell();
-
-initLogin(setPanel, usr => {
-  currentUser = usr;
-  if (usr.role === "admin") { initAdmin(setPanel, usr); setPanel("admin-panel"); }
-  else if (usr.role === "moderator") setPanel("moderator-panel");
-  else setPanel("user-panel");
-});
+document.getElementById("add-user-btn").onclick = async () => {
+  const adminEmail = emailInput.value.trim();
+  const newEmail = document.getElementById("new-email").value.trim();
+  const newRole = document.getElementById("new-role").value;
+  await apiAddUser(adminEmail, newEmail, newRole);
+  document.getElementById("admin-msg").textContent = "User added!";
+  loadUserList(adminEmail);
+};
