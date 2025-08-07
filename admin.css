@@ -38,3 +38,24 @@
 #logout-btn {
   margin-bottom: 1rem;
 }
+
+.tab-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.tab-btn {
+  padding: 0.5rem 1rem;
+  background: #eff2f8;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.tab-btn:hover {
+  background: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}
