@@ -22,26 +22,63 @@
 <!-- ADMIN PANEL -->
 <div id="admin-panel" class="panel hidden">
   <h2>👑 Admin Dashboard</h2>
+
+  <!-- Logout + Message -->
   <p id="admin-msg"></p>
   <button id="logout-btn">Logout</button>
 
-  <hr />
-  <h3>All Users</h3>
-  <div id="user-list">Loading...</div>
+  <!-- Tab Navigation Buttons -->
+  <div class="tab-buttons" style="margin-top: 1.5rem;">
+    <button id="add-user-tab" class="tab-btn">➕ Add User</button>
+    <button id="user-control-tab" class="tab-btn">🧑‍💼 User Control</button>
+    <button id="user-logs-tab" class="tab-btn">📓 User Logs</button>
+    <button id="equipment-control-tab" class="tab-btn">🛠 Equipment</button>
+  </div>
 
-  <hr />
-  <h3>Add User</h3>
-  <form id="add-user-form">
-    <input id="new-name" placeholder="Name" />
-    <input id="new-email" placeholder="Email" />
-    <select id="new-role">
-      <option value="user">User</option>
-      <option value="moderator">Moderator</option>
-      <option value="admin">Admin</option>
-    </select>
-    <button type="submit">Add User</button>
-  </form>
+  <hr style="margin: 1.2rem 0;" />
+
+  <!-- SECTION: Add User -->
+  <div id="add-user-section" class="admin-section">
+    <h3>Add New User</h3>
+    <form id="add-user-form">
+      <label for="new-name">Name</label>
+      <input id="new-name" placeholder="Full Name" />
+
+      <label for="new-email">Email</label>
+      <input id="new-email" type="email" placeholder="email@example.com" />
+
+      <label for="new-role">Role</label>
+      <select id="new-role">
+        <option value="user">User</option>
+        <option value="moderator">Moderator</option>
+        <option value="admin">Admin</option>
+      </select>
+
+      <button type="submit">Add User</button>
+    </form>
+  </div>
+
+  <!-- SECTION: User Control -->
+  <div id="user-control-section" class="admin-section hidden">
+    <h3>Modify Users</h3>
+    <div id="user-control-list">
+      <p>Loading users...</p>
+    </div>
+  </div>
+
+  <!-- SECTION: User Logs -->
+  <div id="user-logs-section" class="admin-section hidden">
+    <h3>📓 User Logs</h3>
+    <p>This is the log dashboard. Coming soon!</p>
+  </div>
+
+  <!-- SECTION: Equipment Control -->
+  <div id="equipment-control-section" class="admin-section hidden">
+    <h3>🛠 Equipment Control</h3>
+    <p>Welcome to the equipment management system. Coming soon!</p>
+  </div>
 </div>
+
   <!-- USER PANEL -->
 <div id="user-panel" class="panel hidden"></div>
 
