@@ -3,7 +3,7 @@ import { initAdminPanel } from "./admin.js";
 import { initModeratorPanel } from "./moderator.js";
 import { initUserPanel } from "./users.js";
 
-const LOGIN_WORKER_URL = "https://your-login-worker.workers.dev"; // Replace with your deployed URL
+const LOGIN_WORKER_URL = "https://round-art-2c60.nafil-8895-s.workers.dev"; // Replace with your deployed URL
 
 document.getElementById("login-btn").onclick = async () => {
   const email = document.getElementById("login-email").value.trim();
