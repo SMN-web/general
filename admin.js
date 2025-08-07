@@ -1,46 +1,40 @@
-export async function initAdminPanel() {
-  const email = sessionStorage.getItem("loggedInEmail");
-  const msgBox = document.getElementById("admin-msg");
-  const list = document.getElementById("user-list");
-  msgBox.textContent = "";
-  list.textContent = "Loading...";
+import { initAddUser } from "./add-user.js";
+import { initUserControl } from "./user-control.js";
+import { initUserLogs } from "./user-logs.js";
+import { initEquipmentControl } from "./equipment-control.js";
 
-  const res = await fetch(`https://fragrant-recipe-072a.nafil-8895-s.workers.dev/users?email=${email}`);
-  const data = await res.json();
+export function initAdminPanel() {
+  document.getElementById("admin-msg").textContent = "";
 
-  if (!res.ok || !data.users) {
-    list.textContent = `❌ ${data.error || "Failed to load users."}`;
-    return;
-  }
+  // Set up tab button handlers
+  const tabs = {
+    "add-user-tab": "add-user-section",
+    "user-control-tab": "user-control-section",
+    "user-logs-tab": "user-logs-section",
+    "equipment-control-tab": "equipment-control-section",
+  };
 
-  list.innerHTML = "";
+  Object.entries(tabs).forEach(([btnId, sectionId]) => {
+    const btn = document.getElementById(btnId);
+    if (btn) {
+      btn.onclick = () => {
+        // Hide all sections
+        Object.values(tabs).forEach(id => {
+          document.getElementById(id)?.classList.add("hidden");
+        });
 
-  data.users.forEach(user => {
-    const row = document.createElement("p");
-    const select = document.createElement("select");
+        // Show selected section
+        document.getElementById(sectionId)?.classList.remove("hidden");
 
-    ["user", "moderator", "admin"].forEach(role => {
-      const o = new Option(role, role, false, role === user.role);
-      select.appendChild(o);
-    });
-
-    select.onchange = async () => {
-      const res2 = await fetch("https://mute-snowflake-11b4.nafil-8895-s.workers.dev", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          adminEmail: email,
-          targetEmail: user.email,
-          newRole: select.value
-        })
-      });
-      const d = await res2.json();
-      msgBox.textContent = res2.ok && d.success ? "✅ Role updated." : `❌ ${d.error}`;
-initAdminPanel();
-    };
-
-    row.innerHTML = `${user.name} (${user.email}) `;
-    row.appendChild(select);
-    list.appendChild(row);
+        // Call matching init function
+        if (sectionId === "add-user-section") initAddUser();
+        if (sectionId === "user-control-section") initUserControl();
+        if (sectionId === "user-logs-section") initUserLogs();
+        if (sectionId === "equipment-control-section") initEquipmentControl();
+      };
+    }
   });
+
+  // Show default tab: Add User
+  document.getElementById("add-user-tab")?.click();
 }
