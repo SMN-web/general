@@ -1,6 +1,19 @@
+:root {
+  --font: 'Segoe UI', Roboto, Helvetica, sans-serif;
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --gray: #6b7280;
+  --border-color: #d1d5db;
+  --background: #f3f4f6;
+  --card-bg: #ffffff;
+  --text: #1f2937;
+  --radius: 8px;
+  --transition: 0.2s ease;
+}
+
 body {
   font-family: var(--font);
-  background-color: var(--bg);
+  background-color: var(--background);
   margin: 0;
   padding: 0;
   color: var(--text);
@@ -9,18 +22,27 @@ body {
 .panel {
   max-width: 600px;
   margin: 3em auto;
-  background: var(--card);
+  background: var(--card-bg);
   padding: 2rem;
-  border-radius: 12px;
+  border-radius: var(--radius);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-color);
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.hidden {
-  display: none;
+.panel.hidden {
+  opacity: 0;
+  transform: scale(0.97);
+  pointer-events: none;
 }
 
-h2, h3 {
-  margin-top: 0;
+.panel:not(.hidden) {
+  opacity: 1;
+  transform: scale(1);
+}
+
+h1, h2, h3 {
   font-weight: 600;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.3px;
+  margin-top: 0;
 }
