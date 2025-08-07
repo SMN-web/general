@@ -23,23 +23,25 @@
 <div id="admin-panel" class="panel hidden">
   <h2>👑 Admin Dashboard</h2>
 
-  <!-- Logout + Message -->
+  <!-- Global Admin Message -->
   <p id="admin-msg"></p>
+
+  <!-- Logout Button -->
   <button id="logout-btn">Logout</button>
 
-  <!-- Tab Navigation Buttons -->
-  <div class="tab-buttons" style="margin-top: 1.5rem;">
+  <!-- TAB BUTTONS -->
+  <div class="tab-buttons" style="margin: 1.5rem 0;">
     <button id="add-user-tab" class="tab-btn">➕ Add User</button>
     <button id="user-control-tab" class="tab-btn">🧑‍💼 User Control</button>
     <button id="user-logs-tab" class="tab-btn">📓 User Logs</button>
     <button id="equipment-control-tab" class="tab-btn">🛠 Equipment</button>
   </div>
 
-  <hr style="margin: 1.2rem 0;" />
+  <hr />
 
-  <!-- SECTION: Add User -->
+  <!-- === ADD USER SECTION === -->
   <div id="add-user-section" class="admin-section">
-    <h3>Add New User</h3>
+    <h3>➕ Add New User</h3>
     <form id="add-user-form">
       <label for="new-name">Name</label>
       <input id="new-name" placeholder="Full Name" />
@@ -58,26 +60,27 @@
     </form>
   </div>
 
-  <!-- SECTION: User Control -->
+  <!-- === USER CONTROL SECTION === -->
   <div id="user-control-section" class="admin-section hidden">
-    <h3>Modify Users</h3>
+    <h3>🧑‍💼 Modify + Delete Users</h3>
     <div id="user-control-list">
       <p>Loading users...</p>
     </div>
   </div>
 
-  <!-- SECTION: User Logs -->
+  <!-- === USER LOGS SECTION === -->
   <div id="user-logs-section" class="admin-section hidden">
     <h3>📓 User Logs</h3>
-    <p>This is the log dashboard. Coming soon!</p>
+    <p>This section will eventually show user login activity, actions, etc.</p>
   </div>
 
-  <!-- SECTION: Equipment Control -->
+  <!-- === EQUIPMENT CONTROL SECTION === -->
   <div id="equipment-control-section" class="admin-section hidden">
-    <h3>🛠 Equipment Control</h3>
-    <p>Welcome to the equipment management system. Coming soon!</p>
+    <h3>🛠 Equipment Dashboard</h3>
+    <p>Welcome to the equipment management panel. Coming soon.</p>
   </div>
 </div>
+
 
   <!-- USER PANEL -->
 <div id="user-panel" class="panel hidden"></div>
@@ -85,17 +88,14 @@
 <!-- MODERATOR PANEL -->
 <div id="moderator-panel" class="panel hidden"></div>
 
-<script type="module">
-  import { initAdminPanel } from './admin.js';
-  import { initModeratorPanel } from './moderator.js';
-  import { initUserPanel } from './users.js';
-  import './login.js';
-  import './main.js';
-  import './add-user.js';
-  import './user-control.js';
-  import './user-logs.js';
-  import './equipment-control.js';
-</script>
+<script type="module" src="./main.js"></script>
+<script type="module" src="./login.js"></script>
+<script type="module" src="./admin.js"></script>
+<script type="module" src="./add-user.js"></script>
+<script type="module" src="./user-control.js"></script>
+<script type="module" src="./user-logs.js"></script>
+<script type="module" src="./equipment-control.js"></script>
+
 
 </body>
 </html>
