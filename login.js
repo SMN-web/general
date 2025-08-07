@@ -1,7 +1,9 @@
 import { showPanel } from "./main.js";
 import { initAdminPanel } from "./admin.js";
+import { initModeratorPanel } from "./moderator.js";
+import { initUserPanel } from "./users.js";
 
-const LOGIN_WORKER_URL = "https://round-art-2c60.nafil-8895-s.workers.dev"; // CHANGE THIS
+const LOGIN_WORKER_URL = "https://your-login-worker.workers.dev"; // Replace with your deployed URL
 
 document.getElementById("login-btn").onclick = async () => {
   const email = document.getElementById("login-email").value.trim();
@@ -19,7 +21,7 @@ document.getElementById("login-btn").onclick = async () => {
     const res = await fetch(LOGIN_WORKER_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password })
+      body: JSON.stringify({ email, password }),
     });
 
     const data = await res.json();
@@ -29,20 +31,35 @@ document.getElementById("login-btn").onclick = async () => {
       return;
     }
 
+    // Extract role from message: "✅ Login successful as {role}"
     const roleMatch = data.message.match(/as (\w+)/i);
     const role = roleMatch?.[1]?.toLowerCase();
 
-    if (role !== "admin") {
-      msg.textContent = "❌ Admin only access";
+    if (!role) {
+      msg.textContent = "❌ Role not found in response.";
       return;
     }
 
     sessionStorage.setItem("loggedInEmail", email);
     sessionStorage.setItem("userRole", role);
 
-    history.pushState({ view: "admin" }, "", "#admin");
-    showPanel("admin-panel");
-    initAdminPanel();
+    // Redirect based on role
+    if (role === "admin") {
+      history.pushState({ view: "admin" }, "", "#admin");
+      showPanel("admin-panel");
+      initAdminPanel();
+    } else if (role === "moderator") {
+      history.pushState({ view: "moderator" }, "", "#moderator");
+      showPanel("moderator-panel");
+      initModeratorPanel();
+    } else {
+      history.pushState({ view: "user" }, "", "#user");
+      showPanel("user-panel");
+      initUserPanel();
+    }
+
+    msg.textContent = ""; // clear msg on success
+
   } catch (err) {
     msg.textContent = "❌ Network error: " + err.message;
   }
