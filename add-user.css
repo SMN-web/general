@@ -1,36 +1,45 @@
+#add-user-form {
+  margin-top: 2rem;
+}
+
 #add-user-form input,
 #add-user-form select {
   width: 100%;
-  margin-top: 0.8rem;
-  padding: 0.75rem;
+  margin-top: 0.75rem;
+  padding: 0.75rem 1rem;
   font-size: 1rem;
-  border: 1px solid var(--border);
-  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  background-color: white;
+  transition: box-shadow var(--transition), border-color var(--transition);
   box-sizing: border-box;
-  background-color: #fff;
 }
 
 #add-user-form input:focus,
 #add-user-form select:focus {
-  border-color: var(--primary);
   outline: none;
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.25);
 }
 
 #add-user-form button {
   width: 100%;
-  padding: 0.75rem;
-  background-color: var(--primary);
-  color: white;
+  padding: 0.75rem 1rem;
+  margin-top: 1rem;
   font-size: 1rem;
   font-weight: 600;
+  background-color: var(--primary);
+  color: white;
   border: none;
-  border-radius: 6px;
-  margin-top: 1rem;
+  border-radius: var(--radius);
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background var(--transition), transform var(--transition);
 }
 
 #add-user-form button:hover {
   background-color: var(--primary-dark);
+}
+
+#add-user-form button:active {
+  transform: scale(0.97);
 }
