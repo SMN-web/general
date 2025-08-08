@@ -1,12 +1,10 @@
 import { setupLogoutHandler, startHeartbeat } from "./main.js";
 
-  
 export function initUserPanel() {
+  // Show user info, etc.
   const email = sessionStorage.getItem("loggedInEmail");
-  document.getElementById("user-panel").innerHTML = `
-    <h2>👤 User Dashboard</h2>
-    <p>Welcome user, ${email}.</p>
-  `;
+  document.getElementById("user-email").textContent = email;
+
   setupLogoutHandler();
   startHeartbeat();
 }
