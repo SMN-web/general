@@ -4,6 +4,8 @@ import { initUserLogs } from "./user-logs.js";
 import { initEquipmentControl } from "./equipment-control.js";
 import { setupLogoutHandler } from "./main.js";
 
+import { startHeartbeat } from "./main.js";
+
 const tabMap = {
   "add-user-tab": { section: "add-user-section", init: initAddUser },
   "user-control-tab": { section: "user-control-section", init: initUserControl },
@@ -13,7 +15,7 @@ const tabMap = {
 
 export function initAdminPanel() {
   setupLogoutHandler(); // ✅ logout button inside admin panel
-
+  startHeartbeat();
   Object.entries(tabMap).forEach(([tabId, { section, init }]) => {
     const btn = document.getElementById(tabId);
     if (!btn.dataset.hasInit) {
