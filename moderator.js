@@ -8,4 +8,5 @@ export function initModeratorPanel() {
     <p>Welcome moderator, ${email}.</p>
   `;
    setupLogoutHandler();
+   startHeartbeat();
 }
