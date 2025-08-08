@@ -2,58 +2,93 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Admin SPA</title>
-  <link rel="stylesheet" href="./shared.css" />
-  <link rel="stylesheet" href="./login.css" />
-  <link rel="stylesheet" href="./admin.css" />
-  <link rel="stylesheet" href="./add-user.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Role-Based Admin Dashboard</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="./shared.css">
+  <link rel="stylesheet" href="./login.css">
+  <link rel="stylesheet" href="./admin.css">
+  <link rel="stylesheet" href="./add-user.css">
 </head>
 <body>
 
-<!-- LOGIN PANEL -->
-<div id="login-panel" class="panel">
-  <h2>Admin Login</h2>
-  <input id="login-email" placeholder="Email" />
-  <input id="login-password" type="password" placeholder="Password" />
-  <button id="login-btn">Login</button>
-  <p id="login-msg"></p>
-</div>
+  <!-- LOGIN PANEL -->
+  <div id="login-panel" class="panel">
+    <h2>🔐 Login</h2>
+    <input id="login-email" placeholder="Email" type="email" autocomplete="username" />
+    <input id="login-password" placeholder="Password" type="password" autocomplete="current-password" />
+    <button id="login-btn">Login</button>
+    <p id="login-msg"></p>
+  </div>
 
-<!-- ADMIN PANEL -->
-<div id="admin-panel" class="panel hidden">
-  <h2>👑 Admin Dashboard</h2>
-  <p id="admin-msg"></p>
-  <button id="logout-btn">Logout</button>
+  <!-- ADMIN PANEL -->
+  <div id="admin-panel" class="panel hidden">
+    <h2>👑 Admin Dashboard</h2>
+    <p id="admin-msg"></p>
+    <button id="logout-btn">Logout</button>
 
-  <hr />
-  <h3>All Users</h3>
-  <div id="user-list">Loading...</div>
+    <div class="tab-buttons">
+      <button id="add-user-tab" class="tab-btn">➕ Add User</button>
+      <button id="user-control-tab" class="tab-btn">🧑‍💼 User Control</button>
+      <button id="user-logs-tab" class="tab-btn">📓 User Logs</button>
+      <button id="equipment-control-tab" class="tab-btn">🛠 Equipment</button>
+    </div>
 
-  <hr />
-  <h3>Add User</h3>
-  <form id="add-user-form">
-    <input id="new-name" placeholder="Name" />
-    <input id="new-email" placeholder="Email" />
-    <select id="new-role">
-      <option value="user">User</option>
-      <option value="moderator">Moderator</option>
-      <option value="admin">Admin</option>
-    </select>
-    <button type="submit">Add User</button>
-  </form>
-</div>
+    <div id="add-user-section" class="admin-section">
+      <h3>Add New User</h3>
+      <form id="add-user-form">
+        <label for="new-name">Name</label>
+        <input id="new-name" />
+        <label for="new-email">Email</label>
+        <input id="new-email" type="email" />
+        <label for="new-role">Role</label>
+        <select id="new-role">
+          <option value="user">User</option>
+          <option value="moderator">Moderator</option>
+          <option value="admin">Admin</option>
+        </select>
+        <button type="submit">Add User</button>
+      </form>
+    </div>
+
+    <div id="user-control-section" class="admin-section hidden">
+      <h3>🧑‍💼 Modify + Delete Users</h3>
+      <div id="user-control-list"><p>Loading users...</p></div>
+    </div>
+
+    <div id="user-logs-section" class="admin-section hidden">
+      <h3>📓 User Logs</h3>
+      <p>This section will show logs. Coming soon.</p>
+    </div>
+
+    <div id="equipment-control-section" class="admin-section hidden">
+      <h3>🛠 Equipment Dashboard</h3>
+      <p>Welcome to the equipment management panel.</p>
+    </div>
+  </div>
+
   <!-- USER PANEL -->
-<div id="user-panel" class="panel hidden"></div>
+  <div id="user-panel" class="panel hidden">
+    <h2>👤 User Dashboard</h2>
+    <p>Welcome, <span id="user-email"></span>.</p>
+  </div>
 
-<!-- MODERATOR PANEL -->
-<div id="moderator-panel" class="panel hidden"></div>
+  <!-- MODERATOR PANEL -->
+  <div id="moderator-panel" class="panel hidden">
+    <h2>🛡 Moderator Dashboard</h2>
+    <p>Welcome, <span id="moderator-email"></span>.</p>
+  </div>
 
-<script type="module" src="./main.js"></script>
-<script type="module" src="./login.js"></script>
-<script type="module" src="./admin.js"></script>
-<script type="module" src="./add-user.js"></script>
-<script type="module" src="./users.js"></script>
-<script type="module" src="./moderator.js"></script>
-
+  <!-- JavaScript Modules -->
+  <script type="module" src="./main.js"></script>
+  <script type="module" src="./login.js"></script>
+  <script type="module" src="./admin.js"></script>
+  <script type="module" src="./add-user.js"></script>
+  <script type="module" src="./user-control.js"></script>
+  <script type="module" src="./user-logs.js"></script>
+  <script type="module" src="./equipment-control.js"></script>
+  <script type="module" src="./users.js"></script>
+  <script type="module" src="./moderator.js"></script>
 </body>
 </html>
