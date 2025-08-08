@@ -1,9 +1,12 @@
+import { setupLogoutHandler } from "./main.js";
+
 import { initAddUser } from "./add-user.js";
 import { initUserControl } from "./user-control.js";
 import { initUserLogs } from "./user-logs.js";
 import { initEquipmentControl } from "./equipment-control.js";
 
 export function initAdminPanel() {
+  setupLogoutHandler();
   const tabs = {
     "add-user-tab": { section: "add-user-section", init: initAddUser },
     "user-control-tab": { section: "user-control-section", init: initUserControl },
