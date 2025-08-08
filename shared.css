@@ -54,3 +54,52 @@ h3 {
   border-bottom: 1px solid var(--border-color);
   padding-bottom: 0.3rem;
 }
+:root {
+  --background: #f3f4f6;
+  --card-bg: #ffffff;
+  --text: #1f2937;
+  --border-color: #d1d5db;
+  --button-bg: #2563eb;
+  --button-text: #ffffff;
+}
+
+[data-theme="dark"] {
+  --background: #18181b;
+  --card-bg: #1e1e22;
+  --text: #f1f5f9;
+  --border-color: #2e2e30;
+  --button-bg: #3b82f6;
+  --button-text: #ffffff;
+}
+
+/* Apply theme vars globally */
+body {
+  background-color: var(--background);
+  color: var(--text);
+}
+
+.panel {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+}
+
+/* Buttons */
+button {
+  background-color: var(--button-bg);
+  color: var(--button-text);
+}
+.theme-toggle {
+  padding: 0.4rem 0.8rem;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.theme-toggle:hover {
+  background-color: var(--button-bg);
+  color: white;
+}
