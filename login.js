@@ -1,10 +1,5 @@
-import {
-  initAppRouter,
-  setupPopState,
-  saveLoginSession,
-  clearLoginSession,
-  showPanel
-} from "./main.js";
+import { saveLoginSession, showPanel } from "./main.js";
+
 import { initAdminPanel } from "./admin.js";
 import { initUserPanel } from "./users.js";
 import { initModeratorPanel } from "./moderator.js";
@@ -46,17 +41,17 @@ document.getElementById("login-btn").onclick = async () => {
     if (role === "admin") {
       showPanel("admin-panel");
       initAdminPanel();
-      saveLoginSession(email, role); // 👈 Save to localStorage after login
+      saveLoginSession(email, role);
 
     } else if (role === "moderator") {
       showPanel("moderator-panel");
       initModeratorPanel();
-      saveLoginSession(email, role); // 👈 Save to localStorage after login
+      saveLoginSession(email, role); 
 
     } else {
       showPanel("user-panel");
       initUserPanel();
-      saveLoginSession(email, role); // 👈 Save to localStorage after login
+      saveLoginSession(email, role);
 
     }
   } catch (err) {
