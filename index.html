@@ -22,65 +22,26 @@
 <!-- ADMIN PANEL -->
 <div id="admin-panel" class="panel hidden">
   <h2>👑 Admin Dashboard</h2>
-
-  <!-- Global message area -->
   <p id="admin-msg"></p>
   <button id="logout-btn">Logout</button>
 
-  <!-- Tab Navigation -->
-  <div class="tab-buttons" style="margin: 1.5rem 0;">
-    <button id="add-user-tab" class="tab-btn">➕ Add User</button>
-    <button id="user-control-tab" class="tab-btn">🧑‍💼 User Control</button>
-    <button id="user-logs-tab" class="tab-btn">📓 User Logs</button>
-    <button id="equipment-control-tab" class="tab-btn">🛠 Equipment</button>
-  </div>
+  <hr />
+  <h3>All Users</h3>
+  <div id="user-list">Loading...</div>
 
   <hr />
-
-  <!-- Add User Section -->
-  <div id="add-user-section" class="admin-section">
-    <h3>➕ Add New User</h3>
-    <form id="add-user-form">
-      <label for="new-name">Name</label>
-      <input id="new-name" placeholder="Full Name" />
-
-      <label for="new-email">Email</label>
-      <input id="new-email" type="email" placeholder="email@example.com" />
-
-      <label for="new-role">Role</label>
-      <select id="new-role">
-        <option value="user">User</option>
-        <option value="moderator">Moderator</option>
-        <option value="admin">Admin</option>
-      </select>
-
-      <button type="submit">Add User</button>
-    </form>
-  </div>
-
-  <!-- User Control Section -->
-  <div id="user-control-section" class="admin-section hidden">
-    <h3>🧑‍💼 Modify + Delete Users</h3>
-    <div id="user-control-list">
-      <p>Loading users...</p>
-    </div>
-  </div>
-
-  <!-- User Logs Section -->
-  <div id="user-logs-section" class="admin-section hidden">
-    <h3>📓 User Logs</h3>
-    <p>This section will show user activity. Coming soon.</p>
-  </div>
-
-  <!-- Equipment Control Section -->
-  <div id="equipment-control-section" class="admin-section hidden">
-    <h3>🛠 Equipment Dashboard</h3>
-    <p>Welcome to the equipment management panel.</p>
-  </div>
+  <h3>Add User</h3>
+  <form id="add-user-form">
+    <input id="new-name" placeholder="Name" />
+    <input id="new-email" placeholder="Email" />
+    <select id="new-role">
+      <option value="user">User</option>
+      <option value="moderator">Moderator</option>
+      <option value="admin">Admin</option>
+    </select>
+    <button type="submit">Add User</button>
+  </form>
 </div>
-
-
-
   <!-- USER PANEL -->
 <div id="user-panel" class="panel hidden"></div>
 
@@ -91,9 +52,6 @@
 <script type="module" src="./login.js"></script>
 <script type="module" src="./admin.js"></script>
 <script type="module" src="./add-user.js"></script>
-<script type="module" src="./user-control.js"></script>
-<script type="module" src="./user-logs.js"></script>
-<script type="module" src="./equipment-control.js"></script>
 <script type="module" src="./users.js"></script>
 <script type="module" src="./moderator.js"></script>
 
