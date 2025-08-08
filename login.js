@@ -1,9 +1,10 @@
 import { showPanel } from "./main.js";
 import { initAdminPanel } from "./admin.js";
-import { initModeratorPanel } from "./moderator.js";
 import { initUserPanel } from "./users.js";
+import { initModeratorPanel } from "./moderator.js";
 
-const LOGIN_WORKER_URL = "https://round-art-2c60.nafil-8895-s.workers.dev"; // Replace with your deployed URL
+// TEMP login endpoint to simulate roles
+const LOGIN_WORKER_URL = "https://round-art-2c60.nafil-8895-s.workers.dev";
 
 document.getElementById("login-btn").onclick = async () => {
   const email = document.getElementById("login-email").value.trim();
@@ -15,13 +16,11 @@ document.getElementById("login-btn").onclick = async () => {
     return;
   }
 
-  msg.textContent = "🔐 Logging in...";
-
   try {
     const res = await fetch(LOGIN_WORKER_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password })
     });
 
     const data = await res.json();
@@ -31,36 +30,24 @@ document.getElementById("login-btn").onclick = async () => {
       return;
     }
 
-    // Extract role from message: "✅ Login successful as {role}"
     const roleMatch = data.message.match(/as (\w+)/i);
     const role = roleMatch?.[1]?.toLowerCase();
-
-    if (!role) {
-      msg.textContent = "❌ Role not found in response.";
-      return;
-    }
+    if (!role) return (msg.textContent = "❌ Invalid role");
 
     sessionStorage.setItem("loggedInEmail", email);
     sessionStorage.setItem("userRole", role);
 
-    // Redirect based on role
     if (role === "admin") {
-      history.pushState({ view: "admin" }, "", "#admin");
       showPanel("admin-panel");
       initAdminPanel();
     } else if (role === "moderator") {
-      history.pushState({ view: "moderator" }, "", "#moderator");
       showPanel("moderator-panel");
       initModeratorPanel();
     } else {
-      history.pushState({ view: "user" }, "", "#user");
       showPanel("user-panel");
       initUserPanel();
     }
-
-    msg.textContent = ""; // clear msg on success
-
   } catch (err) {
-    msg.textContent = "❌ Network error: " + err.message;
+    msg.textContent = "❌ Login error: " + err.message;
   }
 };
