@@ -1,10 +1,4 @@
 import { saveLoginSession, showPanel } from "./main.js";
-import { setupLogoutHandler } from "./main.js";
-
-document.addEventListener("DOMContentLoaded", () => {
-  setupLogoutHandler();
-});
-
 import { initAdminPanel } from "./admin.js";
 import { initUserPanel } from "./users.js";
 import { initModeratorPanel } from "./moderator.js";
