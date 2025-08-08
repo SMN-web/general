@@ -1,4 +1,4 @@
-import { setupLogoutHandler } from "./main.js";
+import { setupLogoutHandler, startHeartbeat } from "./main.js";
 
   
 export function initUserPanel() {
