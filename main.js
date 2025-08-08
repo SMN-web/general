@@ -1,18 +1,18 @@
-// main.js
-
-// 🔄 Show only the selected panel
+// Hide all panels and show a specific one
 export function showPanel(id) {
   document.querySelectorAll(".panel").forEach(p => p.classList.add("hidden"));
   document.getElementById(id)?.classList.remove("hidden");
 }
 
-// ✅ Save login session (localStorage)
+// Save user login info (email + role) to localStorage
 export function saveLoginSession(email, role) {
   localStorage.setItem("session_email", email);
   localStorage.setItem("session_role", role);
+  sessionStorage.setItem("loggedInEmail", email);
+  sessionStorage.setItem("userRole", role);
 }
 
-// ✅ Load login session (returns null if not found)
+// Load saved session from localStorage
 export function loadLoginSession() {
   const email = localStorage.getItem("session_email");
   const role = localStorage.getItem("session_role");
@@ -20,67 +20,21 @@ export function loadLoginSession() {
   return null;
 }
 
-// ✅ Clear session on logout
+// Clear session and return user to login panel
 export function clearLoginSession() {
   localStorage.removeItem("session_email");
   localStorage.removeItem("session_role");
+  sessionStorage.clear();
   history.pushState({ view: "login" }, "", "#login");
   showPanel("login-panel");
 }
 
-// ✅ Call on page load → reads session and routes
-export function initAppRouter(panels) {
-  const saved = loadLoginSession();
-
-  if (saved) {
-    const { email, role } = saved;
-    sessionStorage.setItem("loggedInEmail", email);
-    sessionStorage.setItem("userRole", role);
-
-    if (role === "admin") {
-      history.replaceState({ view: "admin", tab: "add-user-tab" }, "", "#admin");
-      showPanel("admin-panel");
-      panels.initAdminPanel();
-    } else if (role === "moderator") {
-      history.replaceState({ view: "moderator" }, "", "#moderator");
-      showPanel("moderator-panel");
-      panels.initModeratorPanel();
-    } else {
-      history.replaceState({ view: "user" }, "", "#user");
-      showPanel("user-panel");
-      panels.initUserPanel();
-    }
-  } else {
-    // Default to login view
-    history.replaceState({ view: "login" }, "", "#login");
-    showPanel("login-panel");
+// Attach logout button logic (call after DOM is loaded)
+export function setupLogoutHandler() {
+  const logoutBtn = document.getElementById("logout-btn");
+  if (logoutBtn) {
+    logoutBtn.onclick = () => {
+      clearLoginSession();
+    };
   }
-}
-
-// ✅ SPAs: Make browser back/forward buttons behave
-export function setupPopState(panels) {
-  window.onpopstate = (e) => {
-    const state = e.state || {};
-
-    if (!state.view) {
-      showPanel("login-panel");
-      return;
-    }
-
-    if (state.view === "admin") {
-      showPanel("admin-panel");
-      panels.initAdminPanel();
-      if (state.tab && typeof panels.switchAdminTab === "function") {
-        panels.switchAdminTab(state.tab, false); // tabId, don't push again
-      }
-    } else if (state.view === "moderator") {
-      showPanel("moderator-panel");
-      panels.initModeratorPanel();
-    } else if (state.view === "user") {
-      showPanel("user-panel");
-      panels.initUserPanel();
-    } else {
-      showPanel("login-panel");
-    }
-  };
 }
