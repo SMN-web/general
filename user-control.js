@@ -1,6 +1,6 @@
 export async function initUserControl() {
   const adminEmail = sessionStorage.getItem("loggedInEmail");
-  const container = document.getElementById("user-control-section");
+  const container = document.getElementById("user-control-list");
   const msg = document.getElementById("admin-msg");
 
   container.innerHTML = "<p>Loading users...</p>";
@@ -18,7 +18,7 @@ export async function initUserControl() {
 
     data.users.forEach(user => {
       const card = document.createElement("div");
-      card.className = "user-entry";
+      card.className = "user-entry"; // style as needed
 
       const name = document.createElement("span");
       name.textContent = `${user.name} (${user.email})`;
@@ -42,24 +42,17 @@ export async function initUserControl() {
           })
         });
         const d = await res2.json();
-        msg.textContent = d.success ? "✅ Role updated." : `❌ ${d.error}`;
+        msg.textContent = res2.ok && d.success ? "✅ Role updated." : `❌ ${d.error || "Update failed"}`;
       };
 
       const deleteBtn = document.createElement("button");
       deleteBtn.textContent = "🗑️ Delete";
       deleteBtn.disabled = user.role === "admin";
 
-      deleteBtn.onclick = async () => {
-        if (!confirm(`Are you sure you want to delete ${user.email}?`)) return;
-        const res = await fetch("https://your-delete-user-worker.workers.dev", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ adminEmail, targetEmail: user.email })
-        });
-        const d = await res.json();
-        msg.textContent = d.success ? "✅ User deleted." : `❌ ${d.error}`;
-
-        if (d.success) initUserControl(); // reload list
+      deleteBtn.onclick = () => {
+        if (!confirm(`Delete ${user.email}?`)) return;
+        container.removeChild(card);
+        msg.textContent = `⚠️ Simulated delete of ${user.email} (no server call).`;
       };
 
       card.append(name, roleSelect, deleteBtn);
