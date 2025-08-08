@@ -11,7 +11,7 @@ export function startHeartbeat() {
   if (!email) return;
 
   const send = () => {
-    fetch("https://your-heartbeat-worker.workers.dev", {
+    fetch("https://white-breeze-db09.nafil-8895-s.workers.dev", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email })
