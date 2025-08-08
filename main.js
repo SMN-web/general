@@ -1,18 +1,18 @@
-// Hide all panels and show a specific one
+// 🔄 Show one panel
 export function showPanel(id) {
-  document.querySelectorAll(".panel").forEach(p => p.classList.add("hidden"));
+  document.querySelectorAll(".panel").forEach(panel => {
+    panel.classList.add("hidden");
+  });
   document.getElementById(id)?.classList.remove("hidden");
 }
 
-// Save user login info (email + role) to localStorage
+// 💾 Save user session
 export function saveLoginSession(email, role) {
   localStorage.setItem("session_email", email);
   localStorage.setItem("session_role", role);
-  sessionStorage.setItem("loggedInEmail", email);
-  sessionStorage.setItem("userRole", role);
 }
 
-// Load saved session from localStorage
+// 📦 Load session
 export function loadLoginSession() {
   const email = localStorage.getItem("session_email");
   const role = localStorage.getItem("session_role");
@@ -20,21 +20,21 @@ export function loadLoginSession() {
   return null;
 }
 
-// Clear session and return user to login panel
+// 🔁 Clear and logout
 export function clearLoginSession() {
   localStorage.removeItem("session_email");
   localStorage.removeItem("session_role");
   sessionStorage.clear();
-  history.pushState({ view: "login" }, "", "#login");
   showPanel("login-panel");
 }
 
-// Attach logout button logic (call after DOM is loaded)
+// ✋ Attach logout to all possible logout buttons
 export function setupLogoutHandler() {
-  const logoutBtn = document.getElementById("logout-btn");
-  if (logoutBtn) {
-    logoutBtn.onclick = () => {
+  const logoutButtons = document.querySelectorAll("#logout-btn");
+
+  logoutButtons.forEach(btn => {
+    btn.onclick = () => {
       clearLoginSession();
     };
-  }
+  });
 }
