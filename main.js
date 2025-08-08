@@ -40,8 +40,23 @@ export function loadLoginSession() {
   return null;
 }
 
+function notifyLogoutToServer() {
+  const email = sessionStorage.getItem("loggedInEmail");
+  if (!email) return;
+
+  // Send POST request to logout worker asynchronously
+  fetch("https://lively-cell-d074.nafil-8895-s.workers.dev", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email })
+  }).catch(err => {
+    console.warn("⚠️ Logout tracking failed:", err);
+  });
+}
+
 // 🔁 Clear and logout
 export function clearLoginSession() {
+notifyLogoutToServer(); 
   localStorage.removeItem("session_email");
   localStorage.removeItem("session_role");
   sessionStorage.clear();
