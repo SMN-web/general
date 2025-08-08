@@ -8,4 +8,5 @@ export function initUserPanel() {
     <p>Welcome user, ${email}.</p>
   `;
   setupLogoutHandler();
+  startHeartbeat();
 }
