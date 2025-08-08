@@ -2,9 +2,7 @@ import { initAddUser } from "./add-user.js";
 import { initUserControl } from "./user-control.js";
 import { initUserLogs } from "./user-logs.js";
 import { initEquipmentControl } from "./equipment-control.js";
-import { setupLogoutHandler } from "./main.js";
-
-import { startHeartbeat } from "./main.js";
+import { setupLogoutHandler, startHeartbeat } from "./main.js";
 
 const tabMap = {
   "add-user-tab": { section: "add-user-section", init: initAddUser },
