@@ -4,37 +4,41 @@ import { initUserLogs } from "./user-logs.js";
 import { initEquipmentControl } from "./equipment-control.js";
 
 export function initAdminPanel() {
-  document.getElementById("admin-msg").textContent = "";
+  const msgBox = document.getElementById("admin-msg");
+  msgBox.textContent = "";
 
-  // Set up tab button handlers
-  const tabs = {
-    "add-user-tab": "add-user-section",
-    "user-control-tab": "user-control-section",
-    "user-logs-tab": "user-logs-section",
-    "equipment-control-tab": "equipment-control-section",
+  const tabMap = {
+    "add-user-tab": {
+      section: "add-user-section",
+      init: initAddUser
+    },
+    "user-control-tab": {
+      section: "user-control-section",
+      init: initUserControl
+    },
+    "user-logs-tab": {
+      section: "user-logs-section",
+      init: initUserLogs
+    },
+    "equipment-control-tab": {
+      section: "equipment-control-section",
+      init: initEquipmentControl
+    }
   };
 
-  Object.entries(tabs).forEach(([btnId, sectionId]) => {
-    const btn = document.getElementById(btnId);
-    if (btn) {
-      btn.onclick = () => {
-        // Hide all sections
-        Object.values(tabs).forEach(id => {
-          document.getElementById(id)?.classList.add("hidden");
-        });
+  // Attach listeners to all tab buttons
+  Object.entries(tabMap).forEach(([tabId, { section, init }]) => {
+    const tab = document.getElementById(tabId);
+    tab?.addEventListener("click", () => {
+      Object.values(tabMap).forEach(({ section }) => {
+        document.getElementById(section)?.classList.add("hidden");
+      });
 
-        // Show selected section
-        document.getElementById(sectionId)?.classList.remove("hidden");
-
-        // Call matching init function
-        if (sectionId === "add-user-section") initAddUser();
-        if (sectionId === "user-control-section") initUserControl();
-        if (sectionId === "user-logs-section") initUserLogs();
-        if (sectionId === "equipment-control-section") initEquipmentControl();
-      };
-    }
+      document.getElementById(section)?.classList.remove("hidden");
+      if (typeof init === "function") init();
+    });
   });
 
-  // Show default tab: Add User
+  // Default tab on load
   document.getElementById("add-user-tab")?.click();
 }
