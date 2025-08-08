@@ -6,6 +6,26 @@ export function showPanel(id) {
   document.getElementById(id)?.classList.remove("hidden");
 }
 
+export function startHeartbeat() {
+  const email = sessionStorage.getItem("loggedInEmail");
+  if (!email) return;
+
+  const send = () => {
+    fetch("https://your-heartbeat-worker.workers.dev", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email })
+    });
+  };
+
+  send(); // initial
+  const interval = setInterval(send, 60 * 1000); // every minute
+
+  window.addEventListener("blur", () => clearInterval(interval));
+  window.addEventListener("beforeunload", () => clearInterval(interval));
+}
+
+
 // 💾 Save user session
 export function saveLoginSession(email, role) {
   localStorage.setItem("session_email", email);
