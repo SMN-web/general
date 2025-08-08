@@ -1,7 +1,7 @@
 export function initEquipmentControl() {
-  const section = document.getElementById("equipment-control-section");
-  section.innerHTML = `
-    <h3>🛠️ Equipment Control</h3>
-    <p>Welcome to the Equipment Management Panel. Feature coming soon.</p>
+  const container = document.getElementById("equipment-control-section");
+  container.innerHTML = `
+    <h3>🛠 Equipment Dashboard</h3>
+    <p>Welcome to the equipment management panel.</p>
   `;
 }
