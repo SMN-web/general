@@ -1,0 +1,184 @@
+/* ✅ Reset & Base */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  background-color: #f8f9fa;
+  color: #333;
+  min-height: 100vh;
+  scroll-behavior: smooth;
+}
+
+/* ✅ Panels */
+.panel {
+  max-width: 720px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+.hidden {
+  display: none !important;
+}
+.panel h2, .panel h3, .panel h4 {
+  text-align: center;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+/* ✅ Inputs & Forms */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="file"],
+select,
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+  margin: 8px 0 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+input[type="file"] {
+  border: 1px dashed #aaa;
+  background: #fcfcfc;
+  cursor: pointer;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #1a73e8;
+  box-shadow: 0 0 0 2px rgba(26,115,232,0.25);
+}
+
+/* ✅ Buttons */
+button,
+input[type="submit"] {
+  padding: 10px 16px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #1a73e8;
+  color: white;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+button:hover,
+input[type="submit"]:hover {
+  background-color: #0b57d0;
+}
+button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(26,115,232,0.4);
+}
+button:active {
+  transform: scale(0.97);
+}
+
+/* 🔴 Logout Button Style */
+#logout-btn {
+  background-color: #dc3545;
+  float: right;
+}
+#logout-btn:hover {
+  background-color: #b02a37;
+}
+#logout-btn:focus {
+  box-shadow: 0 0 0 3px rgba(220,53,69,0.3);
+}
+@media (max-width: 600px) {
+  #logout-btn {
+    float: none;
+    width: 100%;
+    margin-top: 0.75rem;
+  }
+}
+
+/* 🧾 User Logs */
+.user-log-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+}
+.user-log-entry {
+  border: 1px solid #dee2e6;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  background: #fafafa;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.user-log-entry:hover {
+  background-color: #f1f5f9;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+/* 🧊 Tabs (Admin Panel Tabs Area) */
+.admin-tabs {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+.admin-tabs button {
+  background-color: #e9ecef;
+  color: #333;
+  font-weight: 500;
+}
+.admin-tabs button.active {
+  background-color: #1a73e8;
+  color: white;
+}
+
+/* 🔽 Sections (Under Tabs) */
+.section {
+  display: none;
+}
+.section:not(.hidden) {
+  display: block;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* 📦 Misc */
+#login-msg,
+#admin-msg {
+  color: #d93025;
+  font-size: 0.95rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* ✨ Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 📱 Mobile adjustments */
+@media screen and (max-width: 600px) {
+  .panel {
+    padding: 1.25rem;
+  }
+  button,
+  input[type="submit"] {
+    width: 100%;
+  }
+  .admin-tabs {
+    flex-direction: column;
+  }
+}
