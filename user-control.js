@@ -41,25 +41,24 @@ export async function initUserControl() {
       del.disabled = user.role === "admin";
 
       del.onclick = async () => {
-        if (!confirm(`Are you sure you want to delete ${user.email}?`)) return;
+  if (!confirm(`Are you sure you want to delete ${user.email}?`)) return;
 
-        const resDel = await fetch("https://long-truth-057f.nafil-8895-s.workers.dev", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            adminEmail: admin,
-            targetEmail: user.email
-          })
-        });
-        const result = await resDel.json();
+  const resDel = await fetch("https://long-truth-057f.nafil-8895-s.workers.dev", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ adminEmail: admin, targetEmail: user.email })
+  });
 
-        if (resDel.ok && result.success) {
-          list.removeChild(card);
-          msg.textContent = `✅ Deleted ${user.email}`;
-        } else {
-          msg.textContent = `❌ ${result.error || "Deletion failed"}`;
-        }
-      };
+  const result = await resDel.json();
+
+  if (resDel.ok && result.success) {
+    list.removeChild(card);
+    msg.textContent = `✅ Deleted ${user.email}`;
+  } else {
+    msg.textContent = `❌ ${result.error || "Deletion failed"}`;
+  }
+};
+
 
       card.append(" ", select, " ", del);
       list.appendChild(card);
