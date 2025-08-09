@@ -1,4 +1,5 @@
 import { initEquipmentDashboard } from "./equipment-dashboard.js";
+import { initEquipmentList } from "./equipment-list.js";
 import { initEquipmentManagement } from "./equipment-management.js";
 
 export function initEquipmentControl() {
@@ -16,6 +17,7 @@ export function initEquipmentControl() {
         document.getElementById(btn.dataset.target).classList.remove("hidden");
 
         if (btn.dataset.target === "equip-dashboard") initEquipmentDashboard();
+        if (btn.dataset.target === "equip-list") initEquipmentList();
         if (btn.dataset.target === "equip-control") initEquipmentManagement();
       });
     }
