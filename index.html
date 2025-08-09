@@ -11,8 +11,8 @@
 <!-- LOGIN PANEL -->
 <div id="login-panel" class="panel">
   <h2>🔐 Login</h2>
-  <input id="login-email" type="email" placeholder="Email" required>
-  <input id="login-password" type="password" placeholder="Password" required>
+  <input id="login-email" type="email" placeholder="Email" autocomplete="username" required />
+  <input id="login-password" type="password" placeholder="Password" autocomplete="current-password" required />
   <button id="login-btn">Login</button>
   <p id="login-msg"></p>
 </div>
@@ -21,34 +21,56 @@
 <div id="admin-panel" class="panel hidden">
   <h2>👑 Admin Dashboard</h2>
   <p id="admin-msg"></p>
-  <button class="logout-btn">Logout</button>
+  <button class="logout-btn" id="logout-btn">Logout</button>
 
-  <!-- MAIN TABS -->
+  <!-- TOP-LEVEL SECTIONS -->
   <div class="main-tab-buttons">
     <button data-main="user-section" class="main-tab active">👥 Users</button>
     <button data-main="equipment-section" class="main-tab">🛠 Equipment</button>
     <button data-main="rigging-section" class="main-tab">🪝 Rigging</button>
   </div>
 
-  <!-- USER SECTION -->
+  <!-- ===== USERS SECTION ===== -->
   <div id="user-section" class="main-section">
     <div class="sub-tab-buttons">
       <button data-target="add-user-sub" class="user-subtab active">➕ Add User</button>
       <button data-target="user-control-sub" class="user-subtab">🧑‍💼 User Control</button>
       <button data-target="user-logs-sub" class="user-subtab">📓 User Logs</button>
     </div>
+
+    <!-- Add User real UI -->
     <div id="add-user-sub" class="user-subsection">
-      <div class="coming-soon-card"><span>🚧</span> Add User coming soon</div>
+      <h3>Add New User</h3>
+      <form id="add-user-form">
+        <label for="new-name">Name</label>
+        <input id="new-name" type="text" name="name" required />
+        <label for="new-email">Email</label>
+        <input id="new-email" type="email" name="email" required />
+        <label for="new-role">Role</label>
+        <select id="new-role" name="role" required>
+          <option value="user">User</option>
+          <option value="moderator">Moderator</option>
+          <option value="admin">Admin</option>
+        </select>
+        <button type="submit">Add User</button>
+      </form>
+      <p id="add-user-msg"></p>
     </div>
+
+    <!-- User Control real UI -->
     <div id="user-control-sub" class="user-subsection hidden">
-      <div class="coming-soon-card"><span>🧑‍💼</span> User Control coming soon</div>
+      <h3>🧑‍💼 Modify + Delete Users</h3>
+      <div id="user-control-list"><p>Loading users...</p></div>
     </div>
+
+    <!-- User Logs real UI -->
     <div id="user-logs-sub" class="user-subsection hidden">
-      <div class="coming-soon-card"><span>📓</span> User Logs coming soon</div>
+      <h3>📓 User Logs</h3>
+      <div id="user-logs-list"><p>Loading logs...</p></div>
     </div>
   </div>
 
-  <!-- EQUIPMENT SECTION -->
+  <!-- ===== EQUIPMENT SECTION ===== -->
   <div id="equipment-section" class="main-section hidden">
     <div class="sub-tab-buttons">
       <button data-target="equip-dashboard" class="equip-subtab active">📊 Dashboard</button>
@@ -62,7 +84,7 @@
     </div>
   </div>
 
-  <!-- RIGGING SECTION -->
+  <!-- ===== RIGGING SECTION ===== -->
   <div id="rigging-section" class="main-section hidden">
     <div class="sub-tab-buttons">
       <button data-target="rigging-details" class="rigging-subtab active">📄 Rigging Details</button>
@@ -91,21 +113,22 @@
   <button class="logout-btn">Logout</button>
 </div>
 
-<!-- JS MODULES -->
+<!-- SCRIPTS -->
 <script type="module" src="./main.js"></script>
 <script type="module" src="./login.js"></script>
 <script type="module" src="./admin.js"></script>
 <script type="module" src="./user-control-main.js"></script>
-<script type="module" src="./equipment-control.js"></script>
-<script type="module" src="./rigging-control.js"></script>
 <script type="module" src="./add-user.js"></script>
 <script type="module" src="./user-control.js"></script>
 <script type="module" src="./user-logs.js"></script>
+<script type="module" src="./equipment-control.js"></script>
 <script type="module" src="./equipment-dashboard.js"></script>
 <script type="module" src="./equipment-management.js"></script>
+<script type="module" src="./rigging-control.js"></script>
 <script type="module" src="./rigging-details.js"></script>
 <script type="module" src="./rigging-logs.js"></script>
 <script type="module" src="./users.js"></script>
 <script type="module" src="./moderator.js"></script>
+
 </body>
 </html>
