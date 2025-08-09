@@ -69,17 +69,37 @@
 
   <!-- EQUIPMENT SECTION -->
   <div id="equipment-section" class="main-section hidden">
-    <div class="sub-tab-buttons">
-      <button data-target="equip-dashboard" class="equip-subtab active">📊 Dashboard</button>
-      <button data-target="equip-control" class="equip-subtab">⚙ Equipment Control</button>
+  <div class="sub-tab-buttons">
+    <button data-target="equip-dashboard" class="equip-subtab active">📊 Dashboard</button>
+    <button data-target="equip-list" class="equip-subtab">📋 Equipment List</button>
+    <button data-target="equip-control" class="equip-subtab">⚙ Equipment Control</button>
+  </div>
+
+  <div id="equip-dashboard" class="equip-subsection">
+    <div class="coming-soon-card"><span>🚧</span> Equipment Dashboard coming soon</div>
+  </div>
+
+  <!-- Equipment List Tab -->
+  <div id="equip-list" class="equip-subsection hidden">
+    <h3>📋 Equipment List</h3>
+
+    <div class="csv-upload-box" style="margin-bottom:1.5rem;padding:1rem;background:#f8fafc;border-radius:8px;">
+      <label><strong>Upload CSV:</strong></label>
+      <input id="csvFile" type="file" accept=".csv" />
+      <button id="uploadCsvBtn" type="button">Upload</button>
+      <div id="csv-status" style="margin-top:0.5rem;color:#555;font-size:0.95rem;"></div>
     </div>
-    <div id="equip-dashboard" class="equip-subsection">
-      <div class="coming-soon-card"><span>🚧</span> Equipment Dashboard coming soon</div>
-    </div>
-    <div id="equip-control" class="equip-subsection hidden">
-      <div class="coming-soon-card"><span>🛠</span> Equipment Control coming soon</div>
+
+    <div id="equipment-table">
+      <p>No data loaded yet.</p>
     </div>
   </div>
+
+  <div id="equip-control" class="equip-subsection hidden">
+    <div class="coming-soon-card"><span>🛠</span> Equipment Control coming soon</div>
+  </div>
+</div>
+
 
   <!-- RIGGING SECTION -->
   <div id="rigging-section" class="main-section hidden">
