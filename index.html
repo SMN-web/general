@@ -59,11 +59,41 @@
       <p>This section will show logs. Coming soon.</p>
     </div>
 
-    <div id="equipment-control-section" class="admin-section hidden">
-      <h3>🛠 Equipment Dashboard</h3>
-      <p>Welcome to the equipment management panel.</p>
-    </div>
+    <!-- EQUIPMENT CONTROL SECTION -->
+<div id="equipment-control-section" class="admin-section hidden">
+  <h3>🛠 Equipment Dashboard</h3>
+
+  <div class="equipment-toolbar">
+    <button id="add-equipment-btn">➕ Add Equipment</button>
+    <input id="equipment-search" type="text" placeholder="Search equipment…" />
   </div>
+  
+  <div id="equipment-list"><p>No equipment loaded yet.</p></div>
+</div>
+
+<!-- MODAL FOR ADD/EDIT -->
+<div id="equipment-modal" class="modal hidden">
+  <form id="equipment-form" class="modal-content">
+    <span id="equipment-modal-close" class="close">&times;</span>
+    <h4 id="equipment-modal-title">Add/Edit Equipment</h4>
+    
+    <label for="eq-name">Name*</label>
+    <input id="eq-name" type="text" required />
+    
+    <label for="eq-type">Type</label>
+    <input id="eq-type" type="text" />
+    
+    <label for="eq-status">Status</label>
+    <select id="eq-status">
+      <option value="active">Active</option>
+      <option value="maintenance">Maintenance</option>
+      <option value="inactive">Inactive</option>
+    </select>
+    
+    <button type="submit">Save</button>
+  </form>
+</div>
+
 
   <!-- USER PANEL -->
   <div id="user-panel" class="panel hidden">
