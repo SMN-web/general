@@ -6,24 +6,24 @@ export function initEquipmentControl() {
   const selectEl = document.getElementById("equipment-action-select");
   if (!selectEl) return;
 
+  // Bind event only once
   if (!selectEl.dataset.bound) {
     selectEl.dataset.bound = "true";
     selectEl.addEventListener("change", () => {
-      // Hide all subsections
       document.querySelectorAll("#equipment-section .equip-subsection")
         .forEach(sec => sec.classList.add("hidden"));
 
-      // Show selected subsection
+      // Show relevant subsection
       const target = document.getElementById(selectEl.value);
       if (target) target.classList.remove("hidden");
 
-      // Initialize relevant section
+      // Re-init the feature for the selected subsection
       if (selectEl.value === "equip-dashboard") initEquipmentDashboard();
       if (selectEl.value === "equip-upload") initEquipmentList();
       if (selectEl.value === "equip-manage") initEquipmentManage();
     });
   }
 
-  // Trigger initial load
+  // Always trigger change, so shows something!
   selectEl.dispatchEvent(new Event("change"));
 }
