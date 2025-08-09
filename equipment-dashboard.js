@@ -60,7 +60,7 @@ function renderDashboardStats(stats) {
 
 export function initEquipmentDashboard() {
   // Set your deployed Worker URL here
-  fetch("https://your-dashboard-worker-subdomain.workers.dev")
+  fetch("https://ancient-block-0551.nafil-8895-s.workers.dev")
     .then(res => res.json())
     .then(data => {
       if (data.success) {
