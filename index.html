@@ -76,8 +76,22 @@
   </div>
 
   <div id="equip-dashboard" class="equip-subsection">
-    <div class="coming-soon-card"><span>🚧</span> Equipment Dashboard coming soon</div>
+  <div id="equipment-dashboard-summary" style="margin:2rem 0;">
+    <h3>📊 Equipment Summary</h3>
+    <ul>
+      <li>Crawler Cranes: <span id="stat-crawler"></span></li>
+      <li>Mobile Cranes: <span id="stat-mobile"></span></li>
+      <li>Manlifts: <span id="stat-manlift"></span>
+        (Average size: <span id="stat-manlift-avg"></span> m)</li>
+      <li>Dumber: <span id="stat-dumber"></span></li>
+      <li>Forklift: <span id="stat-forklift"></span></li>
+      <li>Boom Truck: <span id="stat-boom"></span></li>
+      <li>DWM: <span id="stat-dwm"></span></li>
+    </ul>
+    <button id="refresh-dashboard-btn" style="margin-top:1rem;">🔄 Refresh Dashboard</button>
   </div>
+</div>
+
 
   <!-- Equipment List Tab -->
   <div id="equip-list" class="equip-subsection hidden">
