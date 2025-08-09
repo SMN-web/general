@@ -4,8 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Role-Based Admin Dashboard</title>
-
-  <!-- Styles -->
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
@@ -13,8 +11,10 @@
   <!-- LOGIN PANEL -->
   <div id="login-panel" class="panel">
     <h2>🔐 Login</h2>
-    <input id="login-email" placeholder="Email" type="email" autocomplete="username" />
-    <input id="login-password" placeholder="Password" type="password" autocomplete="current-password" />
+    <label for="login-email" class="sr-only">Email</label>
+    <input id="login-email" placeholder="Email" type="email" autocomplete="username" required />
+    <label for="login-password" class="sr-only">Password</label>
+    <input id="login-password" placeholder="Password" type="password" autocomplete="current-password" required />
     <button id="login-btn">Login</button>
     <p id="login-msg"></p>
   </div>
@@ -23,8 +23,9 @@
   <div id="admin-panel" class="panel hidden">
     <h2>👑 Admin Dashboard</h2>
     <p id="admin-msg"></p>
-    <button id="logout-btn">Logout</button>
+    <button class="logout-btn">Logout</button>
 
+    <!-- Admin Tabs -->
     <div class="tab-buttons">
       <button id="add-user-tab" class="tab-btn">➕ Add User</button>
       <button id="user-control-tab" class="tab-btn">🧑‍💼 User Control</button>
@@ -32,15 +33,16 @@
       <button id="equipment-control-tab" class="tab-btn">🛠 Equipment</button>
     </div>
 
+    <!-- Add User Section -->
     <div id="add-user-section" class="admin-section">
       <h3>Add New User</h3>
       <form id="add-user-form">
         <label for="new-name">Name</label>
-        <input id="new-name" />
+        <input id="new-name" type="text" name="name" required />
         <label for="new-email">Email</label>
-        <input id="new-email" type="email" />
+        <input id="new-email" type="email" name="email" required />
         <label for="new-role">Role</label>
-        <select id="new-role">
+        <select id="new-role" name="role" required>
           <option value="user">User</option>
           <option value="moderator">Moderator</option>
           <option value="admin">Admin</option>
@@ -49,67 +51,67 @@
       </form>
     </div>
 
+    <!-- User Control -->
     <div id="user-control-section" class="admin-section hidden">
       <h3>🧑‍💼 Modify + Delete Users</h3>
       <div id="user-control-list"><p>Loading users...</p></div>
     </div>
 
+    <!-- User Logs -->
     <div id="user-logs-section" class="admin-section hidden">
       <h3>📓 User Logs</h3>
-      <p>This section will show logs. Coming soon.</p>
+      <!-- Filled by user-logs.js -->
     </div>
 
-    <!-- EQUIPMENT CONTROL SECTION -->
-<div id="equipment-control-section" class="admin-section hidden">
-  <h3>🛠 Equipment Dashboard</h3>
-
-  <div class="equipment-toolbar">
-    <button id="add-equipment-btn">➕ Add Equipment</button>
-    <input id="equipment-search" type="text" placeholder="Search equipment…" />
+    <!-- Equipment Control -->
+    <div id="equipment-control-section" class="admin-section hidden">
+      <h3>🛠 Equipment Dashboard</h3>
+      <div class="equipment-toolbar">
+        <button id="add-equipment-btn">➕ Add Equipment</button>
+        <input id="equipment-search" type="text" placeholder="Search equipment…" />
+      </div>
+      <div id="equipment-list"><p>No equipment loaded yet.</p></div>
+    </div>
   </div>
-  
-  <div id="equipment-list"><p>No equipment loaded yet.</p></div>
-</div>
-
-<!-- MODAL FOR ADD/EDIT -->
-<div id="equipment-modal" class="modal hidden">
-  <form id="equipment-form" class="modal-content">
-    <span id="equipment-modal-close" class="close">&times;</span>
-    <h4 id="equipment-modal-title">Add/Edit Equipment</h4>
-    
-    <label for="eq-name">Name*</label>
-    <input id="eq-name" type="text" required />
-    
-    <label for="eq-type">Type</label>
-    <input id="eq-type" type="text" />
-    
-    <label for="eq-status">Status</label>
-    <select id="eq-status">
-      <option value="active">Active</option>
-      <option value="maintenance">Maintenance</option>
-      <option value="inactive">Inactive</option>
-    </select>
-    
-    <button type="submit">Save</button>
-  </form>
-</div>
-
 
   <!-- USER PANEL -->
   <div id="user-panel" class="panel hidden">
     <h2>👤 User Dashboard</h2>
     <p>Welcome, <span id="user-email"></span>.</p>
- <button id="logout-btn">Logout</button>
+    <button class="logout-btn">Logout</button>
   </div>
 
   <!-- MODERATOR PANEL -->
   <div id="moderator-panel" class="panel hidden">
     <h2>🛡 Moderator Dashboard</h2>
     <p>Welcome, <span id="moderator-email"></span>.</p>
-  <button id="logout-btn">Logout</button>
+    <button class="logout-btn">Logout</button>
   </div>
 
-  <!-- JavaScript Modules -->
+  <!-- EQUIPMENT MODAL moved outside panels -->
+  <div id="equipment-modal" class="modal hidden">
+    <form id="equipment-form" class="modal-content">
+      <span id="equipment-modal-close" class="close">&times;</span>
+      <h4 id="equipment-modal-title">Add/Edit Equipment</h4>
+
+      <label for="eq-name">Name*</label>
+      <input id="eq-name" name="name" type="text" required />
+
+      <label for="eq-type">Type</label>
+      <input id="eq-type" name="type" type="text" />
+
+      <label for="eq-status">Status</label>
+      <select id="eq-status" name="status">
+        <option value="active">Active</option>
+        <option value="maintenance">Maintenance</option>
+        <option value="inactive">Inactive</option>
+      </select>
+
+      <button type="submit">Save</button>
+    </form>
+  </div>
+
+  <!-- Scripts -->
   <script type="module" src="./main.js"></script>
   <script type="module" src="./login.js"></script>
   <script type="module" src="./admin.js"></script>
