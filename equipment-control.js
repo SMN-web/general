@@ -6,10 +6,9 @@ const closeModalBtn = document.getElementById("equipment-modal-close");
 const form = document.getElementById("equipment-form");
 const modalTitle = document.getElementById("equipment-modal-title");
 
-let equipmentData = []; // Mock data array
+let equipmentData = [];
 let editingId = null;
 
-// Mock: Initial load (replace with fetch from backend)
 function loadEquipment() {
   equipmentData = [
     { id: 1, name: "Forklift 12", type: "Vehicle", status: "active" },
@@ -19,10 +18,9 @@ function loadEquipment() {
   renderEquipment(equipmentData);
 }
 
-// Render list
 function renderEquipment(list) {
   equipmentListEl.innerHTML = "";
-  if (list.length === 0) {
+  if (!list.length) {
     equipmentListEl.innerHTML = "<p>No equipment found.</p>";
     return;
   }
@@ -44,7 +42,6 @@ function renderEquipment(list) {
   });
 }
 
-// Search filter
 searchInput.addEventListener("input", () => {
   const term = searchInput.value.toLowerCase();
   const filtered = equipmentData.filter(e =>
@@ -54,7 +51,6 @@ searchInput.addEventListener("input", () => {
   renderEquipment(filtered);
 });
 
-// Show add modal
 addBtn.addEventListener("click", () => {
   editingId = null;
   form.reset();
@@ -62,43 +58,39 @@ addBtn.addEventListener("click", () => {
   modal.classList.remove("hidden");
 });
 
-// Close modal
 closeModalBtn.addEventListener("click", () => {
   modal.classList.add("hidden");
 });
 
-// Save form
+modal.addEventListener("click", e => {
+  if (e.target === modal) modal.classList.add("hidden");
+});
+
 form.addEventListener("submit", e => {
   e.preventDefault();
-  const name = document.getElementById("eq-name").value;
-  const type = document.getElementById("eq-type").value;
+  const name = document.getElementById("eq-name").value.trim();
+  const type = document.getElementById("eq-type").value.trim();
   const status = document.getElementById("eq-status").value;
 
   if (editingId) {
-    // Edit existing
     const eq = equipmentData.find(e => e.id === editingId);
+    if (!eq) return;
     eq.name = name;
     eq.type = type;
     eq.status = status;
   } else {
-    // Add new
-    const newEq = {
-      id: Date.now(),
-      name,
-      type,
-      status
-    };
-    equipmentData.push(newEq);
+    equipmentData.push({ id: Date.now(), name, type, status });
   }
+
   renderEquipment(equipmentData);
   modal.classList.add("hidden");
 });
 
-// Handle edit/delete clicks
 equipmentListEl.addEventListener("click", e => {
   if (e.target.classList.contains("edit-eq")) {
     const id = parseInt(e.target.dataset.id);
     const eq = equipmentData.find(eq => eq.id === id);
+    if (!eq) return;
     editingId = id;
     document.getElementById("eq-name").value = eq.name;
     document.getElementById("eq-type").value = eq.type;
@@ -113,10 +105,8 @@ equipmentListEl.addEventListener("click", e => {
   }
 });
 
-// Helper
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-// Init
 loadEquipment();
