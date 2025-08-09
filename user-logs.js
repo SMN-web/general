@@ -1,5 +1,5 @@
 export function initUserLogs() {
-  const container = document.getElementById("user-logs-section");
+  const container = document.getElementById("user-logs-list");
   const msgBox = document.getElementById("admin-msg");
 
   container.innerHTML = "<p>Loading user logs...</p>";
