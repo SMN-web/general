@@ -65,19 +65,49 @@
       <!-- Populated by user-logs.js -->
     </div>
 
-    <!-- Equipment Control: Coming Soon Placeholder -->
-    <div id="equipment-control-section" class="admin-section hidden">
-      <h3>🛠 Equipment Dashboard</h3>
-      <div class="coming-soon-card">
-        <div class="coming-soon-icon">🚧</div>
-        <div>
-          <h4>Equipment management is coming soon!</h4>
-          <p>This section will allow you to add, edit, and track equipment.</p>
-          <p><em>Stay tuned for updates.</em></p>
-        </div>
+    <!-- Equipment Control: Coming Soon Placeholder --><!-- EQUIPMENT CONTROL SECTION with sub-tabs -->
+<div id="equipment-control-section" class="admin-section hidden">
+  <h3>🛠 Equipment Section</h3>
+
+  <!-- Sub Tabs -->
+  <div class="sub-tab-buttons">
+    <button data-target="equip-dashboard" class="equip-subtab active">📊 Dashboard</button>
+    <button data-target="equip-control" class="equip-subtab">⚙ Equipment Control</button>
+    <button data-target="rigging-details" class="equip-subtab">🪝 Rigging Details</button>
+  </div>
+
+  <!-- Sub Sections -->
+  <div id="equip-dashboard" class="equip-subsection">
+    <div class="coming-soon-card">
+      <div class="coming-soon-icon">🚧</div>
+      <div>
+        <h4>Equipment Dashboard is coming soon</h4>
+        <p>This section will display equipment stats and summaries.</p>
       </div>
     </div>
   </div>
+
+  <div id="equip-control" class="equip-subsection hidden">
+    <div class="coming-soon-card">
+      <div class="coming-soon-icon">🛠</div>
+      <div>
+        <h4>Equipment Control is coming soon</h4>
+        <p>This will allow you to manage, add, and edit equipment.</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="rigging-details" class="equip-subsection hidden">
+    <div class="coming-soon-card">
+      <div class="coming-soon-icon">🪝</div>
+      <div>
+        <h4>Rigging Details are coming soon</h4>
+        <p>This will display rigging info and related operational details.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
 
   <!-- USER PANEL -->
   <div id="user-panel" class="panel hidden">
