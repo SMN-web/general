@@ -1,41 +1,37 @@
-import { initAddUser } from "./add-user.js";
-import { initUserControl } from "./user-control.js";
-import { initUserLogs } from "./user-logs.js";
-import { initEquipmentControl } from "./equipment-control.js";
 import { setupLogoutHandler, startHeartbeat } from "./main.js";
+import { initUserControlMain } from "./user-control-main.js";
+import { initEquipmentControl } from "./equipment-control.js";
+import { initRiggingControl } from "./rigging-control.js";
 
-const tabMap = {
-  "add-user-tab": { section: "add-user-section", init: initAddUser },
-  "user-control-tab": { section: "user-control-section", init: initUserControl },
-  "user-logs-tab": { section: "user-logs-section", init: initUserLogs },
-  "equipment-control-tab": { section: "equipment-control-section", init: initEquipmentControl }
+const mainTabMap = {
+  "user-section": initUserControlMain,
+  "equipment-section": initEquipmentControl,
+  "rigging-section": initRiggingControl
 };
 
 export function initAdminPanel() {
-  setupLogoutHandler(); // ✅ logout button inside admin panel
+  setupLogoutHandler();
   startHeartbeat();
-  Object.entries(tabMap).forEach(([tabId, { section, init }]) => {
-    const btn = document.getElementById(tabId);
-    if (!btn.dataset.hasInit) {
-      btn.dataset.hasInit = "true";
-      btn.addEventListener("click", () => {
-        switchAdminTab(tabId);
-      });
-    }
+
+  const mainTabs = document.querySelectorAll(".main-tab");
+  const mainSections = document.querySelectorAll(".main-section");
+
+  mainTabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      mainTabs.forEach(t => t.classList.remove("active"));
+      mainSections.forEach(sec => sec.classList.add("hidden"));
+
+      tab.classList.add("active");
+      const targetId = tab.dataset.main;
+      document.getElementById(targetId).classList.remove("hidden");
+
+      if (typeof mainTabMap[targetId] === "function") {
+        mainTabMap[targetId]();
+      }
+    });
   });
 
-  // Show default tab
-  switchAdminTab("add-user-tab");
-}
-
-export function switchAdminTab(tabId) {
-  Object.values(tabMap).forEach(({ section }) => {
-    document.getElementById(section)?.classList.add("hidden");
-  });
-
-  const { section, init } = tabMap[tabId] || {};
-  if (section) {
-    document.getElementById(section)?.classList.remove("hidden");
-    init?.();
-  }
+  // Default to Users section
+  const defaultTab = document.querySelector('.main-tab[data-main="user-section"]');
+  if (defaultTab) defaultTab.click();
 }
