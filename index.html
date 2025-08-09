@@ -63,63 +63,68 @@
       <!-- Filled by user-logs.js -->
     </div>
 
-    <!-- Equipment Control -->
-    <div id="equipment-control-section" class="admin-section hidden">
-      <h3>🛠 Equipment Dashboard</h3>
-      <div class="equipment-toolbar">
-        <button id="add-equipment-btn">➕ Add Equipment</button>
-        <input id="equipment-search" type="text" placeholder="Search equipment…" />
-      </div>
-      <div id="equipment-list"><p>No equipment loaded yet.</p></div>
-    </div>
+    <!-- ... keep all your existing HTML above here ... -->
+
+<!-- EQUIPMENT CONTROL SECTION (inside admin panel tabs) -->
+<div id="equipment-control-section" class="admin-section hidden">
+  <h3>🛠 Equipment Dashboard</h3>
+
+  <div class="equipment-toolbar">
+    <button id="add-equipment-btn">➕ Add Equipment</button>
+    <input id="equipment-search" type="text" placeholder="Search equipment…" />
   </div>
+  
+  <div id="equipment-list"><p>No equipment loaded yet.</p></div>
+</div>
+</div> <!-- closes admin-panel -->
 
-  <!-- USER PANEL -->
-  <div id="user-panel" class="panel hidden">
-    <h2>👤 User Dashboard</h2>
-    <p>Welcome, <span id="user-email"></span>.</p>
-    <button class="logout-btn">Logout</button>
-  </div>
+<!-- EQUIPMENT MODAL: placed after admin panel so it overlays all -->
+<div id="equipment-modal" class="modal hidden">
+  <form id="equipment-form" class="modal-content">
+    <span id="equipment-modal-close" class="close">&times;</span>
+    <h4 id="equipment-modal-title">Add/Edit Equipment</h4>
 
-  <!-- MODERATOR PANEL -->
-  <div id="moderator-panel" class="panel hidden">
-    <h2>🛡 Moderator Dashboard</h2>
-    <p>Welcome, <span id="moderator-email"></span>.</p>
-    <button class="logout-btn">Logout</button>
-  </div>
+    <label for="eq-name">Name*</label>
+    <input id="eq-name" type="text" required />
 
-  <!-- EQUIPMENT MODAL moved outside panels -->
-  <div id="equipment-modal" class="modal hidden">
-    <form id="equipment-form" class="modal-content">
-      <span id="equipment-modal-close" class="close">&times;</span>
-      <h4 id="equipment-modal-title">Add/Edit Equipment</h4>
+    <label for="eq-type">Type</label>
+    <input id="eq-type" type="text" />
 
-      <label for="eq-name">Name*</label>
-      <input id="eq-name" name="name" type="text" required />
+    <label for="eq-status">Status</label>
+    <select id="eq-status">
+      <option value="active">Active</option>
+      <option value="maintenance">Maintenance</option>
+      <option value="inactive">Inactive</option>
+    </select>
 
-      <label for="eq-type">Type</label>
-      <input id="eq-type" name="type" type="text" />
+    <button type="submit">Save</button>
+  </form>
+</div>
 
-      <label for="eq-status">Status</label>
-      <select id="eq-status" name="status">
-        <option value="active">Active</option>
-        <option value="maintenance">Maintenance</option>
-        <option value="inactive">Inactive</option>
-      </select>
+<!-- USER PANEL -->
+<div id="user-panel" class="panel hidden">
+  <h2>👤 User Dashboard</h2>
+  <p>Welcome, <span id="user-email"></span>.</p>
+  <button class="logout-btn">Logout</button>
+</div>
 
-      <button type="submit">Save</button>
-    </form>
-  </div>
+<!-- MODERATOR PANEL -->
+<div id="moderator-panel" class="panel hidden">
+  <h2>🛡 Moderator Dashboard</h2>
+  <p>Welcome, <span id="moderator-email"></span>.</p>
+  <button class="logout-btn">Logout</button>
+</div>
 
-  <!-- Scripts -->
-  <script type="module" src="./main.js"></script>
-  <script type="module" src="./login.js"></script>
-  <script type="module" src="./admin.js"></script>
-  <script type="module" src="./add-user.js"></script>
-  <script type="module" src="./user-control.js"></script>
-  <script type="module" src="./user-logs.js"></script>
-  <script type="module" src="./equipment-control.js"></script>
-  <script type="module" src="./users.js"></script>
-  <script type="module" src="./moderator.js"></script>
+<!-- JavaScript Modules -->
+<script type="module" src="./main.js"></script>
+<script type="module" src="./login.js"></script>
+<script type="module" src="./admin.js"></script>
+<script type="module" src="./add-user.js"></script>
+<script type="module" src="./user-control.js"></script>
+<script type="module" src="./user-logs.js"></script>
+<script type="module" src="./equipment-control.js"></script>
+<script type="module" src="./users.js"></script>
+<script type="module" src="./moderator.js"></script>
 </body>
 </html>
+
