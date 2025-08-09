@@ -395,3 +395,56 @@ button:active {
   from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+.equip-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 1rem;
+}
+
+.equip-menu-group {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  background: #f1f1f1;
+  color: #222;
+  padding: 0.3rem 0.7rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+.equip-menu-group:hover {
+  background: #e0e7ef;
+}
+.equip-menu-group .arrow {
+  margin-left: 0.4rem;
+  font-size: 0.8rem;
+}
+
+.equip-submenu {
+  margin-left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.equip-submenu button {
+  text-align: left;
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 0.22rem 0.7rem;
+  border-radius: 3px;
+  font-size: 0.98rem;
+  cursor: pointer;
+  color: #333;
+  transition: background 0.2s;
+}
+.equip-submenu button:hover {
+  background: #e8f4ff;
+}
+
+.equip-subsection { margin-top: 1.2rem; }
+.hidden { display: none !important; }
+
