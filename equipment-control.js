@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+
   const equipmentListEl = document.getElementById("equipment-list");
   const addBtn = document.getElementById("add-equipment-btn");
   const searchInput = document.getElementById("equipment-search");
@@ -8,15 +9,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const modalTitle = document.getElementById("equipment-modal-title");
 
   if (!equipmentListEl || !addBtn || !searchInput || !modal || !closeModalBtn || !form || !modalTitle) {
-    console.error("❌ Equipment Control: One or more required DOM elements not found.");
+    console.error("Equipment section elements not found.");
     return;
   }
 
   let equipmentData = [];
   let editingId = null;
 
-  // Mock load (replace with fetch to backend)
   function loadEquipment() {
+    // mock data
     equipmentData = [
       { id: 1, name: "Forklift 12", type: "Vehicle", status: "active" },
       { id: 2, name: "Conveyor A1", type: "Machine", status: "maintenance" },
@@ -25,7 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
     renderEquipment(equipmentData);
   }
 
-  // Render list
   function renderEquipment(list) {
     equipmentListEl.innerHTML = "";
     if (!list.length) {
@@ -50,7 +50,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Search filter
   searchInput.addEventListener("input", () => {
     const term = searchInput.value.toLowerCase();
     const filtered = equipmentData.filter(e =>
@@ -60,7 +59,6 @@ document.addEventListener("DOMContentLoaded", () => {
     renderEquipment(filtered);
   });
 
-  // Show Add modal
   addBtn.addEventListener("click", () => {
     editingId = null;
     form.reset();
@@ -68,23 +66,19 @@ document.addEventListener("DOMContentLoaded", () => {
     modal.classList.remove("hidden");
   });
 
-  // Close modal (X button)
   closeModalBtn.addEventListener("click", () => {
     modal.classList.add("hidden");
   });
 
-  // Close modal when clicking outside content
   modal.addEventListener("click", e => {
     if (e.target === modal) modal.classList.add("hidden");
   });
 
-  // Save form
   form.addEventListener("submit", e => {
     e.preventDefault();
     const name = document.getElementById("eq-name").value.trim();
     const type = document.getElementById("eq-type").value.trim();
     const status = document.getElementById("eq-status").value;
-
     if (!name) return;
 
     if (editingId) {
@@ -101,7 +95,6 @@ document.addEventListener("DOMContentLoaded", () => {
     modal.classList.add("hidden");
   });
 
-  // Handle edit/delete
   equipmentListEl.addEventListener("click", e => {
     if (e.target.classList.contains("edit-eq")) {
       const id = parseInt(e.target.dataset.id);
@@ -121,11 +114,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Helper
   function capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
-  // Init
   loadEquipment();
+
 });
