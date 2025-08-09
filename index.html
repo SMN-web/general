@@ -11,8 +11,8 @@
 <!-- LOGIN PANEL -->
 <div id="login-panel" class="panel">
   <h2>🔐 Login</h2>
-  <input id="login-email" type="email" placeholder="Email" autocomplete="username" required />
-  <input id="login-password" type="password" placeholder="Password" autocomplete="current-password" required />
+  <input id="login-email" type="email" placeholder="Email" required />
+  <input id="login-password" type="password" placeholder="Password" required />
   <button id="login-btn">Login</button>
   <p id="login-msg"></p>
 </div>
@@ -23,14 +23,14 @@
   <p id="admin-msg"></p>
   <button class="logout-btn" id="logout-btn">Logout</button>
 
-  <!-- TOP-LEVEL SECTIONS -->
+  <!-- MAIN TABS -->
   <div class="main-tab-buttons">
     <button data-main="user-section" class="main-tab active">👥 Users</button>
     <button data-main="equipment-section" class="main-tab">🛠 Equipment</button>
     <button data-main="rigging-section" class="main-tab">🪝 Rigging</button>
   </div>
 
-  <!-- ===== USERS SECTION ===== -->
+  <!-- USER SECTION -->
   <div id="user-section" class="main-section">
     <div class="sub-tab-buttons">
       <button data-target="add-user-sub" class="user-subtab active">➕ Add User</button>
@@ -38,7 +38,6 @@
       <button data-target="user-logs-sub" class="user-subtab">📓 User Logs</button>
     </div>
 
-    <!-- Add User real UI -->
     <div id="add-user-sub" class="user-subsection">
       <h3>Add New User</h3>
       <form id="add-user-form">
@@ -57,20 +56,18 @@
       <p id="add-user-msg"></p>
     </div>
 
-    <!-- User Control real UI -->
     <div id="user-control-sub" class="user-subsection hidden">
       <h3>🧑‍💼 Modify + Delete Users</h3>
       <div id="user-control-list"><p>Loading users...</p></div>
     </div>
 
-    <!-- User Logs real UI -->
     <div id="user-logs-sub" class="user-subsection hidden">
       <h3>📓 User Logs</h3>
-<div id="user-control-list"><p>Loading users...</p></div>
+      <div id="user-logs-list"><p>Loading logs...</p></div>
     </div>
   </div>
 
-  <!-- ===== EQUIPMENT SECTION ===== -->
+  <!-- EQUIPMENT SECTION -->
   <div id="equipment-section" class="main-section hidden">
     <div class="sub-tab-buttons">
       <button data-target="equip-dashboard" class="equip-subtab active">📊 Dashboard</button>
@@ -84,7 +81,7 @@
     </div>
   </div>
 
-  <!-- ===== RIGGING SECTION ===== -->
+  <!-- RIGGING SECTION -->
   <div id="rigging-section" class="main-section hidden">
     <div class="sub-tab-buttons">
       <button data-target="rigging-details" class="rigging-subtab active">📄 Rigging Details</button>
@@ -127,8 +124,6 @@
 <script type="module" src="./rigging-control.js"></script>
 <script type="module" src="./rigging-details.js"></script>
 <script type="module" src="./rigging-logs.js"></script>
-<script type="module" src="./users.js"></script>
-<script type="module" src="./moderator.js"></script>
 
 </body>
 </html>
