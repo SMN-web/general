@@ -1,4 +1,4 @@
-/* Reset & Base */
+/* ==== RESET & BASE ==== */
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -12,7 +12,7 @@ html, body {
   scroll-behavior: smooth;
 }
 
-/* Panel Styles */
+/* ==== PANEL STYLES ==== */
 .panel {
   max-width: 780px;
   margin: 2rem auto;
@@ -30,7 +30,7 @@ html, body {
   color: #1a1a1a;
 }
 
-/* Shared Inputs and Buttons */
+/* ==== INPUTS & BUTTONS ==== */
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -71,7 +71,7 @@ button:active {
   transform: scale(0.96);
 }
 
-/* Logout */
+/* ==== LOGOUT ==== */
 #logout-btn {
   float: right;
   background-color: #dc3545;
@@ -87,40 +87,117 @@ button:active {
   }
 }
 
-/* Admin Tabs */
-.tab-buttons {
+/* ==== MAIN TAB BUTTONS (Top-level sections) ==== */
+.main-tab-buttons {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   justify-content: center;
   margin: 2rem 0 1.5rem;
 }
-.tab-btn {
+.main-tab {
   background-color: #e9ecef;
   color: #333;
   padding: 10px 14px;
   border-radius: 6px;
   font-weight: 500;
   border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
 }
-.tab-btn:hover {
+.main-tab:hover {
   background-color: #d5dbe0;
 }
-.tab-btn.active {
+.main-tab.active {
   background-color: #1a73e8;
   color: white;
 }
+.main-tab:active {
+  transform: scale(0.97);
+}
 
-/* Admin Sections */
-.admin-section {
+/* ==== COMMON SUB-TAB BUTTON LAYOUT ==== */
+.sub-tab-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 1rem 0 1.5rem;
+}
+
+/* ==== USER SUB-TABS ==== */
+.user-subtab {
+  background-color: #e9ecef;
+  color: #333;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+.user-subtab:hover {
+  background-color: #d6dae0;
+}
+.user-subtab.active {
+  background-color: #1a73e8;
+  color: white;
+}
+.user-subtab:active {
+  transform: scale(0.97);
+}
+.user-subsection.hidden {
   display: none;
 }
-.admin-section:not(.hidden) {
-  display: block;
-  animation: fadeIn 0.2s ease-in-out;
+
+/* ==== EQUIPMENT SUB-TABS ==== */
+.equip-subtab {
+  background-color: #e9ecef;
+  color: #333;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+.equip-subtab:hover {
+  background-color: #d6dae0;
+}
+.equip-subtab.active {
+  background-color: #1a73e8;
+  color: white;
+}
+.equip-subtab:active {
+  transform: scale(0.97);
+}
+.equip-subsection.hidden {
+  display: none;
 }
 
-/* Add User Form: Grid Layout for Labels & Inputs */
+/* ==== RIGGING SUB-TABS ==== */
+.rigging-subtab {
+  background-color: #e9ecef;
+  color: #333;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+.rigging-subtab:hover {
+  background-color: #d6dae0;
+}
+.rigging-subtab.active {
+  background-color: #1a73e8;
+  color: white;
+}
+.rigging-subtab:active {
+  transform: scale(0.97);
+}
+.rigging-subsection.hidden {
+  display: none;
+}
+
+/* ==== ADD USER FORM GRID ==== */
 #add-user-form {
   display: grid;
   grid-template-columns: 120px 1fr;
@@ -150,20 +227,17 @@ button:active {
   }
 }
 
-/* Responsive Panel Padding */
+/* ==== RESPONSIVE PANEL PADDING ==== */
 @media screen and (max-width: 600px) {
   .panel {
     padding: 1.25rem;
   }
-
-  input,
-  select,
-  button {
+  input, select, button {
     font-size: 1rem;
   }
 }
 
-/* Log/Message Styles */
+/* ==== MESSAGES ==== */
 #login-msg,
 #admin-msg,
 #add-user-msg {
@@ -173,26 +247,12 @@ button:active {
   margin-top: 1rem;
 }
 
-/* Fade In Animation */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ==== USER LOGS SECTION ==== */
-
+/* ==== USER LOGS LIST ==== */
 .user-log-list {
   list-style: none;
   padding: 0;
   margin-top: 1rem;
 }
-
 .user-card {
   background: #f9fbfd;
   border-radius: 8px;
@@ -207,8 +267,6 @@ button:active {
 .user-card:hover {
   box-shadow: 0 2px 12px rgba(26,115,232,0.07);
 }
-
-/* Top section: avatar + name + status pill */
 .user-main {
   display: flex;
   align-items: center;
@@ -230,17 +288,13 @@ button:active {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.05rem;
   font-weight: 500;
 }
 .user-role {
   color: #888;
   font-size: 0.92rem;
   margin-left: 0.32rem;
-  font-weight: 400;
 }
-
-/* Status pill colors */
 .user-status {
   font-size: 0.9rem;
   font-weight: 500;
@@ -269,8 +323,6 @@ button:active {
   color: #155978;
   border: 1px solid #bad3ee;
 }
-
-/* Details section */
 .user-meta {
   display: flex;
   gap: 2.2rem;
@@ -281,14 +333,12 @@ button:active {
 .user-meta span {
   white-space: nowrap;
 }
-
-/* Mobile adjustments */
 @media (max-width: 600px) {
   .user-card { padding: 0.8rem; }
-  .user-meta { 
-    gap: 0.8rem; 
+  .user-meta {
+    gap: 0.8rem;
     font-size: 0.93rem; 
-    flex-direction: column; 
+    flex-direction: column;
   }
   .user-main {
     flex-direction: column;
@@ -297,38 +347,7 @@ button:active {
   }
 }
 
-/* Equipment sub-tabs (match main admin tabs) */
-.sub-tab-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 1rem 0 1.5rem;
-}
-.equip-subtab {
-  background-color: #e9ecef;
-  color: #333;
-  padding: 8px 14px;
-  border: none;
-  border-radius: 6px;
-  font-weight: 500;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-.equip-subtab:hover {
-  background-color: #d6dae0;
-}
-.equip-subtab.active {
-  background-color: #1a73e8;
-  color: white;
-}
-
-/* Hide inactive subsections */
-.equip-subsection.hidden {
-  display: none;
-}
-
-/* Coming soon card style */
+/* ==== COMING SOON CARD ==== */
 .coming-soon-card {
   margin: 1.5rem auto;
   background: #fafbfc;
@@ -346,12 +365,12 @@ button:active {
   font-size: 3rem;
 }
 .coming-soon-card h4 {
-  margin: 0 0 0.65rem 0;
+  margin: 0 0 0.65rem;
   font-size: 1.2rem;
   color: #1a73e8;
 }
 .coming-soon-card p {
-  margin: 0 0 0.25rem 0;
+  margin: 0;
   font-size: 1rem;
   color: #555;
 }
@@ -366,83 +385,13 @@ button:active {
   }
 }
 
-/* Fade-in animation for active subsections */
-.equip-subsection {
-  animation: fadeInEquip 0.25s ease-in-out;
+/* ==== FADE IN ANIMATIONS ==== */
+.user-subsection,
+.equip-subsection,
+.rigging-subsection {
+  animation: fadeIn 0.25s ease-in-out;
 }
-@keyframes fadeInEquip {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-
-.main-tab-buttons {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 1rem;
-}
-.main-tab {
-  background: #e9ecef;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-.main-tab.active { background: #1a73e8; color: white; }
-
-.sub-tab-buttons {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 1rem;
-}
-/* For user panel */
-.user-subtab {
-  background: #f1f3f4;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-.user-subtab.active { background: #1a73e8; color: white; }
-.user-subsection.hidden { display: none; }
-/* For equipment panel */
-.equip-subtab {
-  background-color: #e9ecef;
-  color: #333;
-  padding: 8px 14px;
-  border: none;
-  border-radius: 6px;
-  font-weight: 500;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-.equip-subtab:hover {
-  background-color: #d6dae0;
-}
-.equip-subtab.active {
-  background-color: #1a73e8;
-  color: white;
-}
-.equip-subsection.hidden { display: none; }
-/* For rigging panel */
-.rigging-subtab {
-  background: #f1f3f4;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-.rigging-subtab.active { background: #1a73e8; color: white; }
-.rigging-subsection.hidden { display: none; }
-
-/* Coming Soon Card */
-.coming-soon-card { ... }
-.coming-soon-card span { ... }
-
-
