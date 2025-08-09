@@ -69,51 +69,56 @@
 
   <!-- EQUIPMENT SECTION -->
   <div id="equipment-section" class="main-section hidden">
-  <div class="sub-tab-buttons">
-    <button data-target="equip-dashboard" class="equip-subtab active">📊 Dashboard</button>
-    <button data-target="equip-list" class="equip-subtab">📋 Equipment List</button>
-    <button data-target="equip-control" class="equip-subtab">⚙ Equipment Control</button>
-  </div>
 
-  <div id="equip-dashboard" class="equip-subsection">
-  <div id="equipment-dashboard-summary" style="margin:2rem 0;">
-    <h3>📊 Equipment Summary</h3>
-    <ul>
-      <li>Crawler Cranes: <span id="stat-crawler"></span></li>
-      <li>Mobile Cranes: <span id="stat-mobile"></span></li>
-      <li>Manlifts: <span id="stat-manlift"></span>
-        (Average size: <span id="stat-manlift-avg"></span> m)</li>
-      <li>Dumber: <span id="stat-dumber"></span></li>
-      <li>Forklift: <span id="stat-forklift"></span></li>
-      <li>Boom Truck: <span id="stat-boom"></span></li>
-      <li>DWM: <span id="stat-dwm"></span></li>
-    </ul>
-    <button id="refresh-dashboard-btn" style="margin-top:1rem;">🔄 Refresh Dashboard</button>
-  </div>
-</div>
+    <!-- Dropdown selector for equipment subsections -->
+    <label for="equipment-action-select" style="font-weight:bold;display:block;margin-bottom:.5rem;">
+      Equipment Actions:
+    </label>
+    <select id="equipment-action-select" style="margin-bottom:1rem; padding:0.3rem;">
+      <option value="equip-dashboard">📊 Dashboard</option>
+      <option value="equip-upload">⬆ Upload Equipment CSV</option>
+      <option value="equip-manage">🛠 Manage Equipment</option>
+    </select>
 
-
-  <!-- Equipment List Tab -->
-  <div id="equip-list" class="equip-subsection hidden">
-    <h3>📋 Equipment List</h3>
-
-    <div class="csv-upload-box" style="margin-bottom:1.5rem;padding:1rem;background:#f8fafc;border-radius:8px;">
-      <label><strong>Upload CSV:</strong></label>
-      <input id="csvFile" type="file" accept=".csv" />
-      <button id="uploadCsvBtn" type="button">Upload</button>
-      <div id="csv-status" style="margin-top:0.5rem;color:#555;font-size:0.95rem;"></div>
+    <!-- Dashboard subsection -->
+    <div id="equip-dashboard" class="equip-subsection">
+      <div id="equipment-dashboard-summary" style="margin:2rem 0;">
+        <h3>📊 Equipment Summary</h3>
+        <ul>
+          <li>Crawler Cranes: <span id="stat-crawler"></span></li>
+          <li>Mobile Cranes: <span id="stat-mobile"></span></li>
+          <li>Manlifts: <span id="stat-manlift"></span>
+            (Average size: <span id="stat-manlift-avg"></span> m)</li>
+          <li>Dumber: <span id="stat-dumber"></span></li>
+          <li>Forklift: <span id="stat-forklift"></span></li>
+          <li>Boom Truck: <span id="stat-boom"></span></li>
+          <li>DWM: <span id="stat-dwm"></span></li>
+        </ul>
+        <button id="refresh-dashboard-btn" style="margin-top:1rem;">🔄 Refresh Dashboard</button>
+      </div>
     </div>
 
-    <div id="equipment-table">
-      <p>No data loaded yet.</p>
+    <!-- Upload subsection -->
+    <div id="equip-upload" class="equip-subsection hidden">
+      <h3>📋 Upload Equipment CSV</h3>
+      <div class="csv-upload-box" style="margin-bottom:1.5rem;padding:1rem;background:#f8fafc;border-radius:8px;">
+        <label><strong>Upload CSV:</strong></label>
+        <input id="csvFile" type="file" accept=".csv" />
+        <button id="uploadCsvBtn" type="button">Upload</button>
+        <div id="csv-status" style="margin-top:0.5rem;color:#555;font-size:0.95rem;"></div>
+      </div>
+      <div id="equipment-table">
+        <p>No data loaded yet.</p>
+      </div>
     </div>
-  </div>
 
-  <div id="equip-control" class="equip-subsection hidden">
-    <div class="coming-soon-card"><span>🛠</span> Equipment Control coming soon</div>
-  </div>
-</div>
+    <!-- Manage subsection -->
+    <div id="equip-manage" class="equip-subsection hidden">
+      <h3>🛠 Manage Equipment</h3>
+      <div id="manage-table-container">Loading...</div>
+    </div>
 
+  </div>
 
   <!-- RIGGING SECTION -->
   <div id="rigging-section" class="main-section hidden">
@@ -154,7 +159,8 @@
 <script type="module" src="./user-logs.js"></script>
 <script type="module" src="./equipment-control.js"></script>
 <script type="module" src="./equipment-dashboard.js"></script>
-<script type="module" src="./equipment-management.js"></script>
+<script type="module" src="./equipment-list.js"></script>
+<script type="module" src="./equipment-manage.js"></script>
 <script type="module" src="./rigging-control.js"></script>
 <script type="module" src="./rigging-details.js"></script>
 <script type="module" src="./rigging-logs.js"></script>
