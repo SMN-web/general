@@ -31,7 +31,5 @@ export function initAdminPanel() {
     });
   });
 
-  // Default to Users section
-  const defaultTab = document.querySelector('.main-tab[data-main="user-section"]');
-  if (defaultTab) defaultTab.click();
+  document.querySelector('.main-tab[data-main="user-section"]').click();
 }
