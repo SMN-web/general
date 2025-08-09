@@ -1,27 +1,24 @@
-import { initEquipmentDashboard } from "./equipment-dashboard.js";
-import { initEquipmentList } from "./equipment-list.js";
-import { initEquipmentManagement } from "./equipment-management.js";
+import { initEquipmentDashboard } from './equipment-dashboard.js';
+import { initEquipmentList } from './equipment-list.js';
+import { initEquipmentManage } from './equipment-manage.js';
 
 export function initEquipmentControl() {
-  const subTabs = document.querySelectorAll("#equipment-section .equip-subtab");
-  const subSections = document.querySelectorAll("#equipment-section .equip-subsection");
+  const actionSelect = document.getElementById("equipment-action-select");
 
-  subTabs.forEach(btn => {
-    if (!btn.dataset.bound) {
-      btn.dataset.bound = "true";
-      btn.addEventListener("click", () => {
-        subTabs.forEach(b => b.classList.remove("active"));
-        subSections.forEach(s => s.classList.add("hidden"));
+  if (!actionSelect.dataset.bound) {
+    actionSelect.dataset.bound = "true";
+    actionSelect.addEventListener("change", () => {
+      document.querySelectorAll("#equipment-section .equip-subsection")
+        .forEach(sec => sec.classList.add("hidden"));
 
-        btn.classList.add("active");
-        document.getElementById(btn.dataset.target).classList.remove("hidden");
+      document.getElementById(actionSelect.value).classList.remove("hidden");
 
-        if (btn.dataset.target === "equip-dashboard") initEquipmentDashboard();
-        if (btn.dataset.target === "equip-list") initEquipmentList();
-        if (btn.dataset.target === "equip-control") initEquipmentManagement();
-      });
-    }
-  });
+      if (actionSelect.value === "equip-dashboard") initEquipmentDashboard();
+      if (actionSelect.value === "equip-upload") initEquipmentList();
+      if (actionSelect.value === "equip-manage") initEquipmentManage();
+    });
+  }
 
-  document.querySelector('#equipment-section .equip-subtab.active')?.click();
+  // Trigger initial load on page load or section show
+  actionSelect.dispatchEvent(new Event("change"));
 }
