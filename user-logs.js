@@ -4,7 +4,7 @@ export function initUserLogs() {
 
   container.innerHTML = "<p>Loading user logs...</p>";
 
-  fetch("https://tight-union-1a81.nafil-8895-s.workers.dev")
+  fetch("https://tight-union-1a81.nafil-8895-s.workers.dev") // TODO: replace with your endpoint
     .then(res => res.json())
     .then(data => {
       if (!data.users || !Array.isArray(data.users)) {
@@ -22,7 +22,6 @@ export function initUserLogs() {
 
       data.users.forEach(user => {
         const li = document.createElement("li");
-
         const name = user.name || user.email;
         const role = user.role || "User";
         const lastLogin = user.last_login ? new Date(user.last_login) : null;
@@ -65,11 +64,9 @@ export function initUserLogs() {
             </div>
           </div>
         `;
-
         list.appendChild(li);
       });
 
-      // Replace contents
       container.innerHTML = "";
       container.appendChild(list);
     })
@@ -77,4 +74,32 @@ export function initUserLogs() {
       msgBox.textContent = "❌ Error loading logs: " + err.message;
       container.innerHTML = "Error loading user logs.";
     });
+}
+
+// Helpers
+function statusClass(status) {
+  if (status.includes("Online")) return "status-online";
+  if (status.includes("Offline")) return "status-offline";
+  if (status.includes("Last seen")) return "status-away";
+  return "status-unknown";
+}
+function formatDate(date) {
+  if (!date || date === "0") return "–";
+  const d = new Date(date);
+  const adjusted = new Date(d.getTime() + 3 * 60 * 60 * 1000);
+  return adjusted.toLocaleString("en-GB", {
+    dateStyle: "medium",
+    timeStyle: "short",
+    hour12: false
+  }) + " (QAT)";
+}
+function formatRelative(date) {
+  const diffMs = Date.now() - date.getTime();
+  const mins = Math.floor(diffMs / 60000);
+  const hours = Math.floor(mins / 60);
+  const days = Math.floor(hours / 24);
+  if (mins < 1) return "just now";
+  if (mins < 60) return `${mins} min${mins !== 1 ? "s" : ""} ago`;
+  if (hours < 24) return `${hours} hour${hours !== 1 ? "s" : ""} ago`;
+  return `${days} day${days !== 1 ? "s" : ""} ago`;
 }
