@@ -2,7 +2,7 @@ export function initEquipmentManage() {
   const container = document.getElementById("manage-table-container");
   container.textContent = "Loading...";
 
-  fetch("https://your-worker-subdomain.workers.dev/get-equipment")
+  fetch("https://ancient-block-0551.nafil-8895-s.workers.dev/get-equipment")
     .then(res => res.json())
     .then(data => {
       if (data.success) {
