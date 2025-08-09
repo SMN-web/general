@@ -70,25 +70,43 @@
   <!-- EQUIPMENT SECTION -->
 <div id="equipment-section" class="main-section hidden">
 
-  <!-- Dropdown selector instead of subtabs -->
-  <label for="equipment-action-select" style="font-weight:bold;display:block;margin-bottom:.5rem;">
-    Equipment Actions:
-  </label>
-  <select id="equipment-action-select" style="margin-bottom:1rem; padding:0.3rem;">
-    <option value="equip-dashboard">📊 Dashboard</option>
-    <option value="equip-upload">⬆ Upload Equipment CSV</option>
-    <option value="equip-manage">🛠 Manage Equipment</option>
-  </select>
+  <!-- Menu groups for dropdown nav inside Equipment -->
+  <div class="equip-menu">
 
-  <!-- Dashboard subsection -->
+    <div class="equip-menu-group" data-group="dashboard">
+      📊 Dashboard <span class="arrow">▶</span>
+    </div>
+    <div class="equip-submenu hidden" data-parent="dashboard">
+      <!-- Add future dashboard sub-items here -->
+      <button data-target="equip-dashboard">Show Summary</button>
+    </div>
+
+    <div class="equip-menu-group" data-group="manage">
+      🛠 Manage <span class="arrow">▶</span>
+    </div>
+    <div class="equip-submenu hidden" data-parent="manage">
+      <button data-target="equip-upload">⬆ Upload</button>
+      <button data-target="equip-list">📋 List</button>
+      <!-- Add more manage actions here later -->
+    </div>
+
+    <div class="equip-menu-group" data-group="control">
+      ⚙ Control <span class="arrow">▶</span>
+    </div>
+    <div class="equip-submenu hidden" data-parent="control">
+      <!-- Control actions: add later -->
+    </div>
+
+  </div>
+
+  <!-- Sections -->
   <div id="equip-dashboard" class="equip-subsection">
     <div id="equipment-dashboard-summary" style="margin:2rem 0;">
       <h3>📊 Equipment Summary</h3>
       <ul>
         <li>Crawler Cranes: <span id="stat-crawler"></span></li>
         <li>Mobile Cranes: <span id="stat-mobile"></span></li>
-        <li>Manlifts: <span id="stat-manlift"></span>
-          (Average size: <span id="stat-manlift-avg"></span> m)</li>
+        <li>Manlifts: <span id="stat-manlift"></span> (Average size: <span id="stat-manlift-avg"></span> m)</li>
         <li>Dumber: <span id="stat-dumber"></span></li>
         <li>Forklift: <span id="stat-forklift"></span></li>
         <li>Boom Truck: <span id="stat-boom"></span></li>
@@ -98,9 +116,8 @@
     </div>
   </div>
 
-  <!-- Upload subsection -->
   <div id="equip-upload" class="equip-subsection hidden">
-    <h3>📋 Upload Equipment CSV</h3>
+    <h3>⬆ Upload Equipment CSV</h3>
     <div class="csv-upload-box" style="margin-bottom:1.5rem;padding:1rem;background:#f8fafc;border-radius:8px;">
       <label><strong>Upload CSV:</strong></label>
       <input id="csvFile" type="file" accept=".csv" />
@@ -110,12 +127,12 @@
     <div id="equipment-table"><p>No data loaded yet.</p></div>
   </div>
 
-  <!-- Manage subsection -->
-  <div id="equip-manage" class="equip-subsection hidden">
-    <h3>🛠 Manage Equipment</h3>
+  <div id="equip-list" class="equip-subsection hidden">
+    <h3>📋 Equipment List</h3>
     <div id="manage-table-container">Loading...</div>
   </div>
 </div>
+
 
 
   <!-- RIGGING SECTION -->
