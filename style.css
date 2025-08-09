@@ -381,5 +381,68 @@ button:active {
   }
 }
 
+.main-tab-buttons {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 1rem;
+}
+.main-tab {
+  background: #e9ecef;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.main-tab.active { background: #1a73e8; color: white; }
+
+.sub-tab-buttons {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 1rem;
+}
+/* For user panel */
+.user-subtab {
+  background: #f1f3f4;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.user-subtab.active { background: #1a73e8; color: white; }
+.user-subsection.hidden { display: none; }
+/* For equipment panel */
+.equip-subtab {
+  background-color: #e9ecef;
+  color: #333;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.equip-subtab:hover {
+  background-color: #d6dae0;
+}
+.equip-subtab.active {
+  background-color: #1a73e8;
+  color: white;
+}
+.equip-subsection.hidden { display: none; }
+/* For rigging panel */
+.rigging-subtab {
+  background: #f1f3f4;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.rigging-subtab.active { background: #1a73e8; color: white; }
+.rigging-subsection.hidden { display: none; }
+
+/* Coming Soon Card */
+.coming-soon-card { ... }
+.coming-soon-card span { ... }
 
 
