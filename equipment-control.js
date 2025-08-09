@@ -3,22 +3,27 @@ import { initEquipmentList } from './equipment-list.js';
 import { initEquipmentManage } from './equipment-manage.js';
 
 export function initEquipmentControl() {
-  const actionSelect = document.getElementById("equipment-action-select");
+  const selectEl = document.getElementById("equipment-action-select");
+  if (!selectEl) return;
 
-  if (!actionSelect.dataset.bound) {
-    actionSelect.dataset.bound = "true";
-    actionSelect.addEventListener("change", () => {
+  if (!selectEl.dataset.bound) {
+    selectEl.dataset.bound = "true";
+    selectEl.addEventListener("change", () => {
+      // Hide all subsections
       document.querySelectorAll("#equipment-section .equip-subsection")
         .forEach(sec => sec.classList.add("hidden"));
 
-      document.getElementById(actionSelect.value).classList.remove("hidden");
+      // Show selected subsection
+      const target = document.getElementById(selectEl.value);
+      if (target) target.classList.remove("hidden");
 
-      if (actionSelect.value === "equip-dashboard") initEquipmentDashboard();
-      if (actionSelect.value === "equip-upload") initEquipmentList();
-      if (actionSelect.value === "equip-manage") initEquipmentManage();
+      // Initialize relevant section
+      if (selectEl.value === "equip-dashboard") initEquipmentDashboard();
+      if (selectEl.value === "equip-upload") initEquipmentList();
+      if (selectEl.value === "equip-manage") initEquipmentManage();
     });
   }
 
-  // Trigger initial load on page load or section show
-  actionSelect.dispatchEvent(new Event("change"));
+  // Trigger initial load
+  selectEl.dispatchEvent(new Event("change"));
 }
