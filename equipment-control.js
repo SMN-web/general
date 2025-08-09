@@ -1,37 +1,43 @@
 // equipment-control.js
+import { initEquipmentDashboard } from './equipment-dashboard.js';
+import { initEquipmentManagement } from './equipment-management.js';
+import { initRiggingDetails } from './rigging-details.js';
 
 export function initEquipmentControl() {
-  console.log("✅ Equipment Control initialized (placeholder mode)");
+  console.log("✅ Equipment Control: main initializer running");
 
   const subTabButtons = document.querySelectorAll(".equip-subtab");
   const subSections = document.querySelectorAll(".equip-subsection");
 
   if (!subTabButtons.length || !subSections.length) {
-    console.warn("⚠️ Equipment sub-tabs or sections not found in DOM.");
+    console.warn("⚠️ Equipment Control: Sub-tabs or sections not found.");
     return;
   }
 
-  // Attach click events
   subTabButtons.forEach(btn => {
     btn.addEventListener("click", () => {
-      // Remove active from all tabs
+      // Reset UI
       subTabButtons.forEach(b => b.classList.remove("active"));
-      // Hide all sub-sections
       subSections.forEach(sec => sec.classList.add("hidden"));
 
-      // Activate clicked tab
+      // Show correct section
       btn.classList.add("active");
-
       const targetId = btn.dataset.target;
       const targetSection = document.getElementById(targetId);
-      if (targetSection) {
-        targetSection.classList.remove("hidden");
+      targetSection.classList.remove("hidden");
 
-        // Restart fade-in animation
-        targetSection.style.animation = "none";
-        targetSection.offsetHeight; // force reflow
-        targetSection.style.animation = null;
-      }
+      // Restart fade animation
+      targetSection.style.animation = "none";
+      targetSection.offsetHeight; // reflow
+      targetSection.style.animation = null;
+
+      // Call the right sub-module init
+      if (targetId === "equip-dashboard") initEquipmentDashboard();
+      if (targetId === "equip-control") initEquipmentManagement();
+      if (targetId === "rigging-details") initRiggingDetails();
     });
   });
+
+  // Initialize default active section (Dashboard)
+  initEquipmentDashboard();
 }
