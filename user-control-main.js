@@ -12,7 +12,6 @@ export function initUserControlMain() {
       btn.addEventListener("click", () => {
         subTabs.forEach(b => b.classList.remove("active"));
         subSections.forEach(s => s.classList.add("hidden"));
-
         btn.classList.add("active");
         document.getElementById(btn.dataset.target).classList.remove("hidden");
 
