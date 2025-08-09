@@ -1,5 +1,6 @@
 export function initEquipmentManage() {
   const container = document.getElementById("manage-table-container");
+  if (!container) return;
   container.textContent = "Loading...";
 
   fetch("https://ancient-block-0551.nafil-8895-s.workers.dev/get-equipment")
@@ -26,7 +27,6 @@ function renderManageTable(data) {
   table.border = "1";
   table.cellPadding = "5";
   table.style.width = "100%";
-
   const thead = document.createElement("thead");
 
   // Header row
@@ -38,7 +38,7 @@ function renderManageTable(data) {
   });
   thead.appendChild(headerRow);
 
-  // Filter inputs row
+  // Filter row
   const filterRow = document.createElement("tr");
   columns.forEach(col => {
     const th = document.createElement("th");
@@ -83,7 +83,6 @@ function renderManageTable(data) {
   }
 
   applyFilters();
-
   container.innerHTML = "";
   container.appendChild(table);
 }
