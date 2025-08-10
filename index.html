@@ -67,58 +67,58 @@
     </div>
   </div>
 
-  <!-- EQUIPMENT SECTION -->
+<!-- EQUIPMENT SECTION -->
 <div id="equipment-section" class="main-section hidden">
 
-  <!-- Menu groups for dropdown nav inside Equipment -->
+  <!-- Menu groups -->
   <div class="equip-menu">
 
+    <!-- Dashboard -->
     <div class="equip-menu-group" data-group="dashboard">
       📊 Dashboard <span class="arrow">▶</span>
     </div>
     <div class="equip-submenu hidden" data-parent="dashboard">
-      <!-- Add future dashboard sub-items here -->
       <button data-target="equip-dashboard">Show Summary</button>
     </div>
 
+    <!-- Manage -->
     <div class="equip-menu-group" data-group="manage">
       🛠 Manage <span class="arrow">▶</span>
     </div>
     <div class="equip-submenu hidden" data-parent="manage">
       <button data-target="equip-upload">⬆ Upload</button>
       <button data-target="equip-list">📋 List</button>
-      <!-- Add this button in the existing Manage submenu -->
-<button data-target="equip-edit">✏️ Edit</button>
-
-      <!-- Add more manage actions here later -->
+      <button data-target="equip-edit">✏️ Edit</button>
     </div>
 
+    <!-- Control -->
     <div class="equip-menu-group" data-group="control">
       ⚙ Control <span class="arrow">▶</span>
     </div>
     <div class="equip-submenu hidden" data-parent="control">
-      <!-- Control actions: add later -->
+      <!-- control actions here later -->
     </div>
 
   </div>
+
+  <!-- ALL subsections are direct children and hidden by default -->
+
+  <!-- Dashboard subsection -->
   <div id="equip-dashboard" class="equip-subsection hidden">
-  <!-- Sections -->
-  <div id="equipment-dashboard-summary" style="margin:2rem 0;">
-  <h3>📊 Equipment Summary</h3>
-  
-  <h4>Crane</h4>
-  <ul>
-    <li>Crawler Cranes: <span id="stat-crawler"></span></li>
-    <li>Mobile Cranes: <span id="stat-mobile"></span></li>
-  </ul>
+    <div id="equipment-dashboard-summary" style="margin:2rem 0;">
+      <h3>📊 Equipment Summary</h3>
+      <h4>Crane</h4>
+      <ul>
+        <li>Crawler Cranes: <span id="stat-crawler"></span></li>
+        <li>Mobile Cranes: <span id="stat-mobile"></span></li>
+      </ul>
+      <h4>Manlift</h4>
+      <ul id="manlift-sizes-list"></ul>
+      <button id="refresh-dashboard-btn" style="margin-top:1rem;">🔄 Refresh Dashboard</button>
+    </div>
+  </div>
 
-  <h4>Manlift</h4>
-  <ul id="manlift-sizes-list"></ul>
-
-  <button id="refresh-dashboard-btn" style="margin-top:1rem;">🔄 Refresh Dashboard</button>
-</div>
-
-
+  <!-- Upload subsection -->
   <div id="equip-upload" class="equip-subsection hidden">
     <h3>⬆ Upload Equipment CSV</h3>
     <div class="csv-upload-box" style="margin-bottom:1.5rem;padding:1rem;background:#f8fafc;border-radius:8px;">
@@ -130,17 +130,20 @@
     <div id="equipment-table"><p>No data loaded yet.</p></div>
   </div>
 
+  <!-- List subsection -->
   <div id="equip-list" class="equip-subsection hidden">
     <h3>📋 Equipment List</h3>
     <div id="manage-table-container">Loading...</div>
   </div>
- <!-- Edit subsection -->
-<div id="equip-edit" class="equip-subsection hidden">
-  <h3>✏️ Edit Equipment</h3>
-  <div id="edit-table-container">Loading...</div>
-</div>
+
+  <!-- Edit subsection -->
+  <div id="equip-edit" class="equip-subsection hidden">
+    <h3>✏️ Edit Equipment</h3>
+    <div id="edit-table-container">Loading...</div>
+  </div>
 
 </div>
+
 
 
 
