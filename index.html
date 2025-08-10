@@ -87,6 +87,9 @@
     <div class="equip-submenu hidden" data-parent="manage">
       <button data-target="equip-upload">⬆ Upload</button>
       <button data-target="equip-list">📋 List</button>
+      <!-- Add this button in the existing Manage submenu -->
+<button data-target="equip-edit">✏️ Edit</button>
+
       <!-- Add more manage actions here later -->
     </div>
 
@@ -131,6 +134,12 @@
     <h3>📋 Equipment List</h3>
     <div id="manage-table-container">Loading...</div>
   </div>
+ <!-- Edit subsection -->
+<div id="equip-edit" class="equip-subsection hidden">
+  <h3>✏️ Edit Equipment</h3>
+  <div id="edit-table-container">Loading...</div>
+</div>
+
 </div>
 
 
