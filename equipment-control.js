@@ -1,6 +1,8 @@
 import { initEquipmentDashboard } from './equipment-dashboard.js';
 import { initEquipmentList } from './equipment-list.js';
 import { initEquipmentManage } from './equipment-manage.js';
+import { initEquipmentEdit } from './equipment-edit.js';
+
 
 export function initEquipmentControl() {
   // Toggle submenus when clicking group headers
