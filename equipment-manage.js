@@ -33,6 +33,7 @@ function renderManageTable(data, container) {
 
   container.innerHTML = "";
 
+  // Grab dropdown elements already in HTML
   const downloadBtn = document.getElementById("download-btn");
   const downloadMenu = document.getElementById("download-menu");
 
@@ -45,6 +46,7 @@ function renderManageTable(data, container) {
 
   const thead = document.createElement("thead");
 
+  // Header row with S.No
   const headerRow = document.createElement("tr");
   const thSerial = document.createElement("th");
   thSerial.textContent = "S.No";
@@ -56,8 +58,9 @@ function renderManageTable(data, container) {
   });
   thead.appendChild(headerRow);
 
+  // Filter row
   const filterRow = document.createElement("tr");
-  filterRow.appendChild(document.createElement("th"));
+  filterRow.appendChild(document.createElement("th")); // S.No cell empty
   columns.forEach(col => {
     const th = document.createElement("th");
     const input = document.createElement("input");
@@ -92,7 +95,7 @@ function renderManageTable(data, container) {
     filteredData.forEach((row, index) => {
       const tr = document.createElement("tr");
       const tdSerial = document.createElement("td");
-      tdSerial.textContent = index + 1; // plain number — no hyperlink
+      tdSerial.textContent = index + 1; // plain text
       tr.appendChild(tdSerial);
       columns.forEach(col => {
         const td = document.createElement("td");
@@ -103,13 +106,13 @@ function renderManageTable(data, container) {
     });
   }
 
-  /** EXPORT FUNCTIONS **/
+  /** ---- EXPORT FUNCTIONS ---- **/
 
   // CSV
   function exportFilteredToCSV() {
     let csv = "S.No," + columns.join(",") + "\n";
     filteredData.forEach((row, index) => {
-      // Add \t so Excel won't auto-format/link numbers
+      // Prepend tab to keep Excel from auto-formatting/hyperlinking
       const rowData = [`\t${index + 1}`];
       columns.forEach(col => {
         let cell = row[col] ? row[col].toString() : "";
@@ -133,10 +136,9 @@ function renderManageTable(data, container) {
     closeDropdown();
   }
 
-  // PDF
+  // PDF -- robust print delay!
   function exportFilteredToPDF() {
-    const win = window.open("", "_blank");
-    let html = `
+    const html = `
       <html>
       <head>
         <title>Equipment List</title>
@@ -156,24 +158,31 @@ function renderManageTable(data, container) {
         </table>
       </body>
       </html>`;
+
+    const win = window.open("", "_blank");
     win.document.write(html);
     win.document.close();
+    // Print after load
     win.onload = function () {
       win.focus();
       win.print();
       win.close();
     };
+    // For some browsers, fallback on setTimeout
+    setTimeout(() => {
+      try { win.focus(); win.print(); win.close(); } catch (e) {}
+    }, 500);
     closeDropdown();
   }
 
-  // JPEG
+  // JPEG -- robust fallback to PDF on error
   function exportFilteredToJPEG() {
     try {
-      const serializer = new XMLSerializer();
-      // Inline basic border styles so they show in image
+      // Inline basic table border styles
       table.querySelectorAll("th, td").forEach(cell => {
         cell.setAttribute("style", "border:1px solid #000; padding:4px; font-size:12px;");
       });
+      const serializer = new XMLSerializer();
       const tableHtml = serializer.serializeToString(table);
       const svg = `
         <svg xmlns="http://www.w3.org/2000/svg" width="${table.offsetWidth}" height="${table.offsetHeight}">
@@ -193,7 +202,7 @@ function renderManageTable(data, container) {
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(img, 0, 0);
         canvas.toBlob(blob => {
-          if (!blob) { alert("JPEG export failed."); return; }
+          if (!blob) { fallbackToPDF(); return; }
           const link = document.createElement("a");
           link.download = `Equipment_List_${new Date().toISOString().slice(0, 10)}.jpg`;
           link.href = URL.createObjectURL(blob);
@@ -204,18 +213,21 @@ function renderManageTable(data, container) {
           URL.revokeObjectURL(link.href);
         }, "image/jpeg", 0.95);
       };
-      img.onerror = () => {
-        alert("Image export failed: browser may not support this method.");
-        URL.revokeObjectURL(url);
-      };
+      img.onerror = fallbackToPDF;
       img.src = url;
     } catch (e) {
-      alert("Unable to export image without third-party libraries.");
+      fallbackToPDF();
     }
     closeDropdown();
+
+    // fallback: just open PDF export
+    function fallbackToPDF() {
+      alert("Image export is not fully supported. Downloading as PDF instead.");
+      exportFilteredToPDF();
+    }
   }
 
-  /** DROPDOWN HANDLERS **/
+  /** ---- DROPDOWN events ---- **/
   function toggleDropdown() {
     downloadMenu.style.display =
       downloadMenu.style.display === "block" ? "none" : "block";
