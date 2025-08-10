@@ -448,3 +448,14 @@ button:active {
 .equip-subsection { margin-top: 1.2rem; }
 .hidden { display: none !important; }
 
+.edited-row { background: #fffbe6; }       /* highlight rows with changes */
+.saving { opacity: 0.7; }                  /* visual while saving */
+.edit-save-btn, .edit-cancel-btn {
+  margin-right: 0.1rem;
+  font-size: 1rem;
+}
+.edit-save-btn.hidden,
+.edit-cancel-btn.hidden {
+  display: none;
+}
+
