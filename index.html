@@ -41,18 +41,17 @@
     <div id="add-user-sub" class="user-subsection">
       <h3>Add New User</h3>
       <form id="add-user-form">
-        <label for="new-name">Name</label>
-        <input id="new-name" type="text" name="name" required />
-        <label for="new-email">Email</label>
-        <input id="new-email" type="email" name="email" required />
-        <label for="new-role">Role</label>
-        <select id="new-role" name="role" required>
-          <option value="user">User</option>
-          <option value="moderator">Moderator</option>
-          <option value="admin">Admin</option>
-        </select>
-        <button type="submit">Add User</button>
-      </form>
+  <input id="new-name" type="text" name="name" placeholder="Name" required />
+  <input id="new-email" type="email" name="email" placeholder="Email" required />
+  <select id="new-role" name="role" required>
+    <option value="" disabled selected>Select Role</option>
+    <option value="user">User</option>
+    <option value="moderator">Moderator</option>
+    <option value="admin">Admin</option>
+  </select>
+  <button type="submit">Add User</button>
+</form>
+
       <p id="add-user-msg"></p>
     </div>
 
