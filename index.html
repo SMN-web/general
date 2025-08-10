@@ -132,13 +132,31 @@
 
   <!-- List subsection -->
   <div id="equip-list" class="equip-subsection hidden">
-  <h3>
-    📋 Equipment List
-    <button id="export-csv-btn" style="margin-left: 1rem;">Download CSV</button>
-    <button id="export-pdf-btn" style="margin-left: 0.5rem;">Download PDF</button>
+  <h3 style="display:flex; align-items:center; justify-content:space-between;">
+    <span>📋 Equipment List</span>
+    <div style="position:relative; display:inline-block;">
+      <button id="download-btn" type="button" style="cursor:pointer;">Download ▼</button>
+      <ul id="download-menu" style="
+          display:none;
+          position:absolute;
+          right:0;
+          margin:0;
+          padding:0.2rem 0;
+          list-style:none;
+          border:1px solid #ccc;
+          background:#fff;
+          box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+          z-index:1000;
+      ">
+        <li style="padding:0.3rem 1rem; cursor:pointer;" data-format="csv">Download CSV</li>
+        <li style="padding:0.3rem 1rem; cursor:pointer;" data-format="pdf">Download PDF</li>
+        <li style="padding:0.3rem 1rem; cursor:pointer;" data-format="image">Download Image</li>
+      </ul>
+    </div>
   </h3>
   <div id="manage-table-container">Loading...</div>
 </div>
+
 
   <!-- Edit subsection -->
   <div id="equip-edit" class="equip-subsection hidden">
