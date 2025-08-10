@@ -23,22 +23,22 @@ export function initEquipmentManage() {
 
 function renderManageTable(data, container) {
   const columns = [
-    "plantNo", "regNo", "description", "owner",
-    "location", "engineer", "rigCHName", "rigCHNo", "status"
+    "plantNo","regNo","description","owner",
+    "location","engineer","rigCHName","rigCHNo","status"
   ];
 
   let allData = data;
   let filteredData = [...allData];
   const activeFilters = {};
 
-  // Clear table container
+  // Clear old content
   container.innerHTML = "";
 
-  // Get existing HTML dropdown elements
+  // Get existing header dropdown elements from HTML
   const downloadBtn = document.getElementById("download-btn");
   const downloadMenu = document.getElementById("download-menu");
 
-  // Table creation
+  // Create table
   const table = document.createElement("table");
   table.border = "1";
   table.cellPadding = "5";
@@ -47,7 +47,7 @@ function renderManageTable(data, container) {
 
   const thead = document.createElement("thead");
 
-  // Header row with S.No
+  // Header row with S.No column
   const headerRow = document.createElement("tr");
   const thSerial = document.createElement("th");
   thSerial.textContent = "S.No";
@@ -59,9 +59,9 @@ function renderManageTable(data, container) {
   });
   thead.appendChild(headerRow);
 
-  // Filter row
+  // Filter row (empty cell for S.No)
   const filterRow = document.createElement("tr");
-  filterRow.appendChild(document.createElement("th")); // for S.No
+  filterRow.appendChild(document.createElement("th"));
   columns.forEach(col => {
     const th = document.createElement("th");
     const input = document.createElement("input");
@@ -76,13 +76,13 @@ function renderManageTable(data, container) {
     filterRow.appendChild(th);
   });
   thead.appendChild(filterRow);
-  table.appendChild(thead);
 
+  table.appendChild(thead);
   const tbody = document.createElement("tbody");
   table.appendChild(tbody);
+
   container.appendChild(table);
 
-  /** Filtering logic **/
   function applyFilters() {
     filteredData = allData.filter(row =>
       Object.entries(activeFilters).every(([col, val]) =>
@@ -107,11 +107,16 @@ function renderManageTable(data, container) {
         td.textContent = row[col] || "";
         tr.appendChild(td);
       });
+
       tbody.appendChild(tr);
     });
   }
 
-  /** Export Functions **/
+  /** -----------------
+   * EXPORT FUNCTIONS
+   * -----------------*/
+
+  // CSV
   function exportFilteredToCSV() {
     let csv = "S.No," + columns.join(",") + "\n";
     filteredData.forEach((row, index) => {
@@ -125,6 +130,7 @@ function renderManageTable(data, container) {
       });
       csv += rowData.join(",") + "\n";
     });
+
     const blob = new Blob([csv], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -137,6 +143,7 @@ function renderManageTable(data, container) {
     closeDropdown();
   }
 
+  // PDF (via browser print)
   function exportFilteredToPDF() {
     const win = window.open("", "_blank");
     let html = "<html><head><title>Equipment List</title></head><body>";
@@ -157,6 +164,7 @@ function renderManageTable(data, container) {
     closeDropdown();
   }
 
+  // JPEG (native SVG + Canvas)
   function exportFilteredToJPEG() {
     try {
       const serializer = new XMLSerializer();
@@ -190,7 +198,7 @@ function renderManageTable(data, container) {
         }, "image/jpeg", 0.95);
       };
       img.onerror = () => {
-        alert("Image export failed: Browser may not support SVG rendering.");
+        alert("Image export failed: browser may not fully support SVG rendering.");
         URL.revokeObjectURL(url);
       };
       img.src = url;
@@ -200,7 +208,9 @@ function renderManageTable(data, container) {
     closeDropdown();
   }
 
-  /** Dropdown handlers **/
+  /** -----------------
+   * DROPDOWN EVENTS
+   * -----------------*/
   function toggleDropdown() {
     downloadMenu.style.display =
       downloadMenu.style.display === "block" ? "none" : "block";
@@ -208,15 +218,18 @@ function renderManageTable(data, container) {
   function closeDropdown() {
     downloadMenu.style.display = "none";
   }
+
   document.addEventListener("click", (e) => {
     if (!downloadBtn.contains(e.target) && !downloadMenu.contains(e.target)) {
       closeDropdown();
     }
   });
+
   downloadBtn.addEventListener("click", (e) => {
     e.preventDefault();
     toggleDropdown();
   });
+
   downloadMenu.querySelectorAll("li").forEach(item => {
     item.addEventListener("click", () => {
       const format = item.dataset.format;
@@ -226,5 +239,6 @@ function renderManageTable(data, container) {
     });
   });
 
+  // Initial render
   applyFilters();
 }
