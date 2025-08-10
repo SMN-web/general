@@ -1,46 +1,47 @@
 :root {
   --sp-primary: #0078d4;
   --sp-primary-dark: #004578;
-  --sp-light-bg: #f3f5f7;
-  --sp-panel-bg: #fff;
+  --sp-bg: #f3f5f7;
   --sp-border: #e2e8f0;
-  --sp-text: #212529;
-  --sp-menu-bg: #f2f5ff;
-  --sp-hover-bg: #e6f0fa;
-  --sp-accent: #cfe5fc;
+  --sp-text: #222;
+  --sp-hover: #e6f0fa;
 }
 
-/* ===== RESET & BASE ===== */
+/* === Base & Layout === */
 * { box-sizing: border-box; }
 html, body {
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: var(--sp-light-bg);
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: var(--sp-bg);
   color: var(--sp-text);
 }
 
-.panel {
-  max-width: 880px;
-  margin: 2rem auto;
-  padding: 2rem;
-  border-radius: 8px;
-  background: var(--sp-panel-bg);
-  box-shadow: 0 3px 22px rgba(34,61,95,0.07);
-}
-.hidden { display: none !important; }
-.panel h2, .panel h3 {
-  color: var(--sp-primary-dark);
-  margin-bottom: 1rem;
+/* Keep desktop-like feel */
+.panel, .main-section {
+  min-width: 1100px;
 }
 
-/* ===== MAIN TABS ===== */
+/* === Panel === */
+.panel {
+  max-width: 1280px;
+  margin: 1.5rem auto;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+}
+.hidden { display:none !important; }
+
+/* === Main Tabs (horizontal) === */
 .main-tab-buttons {
   display: flex;
-  gap: 12px;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 8px;
   border-bottom: 2px solid var(--sp-border);
-  background: var(--sp-panel-bg);
-  margin-bottom: 6px;
+  background: #fff;
+  padding-left: 8px;
 }
 .main-tab {
   font-size: 15px;
@@ -48,173 +49,147 @@ html, body {
   background: transparent;
   border: none;
   border-bottom: 3px solid transparent;
-  border-radius: 6px 6px 0 0;
-  padding: 10px 22px 10px 22px;
-  margin-bottom: -2px;
+  padding: 10px 20px;
+  white-space: nowrap;
   cursor: pointer;
-  font-weight: 500;
-  transition: border-bottom-color 0.24s, background 0.18s, color 0.18s;
-  outline: none;
+  transition: background 0.15s, border-color 0.15s;
 }
 .main-tab.active {
-  border-bottom: 3px solid var(--sp-primary);
-  background: var(--sp-primary);
   color: #fff;
+  background: var(--sp-primary);
+  border-bottom-color: var(--sp-primary-dark);
   font-weight: 600;
 }
-.main-tab:hover:not(.active),
-.main-tab:focus-visible:not(.active) {
-  background: var(--sp-hover-bg);
-  color: var(--sp-primary-dark);
+.main-tab:hover:not(.active) {
+  background: var(--sp-hover);
 }
 
-/* ===== SUB-TAB BUTTONS ===== */
-.sub-tab-buttons,
-.sub-tab-row {
+/* === Sub Tabs (horizontal) === */
+.sub-tab-buttons {
   display: flex;
-  gap: 8px;
-  margin: 12px 0 14px 0;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 6px;
+  margin: 1rem 0;
 }
-.user-subtab,
-.equip-subtab,
-.rigging-subtab,
-.sub-tab {
+.user-subtab, .equip-subtab, .rigging-subtab {
   font-size: 14px;
   color: var(--sp-primary-dark);
-  background: var(--sp-light-bg);
+  background: var(--sp-bg);
   border: none;
+  padding: 8px 14px;
   border-bottom: 2px solid transparent;
-  border-radius: 5px 5px 0 0;
-  padding: 7px 17px;
+  white-space: nowrap;
   cursor: pointer;
-  font-weight: 500;
-  transition: border-bottom 0.18s, background 0.17s, color 0.17s;
-  outline: none;
-  box-shadow: none;
+  transition: background 0.15s, border-color 0.15s;
 }
-.user-subtab.active,
-.equip-subtab.active,
-.rigging-subtab.active,
-.sub-tab.active {
-  border-bottom: 2px solid var(--sp-primary);
+.user-subtab.active, .equip-subtab.active, .rigging-subtab.active {
   background: var(--sp-primary);
   color: #fff;
+  border-bottom-color: var(--sp-primary-dark);
   font-weight: 600;
 }
 .user-subtab:hover:not(.active),
 .equip-subtab:hover:not(.active),
-.rigging-subtab:hover:not(.active),
-.sub-tab:hover:not(.active),
-.user-subtab:focus-visible:not(.active),
-.equip-subtab:focus-visible:not(.active),
-.rigging-subtab:focus-visible:not(.active),
-.sub-tab:focus-visible:not(.active) {
-  background: var(--sp-hover-bg);
-  color: var(--sp-primary-dark);
+.rigging-subtab:hover:not(.active) {
+  background: var(--sp-hover);
 }
 
-/* ===== EQUIP MENU GROUPS ===== */
+/* === Equipment Menu (left column) === */
 .equip-menu {
-  margin: 10px 0;
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 4px;
+  margin: 0.8rem 0;
 }
 .equip-menu-group {
-  padding: 7px 16px;
-  background: var(--sp-menu-bg);
+  padding: 8px 12px;
+  background: #f2f5ff;
   border-radius: 5px;
   color: var(--sp-primary-dark);
-  cursor: pointer;
-  margin-bottom: 2px;
-  font-size: 1.07rem;
-  font-weight: bold;
   border: 1px solid var(--sp-border);
-  transition: background 0.15s, box-shadow 0.15s;
+  cursor: pointer;
 }
 .equip-menu-group.active {
   background: var(--sp-primary);
   color: #fff;
   border-color: var(--sp-primary);
 }
-.equip-menu-group:hover,
-.equip-menu-group:focus-visible {
-  background: var(--sp-hover-bg);
-  color: var(--sp-primary-dark);
-  box-shadow: 0 1px 8px #0078d412;
+.equip-menu-group:hover:not(.active) {
+  background: var(--sp-hover);
 }
-
-/* ===== EQUIP SUBMENU ===== */
 .equip-submenu {
-  margin-left: 1.5rem;
+  margin-left: 1.2rem;
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 3px;
 }
 .equip-submenu button {
   background: #fff;
   border: 1px solid #ddd;
-  padding: 0.4rem 1rem;
-  border-radius: 4px;
-  font-size: 1rem;
-  color: var(--sp-primary-dark);
-  cursor: pointer;
+  padding: 4px 10px;
+  font-size: 14px;
   text-align: left;
-  margin-bottom: 2px;
-  transition: background 0.17s, border-color 0.18s, color 0.17s;
+  cursor: pointer;
 }
 .equip-submenu button:hover {
-  background: var(--sp-hover-bg);
+  background: var(--sp-hover);
   border-color: var(--sp-primary);
-  color: var(--sp-primary-dark);
 }
 
-/* ===== TABLES ===== */
+/* === Tables === */
 .table-scroll { overflow-x: auto; }
-.equipment-table,
-#equipment-table table {
+.equipment-table, #equipment-table table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
   background: #fff;
   font-size: 13px;
-  border-radius: 4px;
-  box-shadow: 0 1px 10px #0078d415;
 }
-.equipment-table th,
-#equipment-table th {
-  background: var(--sp-light-bg);
+.equipment-table th, #equipment-table th {
+  background: var(--sp-bg);
   border-bottom: 2px solid var(--sp-primary);
-  color: var(--sp-primary-dark);
-  font-weight: 600;
-  padding: 9px;
+  padding: 10px;
   text-align: left;
 }
-.equipment-table td,
-#equipment-table td {
-  padding: 9px;
+.equipment-table td, #equipment-table td {
+  padding: 8px;
   border-bottom: 1px solid #eee;
-  color: var(--sp-text);
 }
-.equipment-table tr:hover td,
-#equipment-table tr:hover td {
-  background: var(--sp-accent);
+.equipment-table tr:hover td {
+  background: var(--sp-hover);
 }
 
-/* ===== BUTTONS ===== */
-button,
-.logout-btn,
-.edit-save-btn,
-.edit-cancel-btn {
-  font-family: inherit;
+/* === User Logs (structured cards) === */
+.user-log-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 12px;
+  padding: 0;
+  list-style: none;
+}
+.user-card {
+  background: #fff;
+  border: 1px solid var(--sp-border);
+  border-radius: 6px;
+  padding: 0.8rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+.user-main { font-weight: 600; margin-bottom: 0.4rem; }
+.user-meta {
+  font-size: 13px;
+  color: #555;
+}
+
+/* === Buttons === */
+button, .logout-btn, .edit-save-btn, .edit-cancel-btn {
+  border: none;
+  border-radius: 3px;
+  padding: 7px 12px;
+  font-size: 13px;
+  cursor: pointer;
   background: var(--sp-primary);
   color: #fff;
-  border: none;
-  border-radius: 2px;
-  padding: 7px 13px;
-  cursor: pointer;
-  font-size: 13px;
-  transition: background 0.15s;
 }
 button:hover, .logout-btn:hover, .edit-save-btn:hover, .edit-cancel-btn:hover {
   background: var(--sp-primary-dark);
@@ -223,100 +198,45 @@ button:hover, .logout-btn:hover, .edit-save-btn:hover, .edit-cancel-btn:hover {
   float: right;
   font-size: 12px;
   border-radius: 15px;
-  margin: 0.5rem 0.5rem 0 0;
-  background: #d83b01 !important; /* SharePoint danger btn */
+  background: #d83b01;
 }
-.logout-btn:hover { background: #a4262c !important; }
+.logout-btn:hover { background: #a4262c; }
+.edit-save-btn { background: #107c41; margin-right: 4px; }
+.edit-save-btn:hover { background: #0b6a33; }
+.edit-cancel-btn { background: #d83b01; }
+.edit-cancel-btn:hover { background: #a4262c; }
 
-.edit-save-btn { background: #107c41 !important; margin-right:3px; }
-.edit-save-btn:hover { background: #0b6a33 !important; }
-.edit-cancel-btn { background: #d83b01 !important; }
-.edit-cancel-btn:hover { background: #a4262c !important; }
-.edit-save-btn:disabled,.edit-cancel-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* ===== INPUTS & SELECTS ===== */
-input[type="text"],
-input[type="email"],
-input[type="password"],
-select {
+/* === Inputs === */
+input[type="text"], input[type="email"], input[type="password"], select {
   width: 100%;
-  padding: 9px 12px;
-  margin-bottom: 10px;
+  padding: 8px;
   border: 1px solid var(--sp-border);
-  border-radius: 4px;
-  font-size: 1rem;
+  border-radius: 3px;
+  font-size: 14px;
 }
 input:focus, select:focus {
   border-color: var(--sp-primary);
-  box-shadow: 0 0 0 2px #0078d439;
   outline: none;
-}
-.sub-dropdown {
-  padding: 7px 12px;
-  border-radius: 4px;
-  border: 1px solid var(--sp-border);
-  background: #fff;
-  font-size: 14px;
-  color: var(--sp-text);
-  min-width: 120px;
-  margin-left: auto;
-}
-.sub-dropdown:focus-visible {
-  box-shadow: 0 0 0 2px #0078d43d;
-  border-color: #0078d4;
-  outline: 0;
+  box-shadow: 0 0 0 2px #0078d440;
 }
 
-/* ===== CSV Upload Box ===== */
-.csv-upload-box {
-  margin-bottom: 1.5rem;
-  padding: 1rem;
-  background: #f8fafc;
-  border-radius: 8px;
-  color: var(--sp-text);
-}
-
-/* ===== MISC ===== */
-.coming-soon-card {
-  padding: 1rem;
-  background: #fafbfc;
-  border: 1px solid #e7eaf0;
-  border-radius: 10px;
-  color: var(--sp-text);
-}
-.flex-between {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+/* === Download menu === */
 .dropdown-wrapper { position: relative; display: inline-block; }
-
 .download-menu {
-  display:none; position:absolute; right:0;
-  background:#fff; border:1px solid #ccc; list-style:none; min-width:150px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-  border-radius: 4px;
-  z-index:1000;
-  font-size: 0.97rem;
+  display: none;
+  position: absolute;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  min-width: 160px;
+  list-style: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  z-index: 1000;
 }
 .download-menu li {
-  padding: 8px 18px; cursor:pointer; color: var(--sp-primary-dark);
-  transition: background 0.13s, color 0.13s;
+  padding: 8px 12px;
+  cursor: pointer;
 }
 .download-menu li:hover {
-  background: var(--sp-accent);
-  color: var(--sp-primary);
-}
-
-/* ===== SCROLLBAR ===== */
-::-webkit-scrollbar { height:8px;background: #ececec;}
-::-webkit-scrollbar-thumb { background: #b3b4b8; border-radius: 4px; }
-
-@media (max-width: 600px) {
-  .panel { padding: 1rem; }
-  .main-tab { font-size: 13px; padding: 8px; }
-  .table-scroll, .equipment-table { min-width: 600px; }
+  background: var(--sp-hover);
 }
