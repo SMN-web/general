@@ -1,15 +1,21 @@
 export function initEquipmentManage() {
+  // Look up the container when called — ensures it exists
   const container = document.getElementById("manage-table-container");
-  if (!container) return;
+  if (!container) {
+    console.error("Manage table container not found in DOM.");
+    return;
+  }
+
   container.textContent = "Loading...";
 
+  // Fetch equipment list from backend
   fetch("https://ancient-block-0551.nafil-8895-s.workers.dev/get-equipment")
     .then(res => res.json())
     .then(data => {
       if (data.success) {
-        renderManageTable(data.equipments);
+        renderManageTable(data.equipments, container);
       } else {
-        container.textContent = "Error: " + (data.error || "Unknown");
+        container.textContent = "Error: " + (data.error || "Unknown error");
       }
     })
     .catch(err => {
@@ -17,8 +23,12 @@ export function initEquipmentManage() {
     });
 }
 
-function renderManageTable(data) {
-  const columns = ["plantNo","regNo","description","owner","location","engineer","rigCHName","rigCHNo","status"];
+function renderManageTable(data, container) {
+  const columns = [
+    "plantNo","regNo","description","owner",
+    "location","engineer","rigCHName","rigCHNo","status"
+  ];
+
   let allData = data;
   let filteredData = [...allData];
   const activeFilters = {};
