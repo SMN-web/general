@@ -5,7 +5,7 @@ function parseManliftSize(description) {
   let size = parseFloat(match[1]);
   const unit = match[3].toLowerCase();
   if (unit === "ft" || unit === "feet") size *= 0.3048;
-  return parseFloat(size.toFixed(2));
+  return Math.round(size);
 }
 
 function analyzeEquipments(equipments) {
