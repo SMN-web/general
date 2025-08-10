@@ -31,14 +31,12 @@ function renderManageTable(data, container) {
   let filteredData = [...allData];
   const activeFilters = {};
 
-  // Clear old content
   container.innerHTML = "";
 
-  // Get existing header dropdown elements from HTML
   const downloadBtn = document.getElementById("download-btn");
   const downloadMenu = document.getElementById("download-menu");
 
-  // Create table
+  // Table
   const table = document.createElement("table");
   table.border = "1";
   table.cellPadding = "5";
@@ -47,7 +45,6 @@ function renderManageTable(data, container) {
 
   const thead = document.createElement("thead");
 
-  // Header row with S.No column
   const headerRow = document.createElement("tr");
   const thSerial = document.createElement("th");
   thSerial.textContent = "S.No";
@@ -59,7 +56,6 @@ function renderManageTable(data, container) {
   });
   thead.appendChild(headerRow);
 
-  // Filter row (empty cell for S.No)
   const filterRow = document.createElement("tr");
   filterRow.appendChild(document.createElement("th"));
   columns.forEach(col => {
@@ -80,7 +76,6 @@ function renderManageTable(data, container) {
   table.appendChild(thead);
   const tbody = document.createElement("tbody");
   table.appendChild(tbody);
-
   container.appendChild(table);
 
   function applyFilters() {
@@ -96,31 +91,26 @@ function renderManageTable(data, container) {
     tbody.innerHTML = "";
     filteredData.forEach((row, index) => {
       const tr = document.createElement("tr");
-
-      // Serial number
       const tdSerial = document.createElement("td");
-      tdSerial.textContent = index + 1;
+      tdSerial.textContent = index + 1; // plain number — no hyperlink
       tr.appendChild(tdSerial);
-
       columns.forEach(col => {
         const td = document.createElement("td");
         td.textContent = row[col] || "";
         tr.appendChild(td);
       });
-
       tbody.appendChild(tr);
     });
   }
 
-  /** -----------------
-   * EXPORT FUNCTIONS
-   * -----------------*/
+  /** EXPORT FUNCTIONS **/
 
   // CSV
   function exportFilteredToCSV() {
     let csv = "S.No," + columns.join(",") + "\n";
     filteredData.forEach((row, index) => {
-      const rowData = [index + 1];
+      // Add \t so Excel won't auto-format/link numbers
+      const rowData = [`\t${index + 1}`];
       columns.forEach(col => {
         let cell = row[col] ? row[col].toString() : "";
         if (cell.includes(",") || cell.includes("\"")) {
@@ -143,31 +133,47 @@ function renderManageTable(data, container) {
     closeDropdown();
   }
 
-  // PDF (via browser print)
+  // PDF
   function exportFilteredToPDF() {
     const win = window.open("", "_blank");
-    let html = "<html><head><title>Equipment List</title></head><body>";
-    html += "<h3>Filtered Equipment List</h3>";
-    html += "<table border='1' cellpadding='5' style='border-collapse:collapse;width:100%;'>";
-    html += "<tr><th>S.No</th>" + columns.map(c => `<th>${c}</th>`).join("") + "</tr>";
-    filteredData.forEach((row, index) => {
-      html += "<tr><td>" + (index + 1) + "</td>" +
-              columns.map(c => `<td>${row[c] || ""}</td>`).join("") +
-              "</tr>";
-    });
-    html += "</table></body></html>";
+    let html = `
+      <html>
+      <head>
+        <title>Equipment List</title>
+        <style>
+          table { border-collapse: collapse; width: 100%; }
+          th, td { border: 1px solid #000; padding: 4px; font-size:12px; }
+          h3 { margin: 0 0 10px 0; }
+        </style>
+      </head>
+      <body>
+        <h3>Filtered Equipment List</h3>
+        <table>
+          <tr><th>S.No</th>${columns.map(c => `<th>${c}</th>`).join("")}</tr>
+          ${filteredData.map((row, i) =>
+            `<tr><td>${i + 1}</td>${columns.map(c => `<td>${row[c] || ""}</td>`).join("")}</tr>`
+          ).join("")}
+        </table>
+      </body>
+      </html>`;
     win.document.write(html);
     win.document.close();
-    win.focus();
-    win.print();
-    win.close();
+    win.onload = function () {
+      win.focus();
+      win.print();
+      win.close();
+    };
     closeDropdown();
   }
 
-  // JPEG (native SVG + Canvas)
+  // JPEG
   function exportFilteredToJPEG() {
     try {
       const serializer = new XMLSerializer();
+      // Inline basic border styles so they show in image
+      table.querySelectorAll("th, td").forEach(cell => {
+        cell.setAttribute("style", "border:1px solid #000; padding:4px; font-size:12px;");
+      });
       const tableHtml = serializer.serializeToString(table);
       const svg = `
         <svg xmlns="http://www.w3.org/2000/svg" width="${table.offsetWidth}" height="${table.offsetHeight}">
@@ -187,6 +193,7 @@ function renderManageTable(data, container) {
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(img, 0, 0);
         canvas.toBlob(blob => {
+          if (!blob) { alert("JPEG export failed."); return; }
           const link = document.createElement("a");
           link.download = `Equipment_List_${new Date().toISOString().slice(0, 10)}.jpg`;
           link.href = URL.createObjectURL(blob);
@@ -198,7 +205,7 @@ function renderManageTable(data, container) {
         }, "image/jpeg", 0.95);
       };
       img.onerror = () => {
-        alert("Image export failed: browser may not fully support SVG rendering.");
+        alert("Image export failed: browser may not support this method.");
         URL.revokeObjectURL(url);
       };
       img.src = url;
@@ -208,9 +215,7 @@ function renderManageTable(data, container) {
     closeDropdown();
   }
 
-  /** -----------------
-   * DROPDOWN EVENTS
-   * -----------------*/
+  /** DROPDOWN HANDLERS **/
   function toggleDropdown() {
     downloadMenu.style.display =
       downloadMenu.style.display === "block" ? "none" : "block";
@@ -218,18 +223,15 @@ function renderManageTable(data, container) {
   function closeDropdown() {
     downloadMenu.style.display = "none";
   }
-
   document.addEventListener("click", (e) => {
     if (!downloadBtn.contains(e.target) && !downloadMenu.contains(e.target)) {
       closeDropdown();
     }
   });
-
   downloadBtn.addEventListener("click", (e) => {
     e.preventDefault();
     toggleDropdown();
   });
-
   downloadMenu.querySelectorAll("li").forEach(item => {
     item.addEventListener("click", () => {
       const format = item.dataset.format;
@@ -239,6 +241,5 @@ function renderManageTable(data, container) {
     });
   });
 
-  // Initial render
   applyFilters();
 }
