@@ -24,18 +24,18 @@
   <button class="logout-btn" id="logout-btn">Logout</button>
 
   <!-- MAIN TABS -->
-  <div class="main-tab-buttons">
-    <button data-main="user-section" class="main-tab active">👥 Users</button>
-    <button data-main="equipment-section" class="main-tab">🛠 Equipment</button>
-    <button data-main="rigging-section" class="main-tab">🪝 Rigging</button>
+  <div class="section-tabs">
+    <button data-main="user-section" class="section-tab active">👥 Users</button>
+    <button data-main="equipment-section" class="section-tab">🛠 Equipment</button>
+    <button data-main="rigging-section" class="section-tab">🪝 Rigging</button>
   </div>
 
   <!-- USER SECTION -->
   <div id="user-section" class="main-section">
-    <div class="sub-tab-buttons">
-      <button data-target="add-user-sub" class="user-subtab active">➕ Add User</button>
-      <button data-target="user-control-sub" class="user-subtab">🧑‍💼 User Control</button>
-      <button data-target="user-logs-sub" class="user-subtab">📓 User Logs</button>
+    <div class="sub-tab-row">
+      <button data-target="add-user-sub" class="sub-tab active">➕ Add User</button>
+      <button data-target="user-control-sub" class="sub-tab">🧑‍💼 User Control</button>
+      <button data-target="user-logs-sub" class="sub-tab">📓 User Logs</button>
     </div>
 
     <div id="add-user-sub" class="user-subsection">
@@ -105,7 +105,7 @@
 
   <!-- Dashboard subsection -->
   <div id="equip-dashboard" class="equip-subsection hidden">
-    <div id="equipment-dashboard-summary" style="margin:2rem 0;">
+    <div id="equipment-dashboard-summary">
       <h3>📊 Equipment Summary</h3>
       <h4>Crane</h4>
       <ul>
@@ -114,49 +114,37 @@
       </ul>
       <h4>Manlift</h4>
       <ul id="manlift-sizes-list"></ul>
-      <button id="refresh-dashboard-btn" style="margin-top:1rem;">🔄 Refresh Dashboard</button>
+      <button id="refresh-dashboard-btn">🔄 Refresh Dashboard</button>
     </div>
   </div>
 
   <!-- Upload subsection -->
   <div id="equip-upload" class="equip-subsection hidden">
     <h3>⬆ Upload Equipment CSV</h3>
-    <div class="csv-upload-box" style="margin-bottom:1.5rem;padding:1rem;background:#f8fafc;border-radius:8px;">
+    <div class="csv-upload-box">
       <label><strong>Upload CSV:</strong></label>
       <input id="csvFile" type="file" accept=".csv" />
       <button id="uploadCsvBtn" type="button">Upload</button>
-      <div id="csv-status" style="margin-top:0.5rem;color:#555;font-size:0.95rem;"></div>
+      <div id="csv-status"></div>
     </div>
     <div id="equipment-table"><p>No data loaded yet.</p></div>
   </div>
 
   <!-- List subsection -->
   <div id="equip-list" class="equip-subsection hidden">
-  <h3 style="display:flex; align-items:center; justify-content:space-between;">
+  <h3 class="flex-between">
     <span>📋 Equipment List</span>
-    <div style="position:relative; display:inline-block;">
-      <button id="download-btn" type="button" style="cursor:pointer;">Download ▼</button>
-      <ul id="download-menu" style="
-          display:none;
-          position:absolute;
-          right:0;
-          margin:0;
-          padding:0.2rem 0;
-          list-style:none;
-          border:1px solid #ccc;
-          background:#fff;
-          box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-          z-index:1000;
-      ">
-        <li style="padding:0.3rem 1rem; cursor:pointer;" data-format="csv">Download CSV</li>
-        <li style="padding:0.3rem 1rem; cursor:pointer;" data-format="pdf">Download PDF</li>
-        <li style="padding:0.3rem 1rem; cursor:pointer;" data-format="image">Download Image</li>
+    <div class="dropdown-wrapper">
+      <button id="download-btn" type="button">Download ▼</button>
+      <ul id="download-menu" class="download-menu">
+        <li data-format="csv">Download CSV</li>
+        <li data-format="pdf">Download PDF</li>
+        <li data-format="image">Download Image</li>
       </ul>
     </div>
   </h3>
   <div id="manage-table-container">Loading...</div>
 </div>
-
 
   <!-- Edit subsection -->
   <div id="equip-edit" class="equip-subsection hidden">
@@ -166,22 +154,19 @@
 
 </div>
 
-
-
-
-  <!-- RIGGING SECTION -->
-  <div id="rigging-section" class="main-section hidden">
-    <div class="sub-tab-buttons">
-      <button data-target="rigging-details" class="rigging-subtab active">📄 Rigging Details</button>
-      <button data-target="rigging-logs" class="rigging-subtab">📓 Rigging Logs</button>
-    </div>
-    <div id="rigging-details" class="rigging-subsection">
-      <div class="coming-soon-card"><span>🪝</span> Rigging Details coming soon</div>
-    </div>
-    <div id="rigging-logs" class="rigging-subsection hidden">
-      <div class="coming-soon-card"><span>📓</span> Rigging Logs coming soon</div>
-    </div>
+<!-- RIGGING SECTION -->
+<div id="rigging-section" class="main-section hidden">
+  <div class="sub-tab-row">
+    <button data-target="rigging-details" class="sub-tab active">📄 Rigging Details</button>
+    <button data-target="rigging-logs" class="sub-tab">📓 Rigging Logs</button>
   </div>
+  <div id="rigging-details" class="rigging-subsection">
+    <div class="coming-soon-card"><span>🪝</span> Rigging Details coming soon</div>
+  </div>
+  <div id="rigging-logs" class="rigging-subsection hidden">
+    <div class="coming-soon-card"><span>📓</span> Rigging Logs coming soon</div>
+  </div>
+</div>
 </div>
 
 <!-- USER PANEL -->
