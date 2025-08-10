@@ -36,7 +36,10 @@ export function initEquipmentControl() {
         initEquipmentList();
       } else if (showId === 'equip-list') {
         initEquipmentManage();
+      } else if (showId === 'equip-edit') {
+        initEquipmentEdit();
       }
+
     });
   });
 
