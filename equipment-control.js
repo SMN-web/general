@@ -3,9 +3,8 @@ import { initEquipmentList } from './equipment-list.js';
 import { initEquipmentManage } from './equipment-manage.js';
 import { initEquipmentEdit } from './equipment-edit.js';
 
-
 export function initEquipmentControl() {
-  // Toggle submenus when clicking group headers
+  // Accordion-style menu: toggle each group to show/hide submenu
   document.querySelectorAll('#equipment-section .equip-menu-group').forEach(group => {
     group.addEventListener('click', () => {
       const targetGroup = group.dataset.group;
@@ -19,19 +18,17 @@ export function initEquipmentControl() {
     });
   });
 
-  // Handle submenu item clicks
+  // Submenu buttons: switch visible section and run its initializer
   document.querySelectorAll('#equipment-section .equip-submenu button').forEach(btn => {
     btn.addEventListener('click', () => {
-      // Hide all subsections first
+      // Hide all subsections
       document.querySelectorAll('#equipment-section .equip-subsection')
         .forEach(sec => sec.classList.add('hidden'));
-
-      // Show selected section
+      // Show the selected subsection
       const showId = btn.dataset.target;
       const secEl = document.getElementById(showId);
       if (secEl) secEl.classList.remove('hidden');
-
-      // Run the right init logic
+      // Run the correct initializer
       if (showId === 'equip-dashboard') {
         initEquipmentDashboard();
       } else if (showId === 'equip-upload') {
@@ -41,28 +38,10 @@ export function initEquipmentControl() {
       } else if (showId === 'equip-edit') {
         initEquipmentEdit();
       }
-
     });
   });
 
-  /*
-    === Default behaviour options ===
-
-    Uncomment ONE of the following:
-
-    1. NO default: everything stays hidden until user clicks submenu
-       (Make sure all .equip-subsection in HTML start with "hidden" class)
-
-    2. Default to dashboard: programmatically click Dashboard button:
-  */
-
-  // ---- OPTION 1: Hide all by default ----
-  // document.querySelectorAll('#equipment-section .equip-subsection')
-  //   .forEach(sec => sec.classList.add('hidden'));
-
-  // ---- OPTION 2: Default to Dashboard ----
-  const dashboardBtn = document.querySelector(
-    '#equipment-section .equip-submenu button[data-target="equip-dashboard"]'
-  );
+  // Automatically show Dashboard by default when section loads
+  const dashboardBtn = document.querySelector('#equipment-section .equip-submenu button[data-target="equip-dashboard"]');
   if (dashboardBtn) dashboardBtn.click();
 }
