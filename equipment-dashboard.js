@@ -1,66 +1,64 @@
 function parseManliftSize(description) {
+  // Extract the numeric size for manlift with units
   const regex = /manlift.*?(\d+(\.\d+)?)\s*(ft|feet|m|meters)/i;
   const match = description.match(regex);
   if (!match) return null;
   let size = parseFloat(match[1]);
   const unit = match[3].toLowerCase();
-  if (unit === "ft" || unit === "feet") {
-    size *= 0.3048; // feet to meters
-  }
-  return size;
+  if (unit === "ft" || unit === "feet") size *= 0.3048; // convert to meters
+  // Round to 2 decimals
+  return parseFloat(size.toFixed(2));
 }
 
 function analyzeEquipments(equipments) {
-  let crawlerCount = 0, mobileCraneCount = 0, manliftCount = 0, manliftTotalSizeM = 0;
-  let dumberCount = 0, forkliftCount = 0, boomTruckCount = 0, dwmCount = 0;
+  let crawlerCount = 0;
+  let mobileCraneCount = 0;
+  let manliftSizesCount = {}; // { sizeMeters: count }
 
   equipments.forEach(eq => {
     const desc = (eq.description || "").toLowerCase();
 
+    // Crawler crane: contains both 'craw' and 'crane'
     if (desc.includes("craw") && desc.includes("crane")) {
       crawlerCount++;
-    } else if (desc.includes("crane") && !desc.includes("craw")) {
+    }
+    // Mobile crane: 'crane' but not 'craw'
+    else if (desc.includes("crane") && !desc.includes("craw")) {
       mobileCraneCount++;
     }
 
+    // Manlift: track sizes
     if (desc.includes("manlift")) {
-      manliftCount++;
       const size = parseManliftSize(desc);
-      if (size) manliftTotalSizeM += size;
+      const key = size ? size + " m" : "Unknown size";
+      manliftSizesCount[key] = (manliftSizesCount[key] || 0) + 1;
     }
-
-    if (desc.includes("dumber")) dumberCount++;
-    if (desc.includes("forklift")) forkliftCount++;
-    if (desc.includes("boom truck")) boomTruckCount++;
-    if (desc.includes("dwm")) dwmCount++;
   });
 
   return {
     crawlerCount,
     mobileCraneCount,
-    manliftCount,
-    manliftAvgSizeM: manliftCount ? (manliftTotalSizeM / manliftCount).toFixed(2) : "N/A",
-    dumberCount,
-    forkliftCount,
-    boomTruckCount,
-    dwmCount
+    manliftSizesCount
   };
 }
 
 function renderDashboardStats(stats) {
+  // Render Cranes section
   document.getElementById('stat-crawler').textContent = stats.crawlerCount;
   document.getElementById('stat-mobile').textContent = stats.mobileCraneCount;
-  document.getElementById('stat-manlift').textContent = stats.manliftCount;
-  document.getElementById('stat-manlift-avg').textContent = stats.manliftAvgSizeM;
-  document.getElementById('stat-dumber').textContent = stats.dumberCount;
-  document.getElementById('stat-forklift').textContent = stats.forkliftCount;
-  document.getElementById('stat-boom').textContent = stats.boomTruckCount;
-  document.getElementById('stat-dwm').textContent = stats.dwmCount;
+
+  // Render Manlifts with sizes
+  const manliftListElem = document.getElementById('manlift-sizes-list');
+  manliftListElem.innerHTML = "";
+  for (const [size, count] of Object.entries(stats.manliftSizesCount)) {
+    const li = document.createElement('li');
+    li.textContent = `${size}: ${count}`;
+    manliftListElem.appendChild(li);
+  }
 }
 
 export function initEquipmentDashboard() {
-  // Set your deployed Worker URL here
-  fetch("https://ancient-block-0551.nafil-8895-s.workers.dev")
+  fetch("https://ancient-block-0551.nafil-8895-s.workers.dev/get-equipment")
     .then(res => res.json())
     .then(data => {
       if (data.success) {
