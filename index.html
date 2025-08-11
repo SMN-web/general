@@ -177,8 +177,38 @@
 <div id="moderator-panel" class="panel hidden">
   <h2>🛡 Moderator Dashboard</h2>
   <p>Welcome, <span id="moderator-email"></span>.</p>
-  <button class="logout-btn">Logout</button>
+  <button class="logout-btn" id="logout-btn">Logout</button>
+
+  <div class="main-tab-buttons">
+    <button data-main="moderator-crane-section" class="main-tab active">🚧 Crane</button>
+    <button data-main="moderator-manlift-section" class="main-tab">🛗 Manlift</button>
+  </div>
+
+  <!-- Crane main section -->
+  <div id="moderator-crane-section" class="main-section">
+    <div class="sub-tab-buttons">
+      <button data-target="crane-status-sub" class="crane-subtab active">📊 Status</button>
+      <button data-target="crane-location-sub" class="crane-subtab">📍 Location</button>
+      <button data-target="crane-rigger-sub" class="crane-subtab">🪝 Rigger</button>
+    </div>
+    <div id="crane-status-sub" class="crane-subsection">Crane status content</div>
+    <div id="crane-location-sub" class="crane-subsection hidden">Crane location content</div>
+    <div id="crane-rigger-sub" class="crane-subsection hidden">Crane rigger content</div>
+  </div>
+
+  <!-- Manlift main section -->
+  <div id="moderator-manlift-section" class="main-section hidden">
+    <div class="sub-tab-buttons">
+      <button data-target="manlift-status-sub" class="manlift-subtab active">📊 Status</button>
+      <button data-target="manlift-location-sub" class="manlift-subtab">📍 Location</button>
+      <button data-target="manlift-banksman-sub" class="manlift-subtab">🪙 Banksman</button>
+    </div>
+    <div id="manlift-status-sub" class="manlift-subsection">Manlift status content</div>
+    <div id="manlift-location-sub" class="manlift-subsection hidden">Manlift location content</div>
+    <div id="manlift-banksman-sub" class="manlift-subsection hidden">Manlift banksman content</div>
+  </div>
 </div>
+
 
 <!-- SCRIPTS -->
 <script type="module" src="./main.js"></script>
