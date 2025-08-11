@@ -1,25 +1,47 @@
-(async () => {
-  const keyPair = await crypto.subtle.generateKey(
-    { name: "ECDSA", namedCurve: "P-256" },
-    true,
-    ["sign", "verify"]
-  );
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Push Demo</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; margin-top: 50px; }
+    button { padding: 10px 20px; font-size: 18px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Push Notification Demo</h1>
+  <button id="subBtn">Subscribe for Push</button>
+  <button id="sendBtn">Send Push</button>
 
-  async function exportKey(key) {
-    const spki = await crypto.subtle.exportKey("spki", key);
-    const b64 = btoa(String.fromCharCode(...new Uint8Array(spki)));
-    return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-  }
+  <script>
+    const publicVapidKey = '<YOUR_PUBLIC_VAPID_KEY>'; // from backend
+    const backendBase = '<YOUR_WORKER_URL>'; // e.g., https://xxx.workers.dev
 
-  async function exportPrivateKey(key) {
-    const pkcs8 = await crypto.subtle.exportKey("pkcs8", key);
-    const b64 = btoa(String.fromCharCode(...new Uint8Array(pkcs8)));
-    return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-  }
+    async function urlBase64ToUint8Array(base64String) {
+      const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+      const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+      const rawData = atob(base64);
+      return Uint8Array.from([...rawData].map(c => c.charCodeAt(0)));
+    }
 
-  const publicKey = await exportKey(keyPair.publicKey);
-  const privateKey = await exportPrivateKey(keyPair.privateKey);
+    document.getElementById('subBtn').onclick = async () => {
+      const reg = await navigator.serviceWorker.register('/service-worker.js');
+      const sub = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: await urlBase64ToUint8Array(publicVapidKey)
+      });
+      await fetch(backendBase + '/save-subscription', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(sub)
+      });
+      alert('Subscribed!');
+    };
 
-  console.log('Public VAPID Key:', publicKey);
-  console.log('Private VAPID Key:', privateKey);
-})();
+    document.getElementById('sendBtn').onclick = async () => {
+      await fetch(backendBase + '/trigger-push', { method: 'POST' });
+      alert('Push sent!');
+    };
+  </script>
+</body>
+</html>
