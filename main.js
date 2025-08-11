@@ -73,5 +73,3 @@ export function setupLogoutHandler() {
     };
   });
 }
-
-please integrate all other codes with these code to avoid any work distribution or error
