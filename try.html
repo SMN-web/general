@@ -4,43 +4,53 @@
   <meta charset="UTF-8">
   <title>Push Demo</title>
   <style>
-    body { font-family: sans-serif; text-align: center; margin-top: 50px; }
-    button { padding: 10px 20px; font-size: 18px; cursor: pointer; }
+    body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+    button { padding: 12px 24px; font-size: 18px; margin: 10px; cursor: pointer; }
   </style>
 </head>
 <body>
   <h1>Push Notification Demo</h1>
-  <button id="subBtn">Subscribe for Push</button>
+  <button id="subscribeBtn">Subscribe to Push</button>
   <button id="sendBtn">Send Push</button>
 
   <script>
-    const publicVapidKey = 'BAajXKIWDYCNRZXMsk-gpf_tAKlAd7Lxrd19jhDRHtCCV4kgKUVlp6gieJGWmUXCJAidn5OIM7WQGBp.rop6no4I'; // from backend
-    const backendBase = 'https://fancy-poetry-027f.nafil-8895-s.workers.dev'; // e.g., https://xxx.workers.dev
+    const backendBase = 'https://fancy-poetry-027f.nafil-8895-s.workers.dev'; // e.g. https://my-worker.username.workers.dev
+    const publicVapidKey = 'BAajXKIWDYCNRZXMsk-gpf_tAKlAd7Lxrd19jhDRHtCCV4kgKUVlp6gieJGWmUXCJAidn5OIM7WQGBp.rop6no4I'; // From CF env var in Worker
 
-    async function urlBase64ToUint8Array(base64String) {
-      const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+    function urlBase64ToUint8Array(base64String) {
+      const padding = '='.repeat((4 - base64String.length % 4) % 4);
       const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
       const rawData = atob(base64);
       return Uint8Array.from([...rawData].map(c => c.charCodeAt(0)));
     }
 
-    document.getElementById('subBtn').onclick = async () => {
+    document.getElementById('subscribeBtn').onclick = async () => {
+      if (!('serviceWorker' in navigator)) {
+        return alert('Service workers not supported');
+      }
+      const permission = await Notification.requestPermission();
+      if (permission !== 'granted') {
+        return alert('Notification permission denied');
+      }
+
       const reg = await navigator.serviceWorker.register('/service-worker.js');
       const sub = await reg.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: await urlBase64ToUint8Array(publicVapidKey)
+        applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
       });
+
       await fetch(backendBase + '/save-subscription', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(sub)
       });
-      alert('Subscribed!');
+
+      alert('Subscribed for Push Notifications!');
     };
 
     document.getElementById('sendBtn').onclick = async () => {
       await fetch(backendBase + '/trigger-push', { method: 'POST' });
-      alert('Push sent!');
+      alert('Push triggered from backend!');
     };
   </script>
 </body>
