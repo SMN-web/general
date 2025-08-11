@@ -1,0 +1,25 @@
+(async () => {
+  const keyPair = await crypto.subtle.generateKey(
+    { name: "ECDSA", namedCurve: "P-256" },
+    true,
+    ["sign", "verify"]
+  );
+
+  async function exportKey(key) {
+    const spki = await crypto.subtle.exportKey("spki", key);
+    const b64 = btoa(String.fromCharCode(...new Uint8Array(spki)));
+    return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+
+  async function exportPrivateKey(key) {
+    const pkcs8 = await crypto.subtle.exportKey("pkcs8", key);
+    const b64 = btoa(String.fromCharCode(...new Uint8Array(pkcs8)));
+    return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+
+  const publicKey = await exportKey(keyPair.publicKey);
+  const privateKey = await exportPrivateKey(keyPair.privateKey);
+
+  console.log('Public VAPID Key:', publicKey);
+  console.log('Private VAPID Key:', privateKey);
+})();
