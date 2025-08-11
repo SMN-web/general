@@ -1,57 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Push Demo</title>
-  <style>
-    body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
-    button { padding: 12px 24px; font-size: 18px; margin: 10px; cursor: pointer; }
-  </style>
+<meta charset="UTF-8">
+<title>Push Demo</title>
+<style>
+  body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+  button { padding: 12px 24px; font-size: 18px; margin: 10px; cursor: pointer; }
+</style>
 </head>
 <body>
-  <h1>Push Notification Demo</h1>
-  <button id="subscribeBtn">Subscribe to Push</button>
+  <h1>Push Notification Test</h1>
+  <button id="subscribeBtn">Subscribe</button>
   <button id="sendBtn">Send Push</button>
 
-  <script>
-    const backendBase = 'https://fancy-poetry-027f.nafil-8895-s.workers.dev'; // e.g. https://my-worker.username.workers.dev
-    const publicVapidKey = 'BAajXKIWDYcNRZXMsk-gpf_tAKlAd7Lxrd19jhDRHtCCV4kgKUVlp6gieJGWmUXCJAidn50IM7WQGBpr0p6no4I'; // From CF env var in Worker
+<script>
+const backendBase = 'https://fancy-poetry-027f.nafil-8895-s.workers.dev'; // e.g. https://push-test.username.workers.dev
+const publicVapidKey = 'BAajXKIWDYcNRZXMsk-gpf_tAKlAd7Lxrd19jhDRHtCCV4kgKUVlp6gieJGWmUXCJAidn50IM7WQGBpr0p6no4I'; // same as Worker env var
 
-    function urlBase64ToUint8Array(base64String) {
-      const padding = '='.repeat((4 - base64String.length % 4) % 4);
-      const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
-      const rawData = atob(base64);
-      return Uint8Array.from([...rawData].map(c => c.charCodeAt(0)));
-    }
+function urlBase64ToUint8Array(base64String) {
+  const padding = "=".repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
+  const rawData = atob(base64);
+  return Uint8Array.from([...rawData].map(c => c.charCodeAt(0)));
+}
 
-    document.getElementById('subscribeBtn').onclick = async () => {
-      if (!('serviceWorker' in navigator)) {
-        return alert('Service workers not supported');
-      }
-      const permission = await Notification.requestPermission();
-      if (permission !== 'granted') {
-        return alert('Notification permission denied');
-      }
+document.getElementById('subscribeBtn').onclick = async () => {
+  if (!('serviceWorker' in navigator)) return alert('SW not supported');
+  const perm = await Notification.requestPermission();
+  if (perm !== 'granted') return alert('Permission denied');
 
-      const reg = await navigator.serviceWorker.register('/service-worker.js');
-      const sub = await reg.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
-      });
+  const reg = await navigator.serviceWorker.register('/service-worker.js');
+  const sub = await reg.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
+  });
 
-      await fetch(backendBase + '/save-subscription', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(sub)
-      });
+  await fetch(backendBase + '/save-subscription', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(sub)
+  });
+  alert('Subscribed!');
+};
 
-      alert('Subscribed for Push Notifications!');
-    };
-
-    document.getElementById('sendBtn').onclick = async () => {
-      await fetch(backendBase + '/trigger-push', { method: 'POST' });
-      alert('Push triggered from backend!');
-    };
-  </script>
+document.getElementById('sendBtn').onclick = async () => {
+  await fetch(backendBase + '/trigger-push', { method: 'POST' });
+  alert('Push triggered!');
+};
+</script>
 </body>
 </html>
