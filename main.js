@@ -16,7 +16,7 @@ export function startHeartbeat() {
   if (!email) return;
 
   const send = () => {
-    fetch("https://white-breeze-db09.nafil-8895-s.workers.dev", {
+    fetch("https://white-breeze-db09.nafil-8895-s.workers.dev.workers.dev", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email })
@@ -78,57 +78,58 @@ export function setupLogoutHandler() {
 }
 
 //
-// === MAIN TAB & SUB-TAB / MENU NAVIGATION ===
+// === MAIN TAB & SUB‑TAB / EQUIPMENT MENU HANDLING ===
 //
 
-// Handle main tab switching
+// Main tab click handling
 document.querySelectorAll('.main-tab').forEach(mainBtn => {
   mainBtn.addEventListener('click', () => {
-    // deactivate all main tabs
+
+    // deactivate all main tabs & hide all main sections
     document.querySelectorAll('.main-tab').forEach(t => t.classList.remove('active'));
-    // hide all main sections
     document.querySelectorAll('.main-section').forEach(sec => sec.classList.add('hidden'));
 
-    // activate clicked tab and show its section
+    // activate clicked main tab & show its section
     mainBtn.classList.add('active');
     const targetSection = document.getElementById(mainBtn.dataset.main);
-    if (targetSection) {
-      targetSection.classList.remove('hidden');
+    if (!targetSection) return;
+    targetSection.classList.remove('hidden');
 
-      // Default open behaviour depending on main section
-      if (mainBtn.dataset.main === 'equipment-section') {
+    // Always reset the default view for each section
+    switch (mainBtn.dataset.main) {
+      case 'equipment-section': {
+        // ensure menu + first submenu button is activated
         const firstEquipMenu = targetSection.querySelector('.equip-menu-group');
-        const firstEquipTab = targetSection.querySelector('.equip-subtab');
         if (firstEquipMenu) {
           firstEquipMenu.click();
-        } else if (firstEquipTab) {
-          firstEquipTab.click();
+        } else {
+          const firstEquipTab = targetSection.querySelector('.equip-subtab');
+          if (firstEquipTab) firstEquipTab.click();
         }
+        break;
       }
-      if (mainBtn.dataset.main === 'user-section') {
+      case 'user-section': {
         const firstUserTab = targetSection.querySelector('.user-subtab');
         if (firstUserTab) firstUserTab.click();
+        break;
       }
-      if (mainBtn.dataset.main === 'rigging-section') {
+      case 'rigging-section': {
         const firstRiggingTab = targetSection.querySelector('.rigging-subtab');
         if (firstRiggingTab) firstRiggingTab.click();
+        break;
       }
     }
   });
 });
 
-// Generic function to initialize sub-tab behaviour
+// Generic sub‑tab setup
 function setupSubTabs(sectionSelector, subtabSelector, subsectionSelector) {
   document.querySelectorAll(sectionSelector + ' ' + subtabSelector).forEach(tab => {
     tab.addEventListener('click', () => {
       const section = tab.closest(sectionSelector);
-      // deactivate all subtabs in section
       section.querySelectorAll(subtabSelector).forEach(st => st.classList.remove('active'));
-      // hide all subsections in section
       section.querySelectorAll(subsectionSelector).forEach(sc => sc.classList.add('hidden'));
-      // activate clicked subtab
       tab.classList.add('active');
-      // show matching subsection
       const targetId = tab.dataset.target;
       if (targetId) {
         document.getElementById(targetId)?.classList.remove('hidden');
@@ -137,25 +138,28 @@ function setupSubTabs(sectionSelector, subtabSelector, subsectionSelector) {
   });
 }
 
-// Init all sub-tab groups
+// Init sub‑tabs for all sections
 setupSubTabs('#user-section', '.user-subtab', '.user-subsection');
 setupSubTabs('#equipment-section', '.equip-subtab', '.equip-subsection');
 setupSubTabs('#rigging-section', '.rigging-subtab', '.rigging-subsection');
 
-// Handle Equipment menu group click and submenu logic
+// Equipment menu group click handling
 document.querySelectorAll('#equipment-section .equip-menu-group').forEach(groupBtn => {
   groupBtn.addEventListener('click', () => {
     const parentSection = groupBtn.closest('#equipment-section');
-    // collapse all submenus and deactivate all menu groups
+
+    // hide all submenus & deactivate all groups
     parentSection.querySelectorAll('.equip-submenu').forEach(sm => sm.classList.add('hidden'));
     parentSection.querySelectorAll('.equip-menu-group').forEach(mg => mg.classList.remove('active'));
-    // activate clicked group
+
+    // activate this group
     groupBtn.classList.add('active');
+
     // show its submenu
     const submenu = parentSection.querySelector(`.equip-submenu[data-parent="${groupBtn.dataset.group}"]`);
     if (submenu) {
       submenu.classList.remove('hidden');
-      // auto-click first submenu button to open default subsection
+      // click first button inside
       const firstBtn = submenu.querySelector('button[data-target]');
       if (firstBtn) firstBtn.click();
     }
@@ -164,5 +168,4 @@ document.querySelectorAll('#equipment-section .equip-menu-group').forEach(groupB
 
 //
 // === INIT ===
-//
 setupLogoutHandler();
