@@ -1,89 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>FCM Push Notification Test</title>
-</head>
-<body>
-  <h1>FCM Push Notification Demo</h1>
+<!doctype html>
 
-  <button id="getTokenBtn">Get & Save FCM Token</button>
-  <button id="sendNotificationBtn">Send Notification (Saved Token)</button>
-
-  <p id="status"></p>
-
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging-compat.js"></script>
-
-  <script>
-    const firebaseConfig = {
-      // YOUR FIREBASE CONFIG HERE
+<html>  
+<head>  
+  <meta charset="utf-8" />  
+  <meta name="viewport" content="width=device-width,initial-scale=1" />  
+  <title>FCM v1 + Cloudflare KV Push Demo</title>  
+  <style>body{font-family:system-ui,Segoe UI,Roboto,Arial;max-width:720px;margin:24px auto;padding:12px}button{margin:6px;padding:10px 14px}</style>  
+</head>  
+<body>  
+  <h2>Push demo — FCM HTTP v1 + Cloudflare KV</h2>  
+  <p>  
+    <button id="enable">Register & Get Token</button>  
+    <button id="save">Save Token to KV</button>  
+    <button id="send">Send Notification (from KV)</button>  
+  </p>  
+  <pre id="out"></pre>    <!-- Firebase compat libs -->    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-messaging-compat.js"></script>    <script>  
+    const log = msg => { const out = document.getElementById('out'); out.textContent += msg + "\n"; };  
+  
+    // ---------- Replace these ----------  
+    const firebaseConfig = {  
       apiKey: "AIzaSyDtZnYYDb5TR01G6zsCtrF0HBR6pnQ2Beg",
     authDomain: "general-68ca7.firebaseapp.com",
     projectId: "general-68ca7",
     storageBucket: "general-68ca7.firebasestorage.app",
     messagingSenderId: "674522865143",
     appId: "1:674522865143:web:c4ec47f2e370c33c3ca2f2"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const messaging = firebase.messaging();
-
-    const backendUrl = "https://fancy-poetry-027f.nafil-8895-s.workers.dev";
-
-    async function getTokenAndSave() {
-      try {
-        const statusEl = document.getElementById("status");
-        statusEl.textContent = "Requesting notification permission...";
-        await Notification.requestPermission();
-        if (Notification.permission !== "granted") {
-          statusEl.textContent = "Notification permission denied";
-          return;
-        }
-
-        statusEl.textContent = "Getting FCM token...";
-        const token = await messaging.getToken({ vapidKey: "BBq9RZXnJDZb9Jq9PDt5YHoKWqgyfy1VhXaV_kfMqXOakh5zMUlqFuGKUVRig9qC8F_F4qMujROAboHXNDbh3hc" });
-        statusEl.textContent = "FCM Token: " + token;
-
-        // Save token to backend KV
-        const res = await fetch(backendUrl + "/save", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ token })
-        });
-        statusEl.textContent += "\nSave response: " + (await res.text());
-      } catch (e) {
-        alert("Error getting token: " + e.message);
-      }
-    }
-
-    async function sendNotification() {
-      try {
-        const res = await fetch(backendUrl + "/send", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            title: "Hello from Web",
-            body: "This is a test notification."
-          })
-        });
-        const text = await res.text();
-        alert("Send response:\n" + text);
-      } catch (e) {
-        alert("Error sending notification: " + e.message);
-      }
-    }
-
-    document.getElementById("getTokenBtn").onclick = getTokenAndSave;
-    document.getElementById("sendNotificationBtn").onclick = sendNotification;
-
-    // Register service worker
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("./firebase-messaging-sw.js")
-        .then(() => console.log("Service worker registered"))
-        .catch(console.error);
-    }
-  </script>
-</body>
-</html>
+    };  
+    const VAPID_KEY = "BBq9RZXnJDZb9Jq9PDt5YHoKWqgyfy1VhXaV_kfMqXOakh5zMUlqFuGKUVRig9qC8F_F4qMujROAboHXNDbh3hc"; // from Firebase Console → Project Settings → Cloud Messaging  
+  
+    // Cloudflare Worker URL (your deployed worker domain)  
+    const WORKER_URL = "https://fancy-poetry-027f.nafil-8895-s.workers.dev";  
+    // -------------------------------------  
+  
+    firebase.initializeApp(firebaseConfig);  
+    const messaging = firebase.messaging();  
+  
+    let lastToken = null;  
+  
+    async function registerAndGetToken() {  
+      if (!('serviceWorker' in navigator)) {  
+        log('Service Worker not supported');  
+        return;  
+      }  
+      try {  
+        const reg = await navigator.serviceWorker.register('/firebase-messaging-sw.js');  
+        log('Service worker registered');  
+  
+        const perm = await Notification.requestPermission();  
+        log('Notification permission: ' + perm);  
+        if (perm !== 'granted') return;  
+  
+        lastToken = await messaging.getToken({ vapidKey: VAPID_KEY, serviceWorkerRegistration: reg });  
+        log('FCM token:\n' + lastToken);  
+      } catch (e) {  
+        log('Error: ' + (e.message || e));  
+      }  
+    }  
+  
+    document.getElementById('enable').addEventListener('click', registerAndGetToken);  
+  
+    document.getElementById('save').addEventListener('click', async () => {  
+      if (!lastToken) {  
+        log('No token found. Click Register first.');  
+        return;  
+      }  
+      try {  
+        const r = await fetch(WORKER_URL + '/save', {  
+          method: 'POST',  
+          headers: { 'Content-Type': 'application/json' },  
+          body: JSON.stringify({ token: lastToken })  
+        });  
+        const txt = await r.text();  
+        log('Save response: ' + r.status + ' — ' + txt);  
+      } catch (err) {  
+        log('Save error: ' + err.message);  
+      }  
+    });  
+  
+    document.getElementById('send').addEventListener('click', async () => {  
+      const title = 'Hello from KV';  
+      const body = 'Sent via Cloudflare Worker using FCM HTTP v1';  
+      try {  
+        const r = await fetch(WORKER_URL + '/send', {  
+          method: 'POST',  
+          headers: { 'Content-Type': 'application/json' },  
+          body: JSON.stringify({ title, body })  
+        });  
+        const txt = await r.text();  
+        log('Send response: ' + r.status + ' — ' + txt);  
+      } catch (err) {  
+        log('Send error: ' + err.message);  
+      }  
+    });  
+  
+    // show messages while app is foregrounded  
+    messaging.onMessage(payload => {  
+      log('Foreground message: ' + JSON.stringify(payload));  
+      if (payload.notification) new Notification(payload.notification.title, { body: payload.notification.body, icon: payload.notification.icon });  
+    });  
+  </script>  </body>  
+</html> 
