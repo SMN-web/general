@@ -1,8 +1,6 @@
-// Import Firebase scripts for compat messaging
 importScripts('https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/9.22.2/firebase-messaging-compat.js');
 
-// Same config as in your frontend
 firebase.initializeApp({
   apiKey: "AIzaSyDtZnYYDb5TR01G6zsCtrF0HBR6pnQ2Beg",
     authDomain: "general-68ca7.firebaseapp.com",
@@ -14,9 +12,9 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-// Listen for background push messages
+// Background or webpage not active → show native notification
 messaging.onBackgroundMessage(payload => {
-  console.log('[firebase-messaging-sw.js] Background message', payload);
+  console.log('[firebase-messaging-sw.js] Background message:', payload);
   const { title, body, icon } = payload.notification;
   self.registration.showNotification(title, {
     body,
@@ -25,9 +23,7 @@ messaging.onBackgroundMessage(payload => {
   });
 });
 
-// Optional: handle clicks
 self.addEventListener('notificationclick', event => {
   event.notification.close();
-  // Open homepage or a URL
   event.waitUntil(clients.openWindow('/'));
 });
