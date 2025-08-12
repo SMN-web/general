@@ -110,15 +110,22 @@ document.getElementById('save').addEventListener('click', saveToken);
 document.getElementById('send').addEventListener('click', sendNotification);
 
 // Foreground messages
-messaging.onMessage(payload => {
+messaging.onMessage(async payload => {
   log('💬 Foreground message: ' + JSON.stringify(payload));
-  if (payload.notification) {
-    new Notification(payload.notification.title, {
-      body: payload.notification.body,
-      icon: payload.notification.icon
-    });
+
+  // Show the notification via the service worker even in foreground
+  if (payload.notification && navigator.serviceWorker) {
+    const reg = await navigator.serviceWorker.getRegistration();
+    if (reg) {
+      reg.showNotification(payload.notification.title, {
+        body: payload.notification.body,
+        icon: payload.notification.icon || '/icon.png',
+        data: payload.data || {}
+      });
+    }
   }
 });
+
 </script>
 </body>
 </html>
