@@ -1,23 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8" />
-  <title>FCM Push with Cloudflare Worker Backend</title>
-  <style>
-    body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
-    button { padding: 12px 24px; font-size: 18px; margin: 10px; cursor: pointer; }
-  </style>
+  <meta charset="UTF-8">
+  <title>Firebase Push Demo</title>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js"></script>
 </head>
 <body>
-  <h1>Push Notifications Demo (FCM + Cloudflare Worker)</h1>
-  <button id="subscribeBtn">Subscribe & Save Token</button>
-  <button id="triggerBtn">Trigger Push</button>
+  <h1>Firebase Push Notifications (No Backend)</h1>
+  <button id="subscribeBtn">Subscribe for Notifications</button>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging.js";
-
-    // Your Firebase config - replace placeholders with your Firebase project config
+  <script>
+    // Firebase config for your project
     const firebaseConfig = {
     apiKey: "AIzaSyDtZnYYDb5TR01G6zsCtrF0HBR6pnQ2Beg",
     authDomain: "general-68ca7.firebaseapp.com",
@@ -28,78 +22,46 @@
     measurementId: "G-6L0DXHGCBE"
   };
 
-    // Initialize Firebase app
-    const app = initializeApp(firebaseConfig);
-    const messaging = getMessaging(app);
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const messaging = firebase.messaging();
 
-    // Your Web Push public VAPID key from Firebase Console
-    const publicVapidKey = "BL6h9NFc_O5r-l5JJ6wKpvzuHrI6o76uSTCM7j2KDG_r_Gp2X07QWBnLMak3bwEu2WD6Wbr7H2qyrtBfCNhbN2Q";
+    const publicVapidKey = "BBq9RZXnJDZb9Jq9PDt5YHoKWqgyfy1VhXaV_kfMqXOakh5zMUlqFuGKUVRig9qC8F_F4qMujROAboHXNDbh3hc"; // From Firebase Console
 
-    // Your backend Cloudflare Worker URL for storing tokens and triggering notifications
-    // Replace this with your Worker 'workers.dev' temporary address or routed URL
-    // Example workers.dev address for a Worker named "my-worker" in account "myacct":
-    // https://my-worker.myacct.workers.dev/fcmpush
-    // If Worker is routed to your domain, use that domain URL + path instead
-    const backendUrl = "https://fancy-poetry-027f.nafil-8895-s.workers.dev/fcmpush";
-
-    // Subscribe user and send FCM token to Cloudflare Worker backend
-    async function subscribeUser() {
-      const permission = await Notification.requestPermission();
-      if (permission !== "granted") {
-        alert("Notification permission denied by user.");
-        return;
-      }
+    // Request permission and get token
+    document.getElementById('subscribeBtn').onclick = async () => {
       try {
-        const currentToken = await getToken(messaging, { vapidKey: publicVapidKey });
-        if (!currentToken) {
-          alert("No token retrieved.");
+        const permission = await Notification.requestPermission();
+        if (permission !== 'granted') {
+          alert("Push permission denied");
           return;
         }
-        const res = await fetch(backendUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ action: "save", token: currentToken })
-        });
-        alert(res.ok ? "Token saved to backend!" : "Failed to save token.");
-      } catch (err) {
-        console.error("Failed to get token or save:", err);
-        alert("Error: " + err.message);
-      }
-    }
 
-    // Trigger push notifications via backend Worker
-    async function triggerPush() {
-      try {
-        const res = await fetch(backendUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ action: "trigger" })
-        });
-        alert(res.ok ? "Push triggered!" : "Failed to trigger push.");
+        const token = await messaging.getToken({ vapidKey: publicVapidKey });
+        if (token) {
+          console.log("Your FCM Token:", token);
+          alert("Subscription success! Token in console.");
+          // SAVE THIS TOKEN somewhere safe — for no-backend demo, you can manually target it in the Firebase Console
+        } else {
+          alert("No token received.");
+        }
       } catch (err) {
-        console.error("Trigger error:", err);
-        alert("Error triggering push: " + err.message);
+        console.error("Error getting token:", err);
+        alert("Error getting token. See console.");
       }
-    }
+    };
 
-    // Handle foreground messages (when the page is open)
-    onMessage(messaging, (payload) => {
-      alert(`Foreground notification:\n${payload.notification.title}\n${payload.notification.body}`);
+    // Foreground message handler
+    messaging.onMessage((payload) => {
+      console.log("Message received in foreground:", payload);
+      alert(`Foreground: ${payload.notification.title} - ${payload.notification.body}`);
     });
 
-    // UI button event listeners
-    document.getElementById("subscribeBtn").addEventListener("click", subscribeUser);
-    document.getElementById("triggerBtn").addEventListener("click", triggerPush);
-
-    // Register the service worker for messaging (make sure /firebase-messaging-sw.js is hosted on your site root)
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("/firebase-messaging-sw.js")
-        .then(registration => {
-          console.log("Service Worker registered for Firebase Messaging.");
-        })
-        .catch(err => {
-          console.error("Service Worker registration failed:", err);
-        });
+    // Register the service worker for background notifications
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/firebase-messaging-sw.js')
+        .then(() => console.log("Service Worker registered."))
+        .catch(err => console.error("SW registration failed:", err));
     }
   </script>
 </body>
