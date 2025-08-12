@@ -3,19 +3,20 @@ importScripts('https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-comp
 
 firebase.initializeApp({
   apiKey: "AIzaSyDtZnYYDb5TR01G6zsCtrF0HBR6pnQ2Beg",
-    authDomain: "general-68ca7.firebaseapp.com",
-    projectId: "general-68ca7",
-    storageBucket: "general-68ca7.firebasestorage.app",
-    messagingSenderId: "674522865143",
-    appId: "1:674522865143:web:c4ec47f2e370c33c3ca2f2",
-    measurementId: "G-6L0DXHGCBE"
+  projectId: "general-68ca7",
+  messagingSenderId: "674522865143",
+  appId: "1:674522865143:web:c4ec47f2e370c33c3ca2f2"
 });
 
 const messaging = firebase.messaging();
 
-messaging.onBackgroundMessage(payload => {
-  self.registration.showNotification(payload.notification.title, {
+messaging.onBackgroundMessage((payload) => {
+  console.log('[firebase-messaging-sw.js] Received background message:', payload);
+  const notificationTitle = payload.notification.title;
+  const notificationOptions = {
     body: payload.notification.body,
     icon: payload.notification.icon || '/icon.png'
-  });
+  };
+
+  self.registration.showNotification(notificationTitle, notificationOptions);
 });
