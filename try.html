@@ -1,68 +1,66 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Firebase Push Demo</title>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js"></script>
+  <meta charset="utf-8" />
+  <title>FCM v1 + Cloudflare Worker Demo</title>
 </head>
 <body>
-  <h1>Firebase Push Notifications (No Backend)</h1>
-  <button id="subscribeBtn">Subscribe for Notifications</button>
+  <h1>Push demo (v1 API + Cloudflare Worker)</h1>
+  <button id="enable">Enable Notifications</button>
+  <pre id="output"></pre>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-messaging-compat.js"></script>
 
   <script>
-    // Firebase config for your project
+    const out = (msg) => document.getElementById("output").textContent += msg + "\n";
+
     const firebaseConfig = {
-    apiKey: "AIzaSyDtZnYYDb5TR01G6zsCtrF0HBR6pnQ2Beg",
+      apiKey: "AIzaSyDtZnYYDb5TR01G6zsCtrF0HBR6pnQ2Beg",
     authDomain: "general-68ca7.firebaseapp.com",
     projectId: "general-68ca7",
     storageBucket: "general-68ca7.firebasestorage.app",
     messagingSenderId: "674522865143",
     appId: "1:674522865143:web:c4ec47f2e370c33c3ca2f2",
     measurementId: "G-6L0DXHGCBE"
-  };
+    };
 
-    // Initialize Firebase
+    const VAPID_KEY = "BBq9RZXnJDZb9Jq9PDt5YHoKWqgyfy1VhXaV_kfMqXOakh5zMUlqFuGKUVRig9qC8F_F4qMujROAboHXNDbh3hc"; // from Firebase Console → Project Settings → Cloud Messaging
+
     firebase.initializeApp(firebaseConfig);
     const messaging = firebase.messaging();
 
-    const publicVapidKey = "BBq9RZXnJDZb9Jq9PDt5YHoKWqgyfy1VhXaV_kfMqXOakh5zMUlqFuGKUVRig9qC8F_F4qMujROAboHXNDbh3hc"; // From Firebase Console
+    async function getTokenAndSend() {
+      const reg = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+      out("Service worker registered.");
 
-    // Request permission and get token
-    document.getElementById('subscribeBtn').onclick = async () => {
-      try {
-        const permission = await Notification.requestPermission();
-        if (permission !== 'granted') {
-          alert("Push permission denied");
-          return;
-        }
+      const permission = await Notification.requestPermission();
+      out("Permission: " + permission);
+      if (permission !== "granted") return;
 
-        const token = await messaging.getToken({ vapidKey: publicVapidKey });
-        if (token) {
-          console.log("Your FCM Token:", token);
-          alert("Subscription success! Token in console.");
-          // SAVE THIS TOKEN somewhere safe — for no-backend demo, you can manually target it in the Firebase Console
-        } else {
-          alert("No token received.");
-        }
-      } catch (err) {
-        console.error("Error getting token:", err);
-        alert("Error getting token. See console.");
-      }
-    };
+      const token = await messaging.getToken({ vapidKey: VAPID_KEY, serviceWorkerRegistration: reg });
+      out("Token: " + token);
 
-    // Foreground message handler
-    messaging.onMessage((payload) => {
-      console.log("Message received in foreground:", payload);
-      alert(`Foreground: ${payload.notification.title} - ${payload.notification.body}`);
-    });
+      // Send test notification via your Worker
+      const resp = await fetch("https://fancy-poetry-027f.nafil-8895-s.workers.dev/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          token,
+          title: "Hello from v1 API",
+          body: "This is a secure push via OAuth2"
+        })
+      });
 
-    // Register the service worker for background notifications
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/firebase-messaging-sw.js')
-        .then(() => console.log("Service Worker registered."))
-        .catch(err => console.error("SW registration failed:", err));
+      out("Worker response: " + await resp.text());
     }
+
+    document.getElementById("enable").addEventListener("click", getTokenAndSend);
+
+    messaging.onMessage((payload) => {
+      out("Foreground message: " + JSON.stringify(payload));
+    });
   </script>
 </body>
 </html>
