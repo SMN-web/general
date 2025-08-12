@@ -48,7 +48,7 @@
         return;
       }
       try {
-        const reg = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+        const reg = await navigator.serviceWorker.register('./firebase-messaging-sw.js');
         log('Service worker registered');
 
         const perm = await Notification.requestPermission();
