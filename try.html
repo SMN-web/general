@@ -1,74 +1,70 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Push Test</title>
+<meta charset="UTF-8" />
+<title>FCM HTTP v1 Push via Cloudflare Worker</title>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js"></script>
 <style>
-  body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
-  button { padding: 12px 24px; font-size: 18px; margin: 10px; cursor: pointer; }
+  body { font-family: Arial; text-align: center; margin-top: 50px; }
+  button { margin: 10px; padding: 10px 20px; font-size: 16px; cursor: pointer; }
 </style>
 </head>
 <body>
-
-<h1>Push Notification Demo</h1>
-<button id="saveBtn">Subscribe (Save)</button>
-<button id="deleteBtn">Unsubscribe (Delete)</button>
-<button id="triggerBtn">Trigger Push</button>
+<h1>Push Notifications with FCM HTTP v1 API</h1>
+<button id="subscribe">Subscribe & Save Token</button>
+<button id="trigger">Trigger Push</button>
 
 <script>
-const publicVapidKey = "BAajXKIWDYcNRZXMsk-gpf_tAKlAd7Lxrd19jhDRHtCCV4kgKUVlp6gieJGWmUXCJAidn50IM7WQGBpr0p6no4I"; // Replace
+const firebaseConfig = {
+    apiKey: "AIzaSyDtZnYYDb5TR01G6zsCtrF0HBR6pnQ2Beg",
+    authDomain: "general-68ca7.firebaseapp.com",
+    projectId: "general-68ca7",
+    storageBucket: "general-68ca7.firebasestorage.app",
+    messagingSenderId: "674522865143",
+    appId: "1:674522865143:web:c4ec47f2e370c33c3ca2f2",
+    measurementId: "G-6L0DXHGCBE"
+  };
 
-function urlBase64ToUint8Array(base64String) {
-  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
-  const rawData = atob(base64);
-  return Uint8Array.from([...rawData].map(c => c.charCodeAt(0)));
-}
+firebase.initializeApp(firebaseConfig);
+const messaging = firebase.messaging();
 
-async function registerSW() {
-  return await navigator.serviceWorker.register("/service-worker.js");
-}
+const publicVapidKey = "BL6h9NFc_O5r-l5JJ6wKpvzuHrI6o76uSTCM7j2KDG_r_Gp2X07QWBnLMak3bwEu2WD6Wbr7H2qyrtBfCNhbN2Q"; // Firebase Web Push VAPID public key
+const workerEndpoint = "https://fancy-poetry-027f.nafil-8895-s.workers.dev/fcmpush"; // Your Cloudflare Worker route handling push
 
-document.getElementById("saveBtn").onclick = async () => {
-  const perm = await Notification.requestPermission();
-  if (perm !== "granted") return alert("Permission denied");
-
-  const reg = await registerSW();
-  const subscription = await reg.pushManager.subscribe({
-    userVisibleOnly: true,
-    applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
-  });
-
-  const res = await fetch("https://fancy-poetry-027f.nafil-8895-s.workers.dev/push", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ action: "save", subscription })
-  });
-  alert(res.ok ? "Subscribed & saved!" : "Failed to save subscription");
+document.getElementById("subscribe").onclick = async () => {
+  try {
+    await Notification.requestPermission();
+    const token = await messaging.getToken({ vapidKey: publicVapidKey });
+    if (!token) throw new Error("Failed to get FCM token.");
+    const res = await fetch(workerEndpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "save", token })
+    });
+    alert(res.ok ? "Token saved!" : "Failed to save token.");
+  } catch (err) {
+    alert("Error: " + err.message);
+  }
 };
 
-document.getElementById("deleteBtn").onclick = async () => {
-  const reg = await navigator.serviceWorker.ready;
-  const subscription = await reg.pushManager.getSubscription();
-  if (!subscription) return alert("No subscription to delete");
-  await subscription.unsubscribe();
-  await fetch("https://fancy-poetry-027f.nafil-8895-s.workers.dev/push", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ action: "delete", subscription })
-  });
-  alert("Subscription deleted");
+document.getElementById("trigger").onclick = async () => {
+  try {
+    const res = await fetch(workerEndpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "trigger" })
+    });
+    alert(res.ok ? "Push triggered!" : "Failed to trigger push.");
+  } catch (err) {
+    alert("Error: " + err.message);
+  }
 };
 
-document.getElementById("triggerBtn").onclick = async () => {
-  const res = await fetch("https://fancy-poetry-027f.nafil-8895-s.workers.dev/push", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ action: "trigger" })
-  });
-  alert(res.ok ? "Push triggered!" : "Push trigger failed");
-};
+// Display foreground notifications
+messaging.onMessage(payload => {
+  alert(`Foreground notification: ${payload.notification.title} - ${payload.notification.body}`);
+});
 </script>
-
 </body>
 </html>
