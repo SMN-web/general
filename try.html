@@ -43,7 +43,7 @@ async function registerAndGetToken() {
     log('Service Worker not supported'); return;
   }
   try {
-    const reg = await navigator.serviceWorker.register('./firebase-messaging-sw.js');
+    const reg = await navigator.serviceWorker.register('general/firebase-messaging-sw.js');
     messaging.useServiceWorker(reg);
     log('Service worker registered');
 
