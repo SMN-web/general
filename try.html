@@ -1,28 +1,22 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>FCM v1 + Cloudflare KV Push Demo</title>
-  <style>body{font-family:system-ui,Segoe UI,Roboto,Arial;max-width:720px;margin:24px auto;padding:12px}button{margin:6px;padding:10px 14px}</style>
+  <meta charset="UTF-8" />
+  <title>FCM Push via Cloudflare Worker Backend</title>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin-top: 50px; text-align: center; }
+    button { margin: 10px; padding: 12px 24px; font-size: 18px; cursor: pointer; }
+  </style>
 </head>
 <body>
-  <h2>Push demo — FCM HTTP v1 + Cloudflare KV</h2>
-  <p>
-    <button id="enable">Register & Get Token</button>
-    <button id="save">Save Token to KV</button>
-    <button id="send">Send Notification (from KV)</button>
-  </p>
-  <pre id="out"></pre>
-
-  <!-- Firebase compat libs -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-messaging-compat.js"></script>
+  <h1>Push Notifications Demo</h1>
+  <button id="subscribe">Subscribe & Save Token</button>
+  <button id="trigger">Trigger Push</button>
 
   <script>
-    const log = msg => { const out = document.getElementById('out'); out.textContent += msg + "\n"; };
-
-    // ---------- Replace these ----------
+    // Firebase config placeholders
     const firebaseConfig = {
       apiKey: "AIzaSyDtZnYYDb5TR01G6zsCtrF0HBR6pnQ2Beg",
     authDomain: "general-68ca7.firebaseapp.com",
@@ -31,78 +25,69 @@
     messagingSenderId: "674522865143",
     appId: "1:674522865143:web:c4ec47f2e370c33c3ca2f2"
     };
-    const VAPID_KEY = "BBq9RZXnJDZb9Jq9PDt5YHoKWqgyfy1VhXaV_kfMqXOakh5zMUlqFuGKUVRig9qC8F_F4qMujROAboHXNDbh3hc"; // from Firebase Console → Project Settings → Cloud Messaging
 
-    // Cloudflare Worker URL (your deployed worker domain)
-    const WORKER_URL = "https://fancy-poetry-027f.nafil-8895-s.workers.dev";
-    // -------------------------------------
-
+    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const messaging = firebase.messaging();
 
-    let lastToken = null;
+    const publicVapidKey = "BBq9RZXnJDZb9Jq9PDt5YHoKWqgyfy1VhXaV_kfMqXOakh5zMUlqFuGKUVRig9qC8F_F4qMujROAboHXNDbh3hc"; // Firebase Web Push certificate public key
+    const backendUrl = "https://fancy-poetry-027f.nafil-8895-s.workers.dev/fcmpush"; // Change to your Worker URL
 
-    async function registerAndGetToken() {
-      if (!('serviceWorker' in navigator)) {
-        log('Service Worker not supported');
-        return;
-      }
+    document.getElementById("subscribe").onclick = async () => {
       try {
-        const reg = await navigator.serviceWorker.register('./firebase-messaging-sw.js');
-        log('Service worker registered');
+        const permission = await Notification.requestPermission();
+        if (permission !== "granted") {
+          alert("Permission denied");
+          return;
+        }
 
-        const perm = await Notification.requestPermission();
-        log('Notification permission: ' + perm);
-        if (perm !== 'granted') return;
+        const token = await messaging.getToken({ vapidKey: publicVapidKey });
+        if (!token) {
+          alert("Failed to get token");
+          return;
+        }
 
-        lastToken = await messaging.getToken({ vapidKey: VAPID_KEY, serviceWorkerRegistration: reg });
-        log('FCM token:\n' + lastToken);
-      } catch (e) {
-        log('Error: ' + (e.message || e));
-      }
-    }
-
-    document.getElementById('enable').addEventListener('click', registerAndGetToken);
-
-    document.getElementById('save').addEventListener('click', async () => {
-      if (!lastToken) {
-        log('No token found. Click Register first.');
-        return;
-      }
-      try {
-        const r = await fetch(WORKER_URL + '/save', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ token: lastToken })
+        const res = await fetch(backendUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "save", token })
         });
-        const txt = await r.text();
-        log('Save response: ' + r.status + ' — ' + txt);
-      } catch (err) {
-        log('Save error: ' + err.message);
-      }
-    });
 
-    document.getElementById('send').addEventListener('click', async () => {
-      const title = 'Hello from KV';
-      const body = 'Sent via Cloudflare Worker using FCM HTTP v1';
+        alert(res.ok ? "Token saved!" : "Failed to save token");
+      } catch (err) {
+        console.error(err);
+        alert("Error: " + err.message);
+      }
+    };
+
+    document.getElementById("trigger").onclick = async () => {
       try {
-        const r = await fetch(WORKER_URL + '/send', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ title, body })
+        const res = await fetch(backendUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "trigger" })
         });
-        const txt = await r.text();
-        log('Send response: ' + r.status + ' — ' + txt);
-      } catch (err) {
-        log('Send error: ' + err.message);
-      }
-    });
 
-    // show messages while app is foregrounded
+        alert(res.ok ? "Push triggered!" : "Failed to trigger push");
+      } catch (err) {
+        console.error(err);
+        alert("Error: " + err.message);
+      }
+    };
+
     messaging.onMessage(payload => {
-      log('Foreground message: ' + JSON.stringify(payload));
-      if (payload.notification) new Notification(payload.notification.title, { body: payload.notification.body, icon: payload.notification.icon });
+      alert(`Notification: ${payload.notification.title}\n${payload.notification.body}`);
     });
+
+    // Register service worker for background notifications
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/firebase-messaging-sw.js")
+        .then(registration => {
+          messaging.useServiceWorker(registration);
+          console.log("Service Worker registered for FCM");
+        })
+        .catch(console.error);
+    }
   </script>
 </body>
 </html>
