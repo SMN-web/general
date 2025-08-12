@@ -12,7 +12,7 @@
   </style>
 </head>
 <body>
-  <h2>Push demo — FCM HTTP v1 + Cloudflare</h2>
+  <h2>Push demo — FCM HTTP v1 + Cloudflare KV</h2>
   <button id="enable">Register & Get Token</button>
   <button id="save">Save Token to KV</button>
   <button id="send">Send Notification (from KV)</button>
@@ -44,8 +44,12 @@ async function registerAndGetToken() {
   }
   try {
     const registration = await navigator.serviceWorker.register('./firebase-messaging-sw.js');
-    messaging.useServiceWorker(reg);
-    log('Service worker registered');
+    const currentToken = await messaging.getToken({
+  vapidKey: 'BBq9RZXnJDZb9Jq9PDt5YHoKWqgyfy1VhXaV_kfMqXOakh5zMUlqFuGKUVRig9qC8F_F4qMujROAboHXNDbh3hc',
+  serviceWorkerRegistration: registration
+log('Service worker registered');
+});
+    
 
     const perm = await Notification.requestPermission();
     log('Notification permission: ' + perm);
