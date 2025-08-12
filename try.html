@@ -12,7 +12,7 @@
   </style>
 </head>
 <body>
-  <h2>Push demo — FCM HTTP v1 + Cloudflare KV</h2>
+  <h2>Push demo — FCM HTTP v1 + Cloudflare</h2>
   <button id="enable">Register & Get Token</button>
   <button id="save">Save Token to KV</button>
   <button id="send">Send Notification (from KV)</button>
@@ -43,7 +43,7 @@ async function registerAndGetToken() {
     log('Service Worker not supported'); return;
   }
   try {
-    const reg = await navigator.serviceWorker.register('./firebase-messaging-sw.js');
+    const registration = await navigator.serviceWorker.register('./firebase-messaging-sw.js');
     messaging.useServiceWorker(reg);
     log('Service worker registered');
 
