@@ -8,7 +8,7 @@
   <style>
     body { font-family: system-ui, Arial; max-width: 720px; margin: 24px auto; padding: 12px; }
     button { margin: 6px; padding: 10px 14px; }
-    pre { background: #f3f3f3; padding: 10px; }
+    pre { background: #f3f3f3; padding: 10px; white-space: pre-wrap; }
   </style>
 </head>
 <body>
@@ -30,62 +30,88 @@ const firebaseConfig = {
     messagingSenderId: "674522865143",
     appId: "1:674522865143:web:c4ec47f2e370c33c3ca2f2"
 };
-const VAPID_KEY = "BBq9RZXnJDZb9Jq9PDt5YHoKWqgyfy1VhXaV_kfMqXOakh5zMUlqFuGKUVRig9qC8F_F4qMujROAboHXNDbh3hc"; // from Firebase Console → Cloud Messaging
-const WORKER_URL = "https://fancy-poetry-027f.nafil-8895-s.workers.dev"; // Worker backend
+const VAPID_KEY = "BBq9RZXnJDZb9Jq9PDt5YHoKWqgyfy1VhXaV_kfMqXOakh5zMUlqFuGKUVRig9qC8F_F4qMujROAboHXNDbh3hc"; 
+const WORKER_URL = "https://fancy-poetry-027f.nafil-8895-s.workers.dev"; 
 // -------------------------------------
 
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 let lastToken = null;
 
+// Register SW, request permission, and get token
 async function registerAndGetToken() {
   if (!('serviceWorker' in navigator)) {
-    log('Service Worker not supported'); return;
+    log('❌ Service Worker not supported');
+    return;
   }
   try {
+    // Register the messaging service worker
     const registration = await navigator.serviceWorker.register('./firebase-messaging-sw.js');
-    const currentToken = await messaging.getToken({
-  vapidKey: 'BBq9RZXnJDZb9Jq9PDt5YHoKWqgyfy1VhXaV_kfMqXOakh5zMUlqFuGKUVRig9qC8F_F4qMujROAboHXNDbh3hc',
-  serviceWorkerRegistration: registration
-log('Service worker registered');
-});
-    
+    log('✅ Service worker registered');
 
+    // Ask user permission for notifications
     const perm = await Notification.requestPermission();
-    log('Notification permission: ' + perm);
+    log('🔔 Notification permission: ' + perm);
     if (perm !== 'granted') return;
 
-    lastToken = await messaging.getToken({ vapidKey: VAPID_KEY, serviceWorkerRegistration: reg });
-    log('FCM token:\n' + lastToken);
+    // Get the FCM token
+    lastToken = await messaging.getToken({
+      vapidKey: VAPID_KEY,
+      serviceWorkerRegistration: registration
+    });
+
+    if (lastToken) {
+      log('🎯 FCM token:\n' + lastToken);
+    } else {
+      log('⚠️ Failed to get token');
+    }
   } catch (e) {
-    log('Error: ' + e.message);
+    log('❌ Error: ' + e.message);
+  }
+}
+
+// Save token to KV via backend Worker
+async function saveToken() {
+  if (!lastToken) {
+    log('⚠️ No token found. Click "Register" first.');
+    return;
+  }
+  try {
+    const r = await fetch(WORKER_URL + '/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: lastToken })
+    });
+    log('💾 Save response: ' + r.status + ' — ' + await r.text());
+  } catch (err) {
+    log('❌ Save error: ' + err.message);
+  }
+}
+
+// Trigger a push from your Worker
+async function sendNotification() {
+  try {
+    const r = await fetch(WORKER_URL + '/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title: 'Hello from KV',
+        body: 'Sent via Cloudflare Worker + FCM HTTP v1'
+      })
+    });
+    log('📤 Send response: ' + r.status + ' — ' + await r.text());
+  } catch (err) {
+    log('❌ Send error: ' + err.message);
   }
 }
 
 document.getElementById('enable').addEventListener('click', registerAndGetToken);
+document.getElementById('save').addEventListener('click', saveToken);
+document.getElementById('send').addEventListener('click', sendNotification);
 
-document.getElementById('save').addEventListener('click', async () => {
-  if (!lastToken) { log('No token. Click Register first.'); return; }
-  const r = await fetch(WORKER_URL + '/save', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ token: lastToken })
-  });
-  log('Save response: ' + r.status + ' — ' + await r.text());
-});
-
-document.getElementById('send').addEventListener('click', async () => {
-  const r = await fetch(WORKER_URL + '/send', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ title: 'Hello from KV', body: 'Sent via Cloudflare Worker + FCM HTTP v1' })
-  });
-  log('Send response: ' + r.status + ' — ' + await r.text());
-});
-
-// Foreground
+// Foreground messages
 messaging.onMessage(payload => {
-  log('Foreground message: ' + JSON.stringify(payload));
+  log('💬 Foreground message: ' + JSON.stringify(payload));
   if (payload.notification) {
     new Notification(payload.notification.title, {
       body: payload.notification.body,
