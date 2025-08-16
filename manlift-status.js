@@ -1,6 +1,7 @@
 const API_BASE = "https://odd-queen-6de9.nafil-8895-s.workers.dev";
 
 export function initManliftStatus() {
+  const form = document.getElementById('manlift-status-form');
   const searchBtn = document.getElementById('manlift-search-btn');
   const actionSelect = document.getElementById('manlift-action');
   const submitBtn = document.getElementById('manlift-submit-btn');
@@ -11,15 +12,15 @@ export function initManliftStatus() {
     form.querySelector('.description').value = '';
     form.querySelector('.reason').value = '';
     form.querySelector('.date').value = '';
-    actionSelect.value = 'None';
+    actionSelect.value = 'breakdown';
     document.getElementById('manlift-reason-block').style.display = 'block';
   }
-  
+
   if (!searchBtn || !actionSelect || !submitBtn) return;
 
   // Search Logic
   searchBtn.addEventListener('click', async () => {
-    const regNo = document.querySelector('#manlift-status-form .reg_no').value.trim();
+    const regNo = form.querySelector('.reg_no').value.trim();
     if (!regNo) return alert("Enter registration number");
 
     const res = await fetch(`${API_BASE}/public-equipment-lookup/${encodeURIComponent(regNo)}`);
@@ -27,8 +28,8 @@ export function initManliftStatus() {
     const data = await res.json();
     if (data.detected_type !== "Manlift") return alert("This registration belongs to Crane");
 
-    document.querySelector('#manlift-status-form .plant_no').value = data.plantNo;
-    document.querySelector('#manlift-status-form .description').value = data.description;
+    form.querySelector('.plant_no').value = data.plantNo;
+    form.querySelector('.description').value = data.description;
   });
 
   // Show Reason if Breakdown
@@ -39,10 +40,10 @@ export function initManliftStatus() {
 
   // Submit Logic
   submitBtn.addEventListener('click', async () => {
-    const regNo = document.querySelector('#manlift-status-form .reg_no').value.trim();
-    const action = document.querySelector('#manlift-status-form .action').value;
-    const date = document.querySelector('#manlift-status-form .date').value;
-    const reason = document.querySelector('#manlift-status-form .reason').value.trim();
+    const regNo = form.querySelector('.reg_no').value.trim();
+    const action = form.querySelector('.action').value;
+    const date = form.querySelector('.date').value;
+    const reason = form.querySelector('.reason').value.trim();
 
     const payload = { regNo, equipment_type: "Manlift", action };
     if (action === "breakdown") { payload.breakdown_date = date; payload.reason = reason; }
