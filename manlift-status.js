@@ -5,6 +5,16 @@ export function initManliftStatus() {
   const actionSelect = document.getElementById('manlift-action');
   const submitBtn = document.getElementById('manlift-submit-btn');
 
+  function clearForm() {
+    form.querySelector('.reg_no').value = '';
+    form.querySelector('.plant_no').value = '';
+    form.querySelector('.description').value = '';
+    form.querySelector('.reason').value = '';
+    form.querySelector('.date').value = '';
+    actionSelect.value = 'None';
+    document.getElementById('manlift-reason-block').style.display = 'block';
+  }
+  
   if (!searchBtn || !actionSelect || !submitBtn) return;
 
   // Search Logic
@@ -44,5 +54,7 @@ export function initManliftStatus() {
     });
     const data = await res.json();
     alert(data.message || data.error);
+
+    if (data.success) clearForm();
   });
 }
