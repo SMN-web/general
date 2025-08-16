@@ -4,6 +4,16 @@ export function initCraneStatus() {
   const searchBtn = document.getElementById('crane-search-btn');
   const actionSelect = document.getElementById('crane-action');
   const submitBtn = document.getElementById('crane-submit-btn');
+  
+  function clearForm() {
+    form.querySelector('.reg_no').value = '';
+    form.querySelector('.plant_no').value = '';
+    form.querySelector('.description').value = '';
+    form.querySelector('.reason').value = '';
+    form.querySelector('.date').value = '';
+    actionSelect.value = 'breakdown';
+    document.getElementById('crane-reason-block').style.display = 'block';
+  }
 
   if (!searchBtn || !actionSelect || !submitBtn) return;
 
@@ -44,5 +54,7 @@ export function initCraneStatus() {
     });
     const data = await res.json();
     alert(data.message || data.error);
+    
+    if (data.success) clearForm();
   });
 }
