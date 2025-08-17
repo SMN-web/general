@@ -10,6 +10,12 @@
   --sp-transition: 0.22s ease;
 }
 
+/* ---- ADDED: Selection Glowing ---- */
+::selection {
+  background: #1976d2;
+  color: #fff;
+}
+
 /* Base Layout */
 html, body {
   font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
@@ -291,18 +297,24 @@ textarea.description:focus, input.description:focus {
   background: #fff6f6;
 }
 
-/* General input and textarea styles */
+/* --- ADDED: Modern, Rounded, Glowing Inputs/Textareas/Selects --- */
 input[type="text"],
 input[type="email"],
 input[type="password"],
 input[type="datetime-local"],
-textarea {
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 8px 10px;
-  font-size: 1rem;
-  transition: box-shadow 0.2s, border-color 0.2s;
+textarea,
+select {
+  border: 1.5px solid #b0bec5;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 1.08rem;
+  background: #f6f8fb;
+  color: #222;
+  transition: box-shadow 0.2s, border-color 0.2s, background 0.2s;
   outline: none;
+  margin-bottom: 3px;
+  box-shadow: 0 1px 6px rgba(60,60,60,0.07);
+  font-family: inherit;
 }
 
 /* Glow effect on focus */
@@ -310,50 +322,4 @@ input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="password"]:focus,
 input[type="datetime-local"]:focus,
-textarea:focus {
-  border-color: #1976d2;
-  box-shadow: 0 0 6px 2px rgba(25, 118, 210, 0.3);
-  outline: none;
-}
-
-/* Make readonly fields visually distinct but still glow on focus */
-input[readonly],
-textarea[readonly] {
-  background: #f5f5f5;
-  color: #888;
-}
-
-/* Glow on readonly fields when focused */
-input[readonly]:focus,
-textarea[readonly]:focus {
-  border-color: #1976d2;
-  box-shadow: 0 0 6px 2px rgba(25, 118, 210, 0.2);
-}
-
-/* Optional: style buttons and selects for consistency */
-button {
-  background: #1976d2;
-  color: #fff;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-button:hover {
-  background: #1565c0;
-}
-
-select {
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 6px 10px;
-  font-size: 1rem;
-  transition: border-color 0.2s;
-}
-
-select:focus {
-  border-color: #1976d2;
-  outline: none;
-}
+textarea:focus
