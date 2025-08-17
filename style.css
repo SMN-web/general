@@ -284,3 +284,106 @@ button:hover, .logout-btn:hover {
   border-radius: 11px;
   background: #bacce3;
 }
+
+/*--- Equipment Menu Groups as Section Tabs ---*/
+.equip-menu {
+  display: flex;
+  flex-direction: row !important;
+  gap: 24px; /* More space between top-level groups */
+  margin: 18px 0 0 0;
+  padding: 8px 7px 0 7px;
+  background: #fff;
+  border-radius: 14px;
+  border: none;
+  align-items: flex-start;
+}
+
+/* Group Button: dashboard/manage/control: big, colored, tab-style */
+.equip-menu-group {
+  background: linear-gradient(90deg, #1976d2 60%, #1565c0 100%);
+  color: #fff;
+  border: 2px solid #1565c0;
+  font-size: 1.14rem;
+  font-weight: 600;
+  border-radius: 14px;
+  box-shadow: 0 7px 18px #1976d20a;
+  cursor: pointer;
+  padding: 13px 28px 10px 18px;
+  transition: background .22s, color .22s, border .22s, box-shadow .22s;
+  margin-bottom: 14px;
+  margin-right: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* Group Button: inactive style */
+.equip-menu-group:not(.active) {
+  background: #f4f7fb;
+  color: #1976d2;
+  border: 2px solid #dde4f1;
+}
+
+/* Group hover: slight highlight */
+.equip-menu-group:hover {
+  background: #e8f1fb;
+  color: #1565c0;
+}
+
+/*--- Equipment Submenu (nested) ---*/
+.equip-submenu {
+  display: flex;
+  gap: 12px;
+  margin: 0 0 14px 32px;   /* Indent nested items! */
+  padding-bottom: 5px;
+}
+
+.equip-submenu button {
+  background: #f7fafd;
+  color: #1565c0;
+  border: 1.5px solid #dde4f1;
+  border-radius: 16px;
+  font-size: 0.98rem;
+  font-weight: 500;
+  padding: 9px 21px;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s, border 0.18s, box-shadow 0.18s;
+  box-shadow: 0 1.5px 5px #1976d229;
+}
+
+/* Active submenu button: pill gradient */
+.equip-submenu button.active {
+  background: linear-gradient(90deg, #1976d2 60%, #1565c0 100%);
+  color: #fff;
+  border: 1.5px solid #1565c0;
+  font-weight: 600;
+  box-shadow: 0 2px 10px #1976d229;
+}
+
+.equip-submenu button:hover:not(.active) {
+  background: #e8f1fb;
+  color: #1976d2;
+}
+
+/* Optional: more space between menu and submenu */
+.equip-menu-group+.equip-submenu {
+  margin-top: -6px;
+}
+
+/* Responsive fix: wrap horizontal buttons on tiny screens */
+@media (max-width: 700px) {
+  .equip-menu {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .equip-menu-group {
+    min-width: 120px;
+    font-size: 1rem;
+    padding: 10px 12px;
+  }
+  .equip-submenu {
+    margin-left: 12px;
+    gap: 7px;
+  }
+}
+
+
