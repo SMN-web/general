@@ -368,3 +368,90 @@ select:focus {
     max-width: 99vw;
   }
 }
+
+/* Modern Consistent Input, Select, and Textarea Styling with Glow */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="datetime-local"],
+textarea,
+select {
+  width: 96%;
+  outline: none;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  padding: 7px 10px;
+  font-size: 1rem;
+  transition: box-shadow 0.17s, border-color 0.17s, background 0.17s;
+  box-sizing: border-box;
+  background: #fafbfc;
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* Remove resize on single-line fields but allow for textarea */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="datetime-local"],
+select {
+  resize: none;
+}
+
+textarea {
+  min-height: 70px;
+  max-height: 280px;
+  resize: vertical;
+}
+
+/* Focused Glow */
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #0076ff;
+  box-shadow: 0 0 10px #0076ff58;
+  background: #f3faff;
+}
+
+/* Placeholders subtle and readable */
+input::placeholder,
+textarea::placeholder {
+  color: #999;
+  opacity: 1;
+}
+
+/* Read-only fields subtle style */
+input[readonly],
+textarea[readonly] {
+  background: #ececec;
+  color: #888;
+  cursor: not-allowed;
+}
+
+/* Error state (optional – enable from JS for error-highlight) */
+.input-error,
+.textarea-error {
+  border-color: #ff3a3a !important;
+  box-shadow: 0 0 12px #ff3a3a66 !important;
+  background: #fff6f6 !important;
+}
+
+/* Buttons visually consistent */
+button {
+  border: none;
+  border-radius: 4px;
+  padding: 7px 16px;
+  font-size: 1rem;
+  background: #0076ff;
+  color: #fff;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: box-shadow 0.17s, background 0.17s;
+}
+button:focus {
+  box-shadow: 0 0 10px #0076ff58;
+  outline: none;
+}
+button:active {
+  background: #005bb5;
+}
