@@ -12,7 +12,7 @@ export function initCraneStatus() {
     form.querySelector('.description').value = '';
     form.querySelector('.reason').value = '';
     form.querySelector('.date').value = '';
-    actionSelect.value = 'breakdown';
+    actionSelect.value = 'None';
     document.getElementById('crane-reason-block').style.display = 'block';
   }
 
