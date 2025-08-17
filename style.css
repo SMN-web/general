@@ -1,66 +1,74 @@
 :root {
-  --ui-primary: #1976d2;
-  --ui-primary-dark: #004ba0;
-  --ui-bg: #f7fafd;
-  --ui-panel-bg: #fff;
-  --ui-border: #c7d0e0;
-  --ui-shadow: rgba(25, 118, 210, 0.13);
-  --ui-radius: 15px;
-  --ui-tabs-radius: 9px;
-  --ui-input-bg: #f4f7fb;
-  --ui-font: 'Segoe UI', Tahoma, Arial, sans-serif;
-  --ui-trans: 0.23s cubic-bezier(.6,.4,.1,1);
+  --sp-primary: #1976d2;
+  --sp-primary-dark: #004ba0;
+  --sp-accent-bg: #f7fafd;
+  --sp-panel-bg: #fff;
+  --sp-border: #c7d0e0;
+  --sp-shadow: rgba(25, 118, 210, 0.12);
+  --sp-radius: 15px;
+  --sp-tabs-radius: 9px;
+  --sp-input-bg: #f4f7fb;
+  --sp-font: 'Segoe UI', Tahoma, Arial, sans-serif;
+  --sp-trans: 0.22s cubic-bezier(.6,.4,.1,1);
 }
 
 html, body {
-  font-family: var(--ui-font);
-  background: var(--ui-bg);
+  font-family: var(--sp-font);
+  background: var(--sp-accent-bg);
   color: #263248;
   margin: 0;
   min-width: 0;
 }
 
-.panel, .main-section, .main-tab-buttons, .sub-tab-buttons, .equip-subsection, .user-subsection, .rigging-subsection {
-  background: var(--ui-panel-bg);
-  border-radius: var(--ui-radius);
-  box-shadow: 0 7px 30px #1976d25b;
-  border: 1.8px solid var(--ui-border);
+.panel, .main-section, .equip-subsection, .user-subsection, .rigging-subsection {
+  background: var(--sp-panel-bg);
+  border-radius: var(--sp-radius);
+  box-shadow: 0 7px 30px var(--sp-shadow);
+  border: 1.8px solid var(--sp-border);
   margin: 2rem auto;
   padding: 2.1rem 2rem;
   max-width: 780px;
   width: 100%;
-  transition: box-shadow var(--ui-trans), border-color var(--ui-trans);
+  transition: box-shadow var(--sp-trans), border-color var(--sp-trans);
+  position: relative;
 }
 
 .panel h2, .main-section h2, .main-section h3,
 .equip-subsection h3, .user-subsection h3, .rigging-subsection h3 {
-  color: var(--ui-primary-dark);
+  color: var(--sp-primary-dark);
   margin-bottom: 1.4rem;
   font-weight: 600;
   letter-spacing: 0.02em;
 }
 
+/* Main Tabs, Sub-tabs, and Equipment Submenu: Horizontal, Spacious */
 .main-tab-buttons, .sub-tab-buttons, .equip-submenu {
   display: flex;
-  gap: 8px;
-  background: var(--ui-panel-bg);
-  border-radius: var(--ui-tabs-radius);
+  flex-direction: row;
+  gap: 14px;
+  background: var(--sp-panel-bg);
+  border-radius: var(--sp-tabs-radius);
   border: none;
   margin-bottom: 1.2rem;
-  padding: 0 5px;
+  padding: 7px 0 7px 0;
+  box-shadow: none;
+  justify-content: flex-start;
 }
 
+/* Tabs/Sub-Tab/Equip-Submenu Button Styles Consistent Everywhere */
 .main-tab, .user-subtab, .equip-subtab, .rigging-subtab, .equip-submenu button {
-  background: none;
-  border-radius: var(--ui-tabs-radius);
-  border: none;
-  color: var(--ui-primary);
-  font-size: 1.08rem;
+  background: white;
+  color: var(--sp-primary);
+  border: 2px solid #dde4f1;
+  border-radius: 11px !important;
+  font-size: 1rem;
+  font-family: inherit;
   font-weight: 500;
-  padding: 13px 30px 10px 30px;
+  padding: 12px 30px 9px 30px;
+  margin: 0;
   cursor: pointer;
-  border-bottom: 3px solid transparent;
-  transition: background var(--ui-trans), color var(--ui-trans), box-shadow var(--ui-trans), border var(--ui-trans);
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.03);
+  transition: background var(--sp-trans), color var(--sp-trans), border var(--sp-trans), box-shadow var(--sp-trans);
   outline: none;
   position: relative;
   user-select: none;
@@ -68,26 +76,35 @@ html, body {
 }
 
 .main-tab.active, .user-subtab.active, .equip-subtab.active, .rigging-subtab.active, .equip-submenu button.active {
-  background: linear-gradient(90deg, var(--ui-primary) 60%, var(--ui-primary-dark) 100%);
+  background: linear-gradient(90deg, var(--sp-primary) 70%, var(--sp-primary-dark) 100%);
   color: #fff;
-  border-bottom: 3px solid var(--ui-primary-dark);
-  box-shadow: 0 2px 10px #1976d285;
+  border: 2px solid var(--sp-primary-dark);
   font-weight: 600;
+  box-shadow: 0 5px 16px var(--sp-shadow);
 }
 
-.main-tab:hover:not(.active), .user-subtab:hover:not(.active), .equip-subtab:hover:not(.active), 
-.rigging-subtab:hover:not(.active), .equip-submenu button:hover:not(.active) {
-  background: var(--ui-input-bg);
-  color: var(--ui-primary-dark);
-  box-shadow: 0 3px 10px var(--ui-shadow);
+.main-tab:hover:not(.active), .user-subtab:hover:not(.active),
+.equip-subtab:hover:not(.active), .rigging-subtab:hover:not(.active),
+.equip-submenu button:hover:not(.active) {
+  background: var(--sp-input-bg);
+  color: var(--sp-primary-dark);
+  border-color: var(--sp-primary);
+  box-shadow: 0 2px 14px var(--sp-shadow);
 }
 
+.main-tab:focus, .user-subtab:focus, .equip-subtab:focus, .rigging-subtab:focus, .equip-submenu button:focus {
+  outline: none;
+  border-color: var(--sp-primary-dark);
+  box-shadow: 0 0 0 3px var(--sp-primary-dark);
+}
+
+/* Section fade animation and responsive alignment */
 .equip-subsection, .user-subsection, .rigging-subsection {
   display: none;
   opacity: 0;
   pointer-events: none;
   transform: scale(0.98) translateY(8px);
-  transition: opacity var(--ui-trans), transform var(--ui-trans);
+  transition: opacity 0.39s, transform 0.32s;
 }
 
 .equip-subsection:not(.hidden),
@@ -104,28 +121,85 @@ html, body {
   opacity: 0 !important;
 }
 
-/* Buttons and logout button fixed to top-right */
+/* Form Boxes - Consistent Glow, Width, Padding */
+input[type="text"], input[type="email"], input[type="password"], input[type="datetime-local"],
+textarea, select {
+  border: 1.8px solid #bacce3;
+  border-radius: 8px;
+  padding: 14px 15px;
+  font-size: 1.07rem;
+  background: var(--sp-input-bg);
+  color: #253145;
+  margin-bottom: 1.1rem;
+  transition: box-shadow var(--sp-trans), border-color var(--sp-trans), background var(--sp-trans);
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: var(--sp-primary);
+  background: #fff;
+  box-shadow: 0 0 0 3px #1976d2ab;
+}
+input::placeholder, textarea::placeholder {
+  color: #b3bacb;
+  opacity: 0.85;
+}
+
+textarea.description {
+  min-height: 56px;
+  max-height: 180px;
+}
+
+input[readonly], textarea[readonly] {
+  background: #f3f6fc;
+  color: #898989;
+  border-style: dashed;
+  border-color: #c7d0e0;
+}
+input[readonly]:focus, textarea[readonly]:focus {
+  border-color: var(--sp-primary-dark);
+  box-shadow: 0 0 8px 2px var(--sp-primary-dark);
+}
+.input-error, .textarea-error {
+  border-color: #ff4848 !important;
+  box-shadow: 0 0 12px #ff484877 !important;
+  background: #fff4f4 !important;
+}
+
+#crane-search-btn, #manlift-search-btn {
+  margin-left: 11px;
+  padding: 12px 22px !important;
+  border-radius: 8px;
+  font-size: 1.06rem;
+  margin-bottom: 9px !important;
+}
+
+form label, form input, form textarea, form select, form button {
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* Buttons and logout button top-right, never overlapping tabs */
 button, .logout-btn {
   border: none;
   border-radius: 8px;
-  padding: 11px 18px;
+  padding: 12px 20px;
   font-size: 1rem;
-  background: var(--ui-primary);
+  background: var(--sp-primary);
   color: #fff;
   cursor: pointer;
   font-weight: 500;
   margin-bottom: 14px;
-  box-shadow: 0 2px 4px var(--ui-shadow);
-  transition: background var(--ui-trans), box-shadow var(--ui-trans);
+  box-shadow: 0 2px 4px var(--sp-shadow);
+  transition: background var(--sp-trans), box-shadow var(--sp-trans);
   z-index: 50;
   position: relative;
 }
-
 button:hover, .logout-btn:hover {
-  background: var(--ui-primary-dark);
-  box-shadow: 0 4px 16px #1976d27a;
+  background: var(--sp-primary-dark);
+  box-shadow: 0 4px 16px var(--sp-primary-dark);
 }
-
 .logout-btn {
   position: absolute;
   top: 24px;
@@ -138,68 +212,16 @@ button:hover, .logout-btn:hover {
   box-shadow: 0 3px 15px #ea3a325c;
   margin: 0;
 }
-
 .logout-btn:hover {
   background: #c62828;
 }
 
-/* Form Boxes - Consistent Glow for All Fields */
-input[type="text"], input[type="email"], input[type="password"],
-input[type="datetime-local"], textarea, select {
-  border: 1.8px solid #bacce3;
-  border-radius: 8px;
-  padding: 14px 16px;
-  font-size: 1.07rem;
-  background: var(--ui-input-bg);
-  color: #253145;
-  margin-bottom: 1.1rem;
-  transition: box-shadow var(--ui-trans), border-color var(--ui-trans), background var(--ui-trans);
-  outline: none;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-input:focus, textarea:focus, select:focus {
-  border-color: var(--ui-primary);
-  background: #fff;
-  box-shadow: 0 0 0 3px #1976d2ab;
-}
-
-input::placeholder, textarea::placeholder {
-  color: #b3bacb;
-  opacity: 0.85;
-}
-
-/* Large description box multiline */
-textarea.description {
-  min-height: 52px;
-  max-height: 155px;
-  resize: vertical;
-}
-
-input[readonly], textarea[readonly] {
-  background: #f3f6fb;
-  color: #828282;
-  border-style: dashed;
-  cursor: not-allowed;
-}
-
-input[readonly]:focus, textarea[readonly]:focus {
-  border-color: var(--ui-primary-dark);
-  box-shadow: 0 0 8px 2px var(--ui-primary-dark);
-}
-
-.input-error, .textarea-error {
-  border-color: #ff4848 !important;
-  box-shadow: 0 0 12px #ff484877 !important;
-  background: #fff4f4 !important;
-}
-
+/* Responsive for mobile */
 @media (max-width: 1000px) {
   .panel, .main-section, .equip-subsection, .user-subsection, .rigging-subsection {
-    max-width: 95vw;
+    max-width: 99vw;
     min-width: 0;
-    padding: 1.2rem 0.3rem;
+    padding: 1.1rem 0.2rem;
   }
   .logout-btn {
     top: 10px;
@@ -231,7 +253,7 @@ input[readonly]:focus, textarea[readonly]:focus {
 /* Slick scrollbars */
 ::-webkit-scrollbar {
   width: 14px;
-  background: var(--ui-input-bg);
+  background: var(--sp-input-bg);
 }
 ::-webkit-scrollbar-thumb {
   border-radius: 11px;
