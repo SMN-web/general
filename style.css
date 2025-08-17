@@ -10,7 +10,7 @@
   --sp-transition: 0.22s ease;
 }
 
-/* ---- ADDED: Selection Glowing ---- */
+/* Selection Glowing Effect */
 ::selection {
   background: #1976d2;
   color: #fff;
@@ -278,32 +278,15 @@ button:hover, .logout-btn:hover {
 }
 .logout-btn:hover { background: #a4262c; }
 
-textarea.description, input.description {
-  outline: none;
-  border: 2px solid #ccc;
-  border-radius: 4px;
-  padding: 6px;
-  font-size: 1rem;
-  width: 96%;
-  transition: box-shadow 0.2s, border-color 0.2s;
-}
-textarea.description:focus, input.description:focus {
-  border-color: #0076ff;
-  box-shadow: 0 0 10px #0076ff66;
-}
-.textarea-error, .input-error {
-  border-color: #ff3a3a !important;
-  box-shadow: 0 0 10px #ff3a3a66 !important;
-  background: #fff6f6;
-}
-
-/* --- ADDED: Modern, Rounded, Glowing Inputs/Textareas/Selects --- */
+/* Unified Modern Inputs/Textareas/Selects (including .description) */
 input[type="text"],
 input[type="email"],
 input[type="password"],
 input[type="datetime-local"],
 textarea,
-select {
+select,
+input.description,
+textarea.description {
   border: 1.5px solid #b0bec5;
   border-radius: 8px;
   padding: 10px 14px;
@@ -315,11 +298,73 @@ select {
   margin-bottom: 3px;
   box-shadow: 0 1px 6px rgba(60,60,60,0.07);
   font-family: inherit;
+  width: 96%;
 }
 
-/* Glow effect on focus */
 input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="password"]:focus,
 input[type="datetime-local"]:focus,
-textarea:focus
+textarea:focus,
+select:focus,
+input.description:focus,
+textarea.description:focus {
+  border-color: #1976d2;
+  box-shadow: 0 0 12px 2px rgba(25, 118, 210, 0.18);
+  background: #fff;
+  outline: none;
+}
+
+/* Make readonly fields visually distinct but still glow on focus */
+input[readonly],
+textarea[readonly] {
+  background: #f3f3f3;
+  color: #888;
+  border: 1.5px solid #e0e0e0;
+}
+
+input[readonly]:focus,
+textarea[readonly]:focus {
+  border-color: #1976d2;
+  box-shadow: 0 0 8px 2px rgba(25, 118, 210, 0.13);
+}
+
+/* Error Styles */
+.textarea-error, .input-error {
+  border-color: #ff3a3a !important;
+  box-shadow: 0 0 10px #ff3a3a66 !important;
+  background: #fff6f6;
+}
+
+/* Optional: style buttons and selects for consistency */
+button {
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background: #1565c0;
+}
+
+select {
+  cursor: pointer;
+}
+select:focus {
+  border-color: #1976d2;
+  outline: none;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  html, body { min-width: 0; }
+  .panel, .main-section {
+    padding: 1rem 0.5rem;
+    min-width: 0;
+    max-width: 99vw;
+  }
+}
