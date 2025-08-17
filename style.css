@@ -12,289 +12,145 @@
   --sp-trans: 0.22s cubic-bezier(.6,.4,.1,1);
 }
 
-html, body {
+body {
   font-family: var(--sp-font);
   background: var(--sp-accent-bg);
   color: #263248;
-  margin: 0;
-  min-width: 0;
   width: 100vw;
   height: 100%;
 }
 
-/* Main centered, always desktop width */
-body {
-  width: 100vw;
-  height: 100%;
-  overflow-x: auto;
-}
-.panel, .main-section, .equip-subsection, .user-subsection, .rigging-subsection {
-  background: var(--sp-panel-bg);
-  border-radius: var(--sp-radius);
-  box-shadow: 0 7px 30px var(--sp-shadow);
-  border: 1.6px solid var(--sp-border);
-  margin: 2rem auto;
-  padding: 2rem 2.2rem;
-  max-width: 1080px;
-  min-width: 750px;
-  width: 70vw;
-  position: relative;
-  transition: box-shadow var(--sp-trans), border-color var(--sp-trans);
-}
-
-/* Panel headings */
-.panel h2, .main-section h2, .main-section h3,
-.equip-subsection h3, .user-subsection h3, .rigging-subsection h3 {
-  color: var(--sp-primary-dark);
-  margin-bottom: 1.4rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-}
-
-/* Main Tabs, Sub-tabs, Equipment Menu Groups: Horizontal + spacious */
-.main-tab-buttons, .sub-tab-buttons, .equip-menu {
+.equip-menu {
   display: flex;
   flex-direction: row;
-  gap: 18px;
-  background: var(--sp-panel-bg);
-  border-radius: var(--sp-tabs-radius);
-  border: none;
-  margin-bottom: 1.2rem;
-  padding: 14px 6px 12px 0;
-  box-shadow: none;
-  justify-content: flex-start;
-  align-items: flex-end;
+  gap: 24px;
+  position: relative;
+  align-items: flex-start;
+  margin: 22px 0 0 0;
+  padding: 18px 10px;
+  background: #fff;
+  border-radius: 18px;
+  border: 1.6px solid var(--sp-border);
+  box-shadow: 0 5px 16px var(--sp-shadow);
 }
 
-/* Tab, Sub-tab, Equipment Section Group Button */
-.main-tab, .user-subtab, .equip-subtab, .rigging-subtab, .equip-menu-group {
+.equip-menu-group {
   background: white;
-  color: var(--sp-primary);
+  color: #1976d2;
   border: 2px solid #dde4f1;
-  border-radius: 11px !important;
-  font-size: 1.09rem;
-  font-family: inherit;
-  font-weight: 500;
-  padding: 13px 32px 11px 32px;
-  margin: 0;
+  border-radius: 16px;
+  font-size: 1.14rem;
+  font-weight: 600;
+  box-shadow: 0 5px 16px #1976d20a;
   cursor: pointer;
-  box-shadow: 0 2px 7px rgba(25, 118, 210, 0.05);
-  transition: background var(--sp-trans), color var(--sp-trans), border var(--sp-trans), box-shadow var(--sp-trans);
-  outline: none;
+  padding: 15px 38px 13px 22px;
+  margin-bottom: 10px;
+  margin-right: 0;
+  min-width: 170px;
+  transition: background 0.22s, color 0.22s, border 0.22s, box-shadow 0.22s;
   position: relative;
-  user-select: none;
   z-index: 1;
 }
-.main-tab.active, .user-subtab.active, .equip-subtab.active, .rigging-subtab.active, .equip-menu-group.active {
-  background: linear-gradient(90deg, var(--sp-primary) 70%, var(--sp-primary-dark) 100%);
+.equip-menu-group.active {
+  background: linear-gradient(90deg, #1976d2 60%, #1565c0 100%);
   color: #fff;
-  border: 2px solid var(--sp-primary-dark);
-  font-weight: 600;
-  box-shadow: 0 5px 18px var(--sp-shadow);
-}
-.main-tab:hover:not(.active), .user-subtab:hover:not(.active),
-.equip-subtab:hover:not(.active), .rigging-subtab:hover:not(.active),
-.equip-menu-group:hover:not(.active) {
-  background: var(--sp-input-bg);
-  color: var(--sp-primary-dark);
-  border-color: var(--sp-primary);
-  box-shadow: 0 2px 14px var(--sp-shadow);
-}
-.main-tab:focus, .user-subtab:focus, .equip-subtab:focus, .rigging-subtab:focus, .equip-menu-group:focus {
-  outline: none;
-  border-color: var(--sp-primary-dark);
-  box-shadow: 0 0 0 3px var(--sp-primary-dark);
+  border: 2px solid #1565c0;
 }
 
-/* Equipment Submenus: vertically stacked below their parent, not inline */
-.equip-submenu {
-  display: block;
-  padding-top: 0;
-  padding-bottom: 8px;
-  margin-top: -4px;
-  margin-bottom: 18px;
+/* Move Dashboard's submenu visually below the dashboard tab */
+.equip-submenu[data-parent="dashboard"] {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 0;
+  top: 88px;   /* Space below Dashboard tab, adjust as needed */
+  z-index: 10;
+  width: 160px;
 }
-.equip-submenu button {
+.equip-submenu[data-parent="dashboard"] button {
+  width: 160px;
+  margin: 0 auto;
   background: #f7fafd;
   color: #1565c0;
   border: 1.5px solid #dde4f1;
-  border-radius: 16px;
+  border-radius: 12px;
   font-size: 1.01rem;
   font-weight: 500;
-  padding: 9px 25px;
-  cursor: pointer;
-  transition: background 0.18s, color 0.18s, border 0.18s, box-shadow 0.18s;
+  padding: 9px 0px;
   box-shadow: 0 1.5px 5px #1976d229;
   margin-bottom: 7px;
-  display: block;
-  width: auto;
+  transition: background .15s, color .15s, border .15s;
 }
-.equip-submenu button.active {
+
+.equip-submenu[data-parent="dashboard"] button.active {
   background: linear-gradient(90deg, #1976d2 60%, #1565c0 100%);
   color: #fff;
   border: 1.5px solid #1565c0;
-  font-weight: 600;
-  box-shadow: 0 2px 10px #1976d229;
 }
-.equip-submenu button:hover:not(.active) {
+
+.equip-submenu[data-parent="dashboard"] button:hover:not(.active) {
   background: #e8f1fb;
   color: #1976d2;
 }
 
-/* Fade in effect for shown subsections */
-.equip-subsection, .user-subsection, .rigging-subsection {
-  display: none;
-  opacity: 0;
-  pointer-events: none;
-  transform: scale(0.98) translateY(8px);
-  transition: opacity 0.39s, transform 0.32s;
-}
-.equip-subsection:not(.hidden),
-.user-subsection:not(.hidden),
-.rigging-subsection:not(.hidden) {
-  display: block;
-  opacity: 1;
-  pointer-events: auto;
-  transform: scale(1) translateY(0px);
-}
-.hidden {
-  display: none !important;
-  opacity: 0 !important;
+/* Avoid overlap with Manage/Control tabs */
+.equip-menu-group[data-group="dashboard"] {
+  margin-right: 180px;
+  z-index: 1;
 }
 
-/* Form fields - fixed desktop max-width, not fully stretched */
-input[type="text"], input[type="email"], input[type="password"], input[type="datetime-local"],
-textarea, select {
-  border: 1.8px solid #bacce3;
-  border-radius: 8px;
-  padding: 14px 15px;
-  font-size: 1.09rem;
-  background: var(--sp-input-bg);
-  color: #253145;
-  margin-bottom: 1.1rem;
-  transition: box-shadow var(--sp-trans), border-color var(--sp-trans), background var(--sp-trans);
-  outline: none;
-  max-width: 490px;
-  min-width: 180px;
-  width: 77%;
-  box-sizing: border-box;
-  display: block;
-}
-input:focus, textarea:focus, select:focus {
-  border-color: var(--sp-primary);
-  background: #fff;
-  box-shadow: 0 0 0 3px #1976d2ab;
-}
-input::placeholder, textarea::placeholder {
-  color: #b3bacb;
-  opacity: 0.85;
-}
-textarea.description {
-  min-height: 56px;
-  max-height: 180px;
-}
-input[readonly], textarea[readonly] {
-  background: #f3f6fc;
-  color: #898989;
-  border-style: dashed;
-  border-color: #c7d0e0;
-}
-input[readonly]:focus, textarea[readonly]:focus {
-  border-color: var(--sp-primary-dark);
-  box-shadow: 0 0 8px 2px var(--sp-primary-dark);
-}
-.input-error, .textarea-error {
-  border-color: #ff4848 !important;
-  box-shadow: 0 0 12px #ff484877 !important;
-  background: #fff4f4 !important;
+/* Remaining Equip Menu Groups (Manage, Control) stay horizontal */
+.equip-submenu[data-parent="manage"], .equip-submenu[data-parent="control"] {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  position: static;
+  margin-top: 0;
+  width: auto;
 }
 
-/* Plant No box fix: same width as other textboxes */
-.plant_no {
-  width: 77% !important;
-  max-width: 490px !important;
-  min-width: 180px !important;
-  display: block;
-  font-size: 1.09rem;
-}
-
-/* Reg No box fix: same width as other textboxes */
-.reg_no {
-  width: 77% !important;
-  max-width: 490px !important;
-  min-width: 180px !important;
-  display: inline-block;
-  font-size: 1.09rem;
-  margin-right: 10px;
-}
-
-/* Search button alignment */
-#crane-search-btn, #manlift-search-btn {
-  vertical-align: middle;
-  padding: 12px 20px !important;
-  font-size: 1.05rem;
-  margin-bottom: 9px !important;
-  display: inline-block;
-}
-
-/* All form elements: tidy spacing */
-form label, form input, form textarea, form select, form button {
-  display: block;
-  margin-bottom: 8px;
-}
-
-/* Buttons, logout button desktop style */
-button, .logout-btn {
-  border: none;
-  border-radius: 8px;
-  padding: 13px 24px;
-  font-size: 1.12rem;
-  background: var(--sp-primary);
-  color: #fff;
-  cursor: pointer;
+.equip-submenu[data-parent="manage"] button, .equip-submenu[data-parent="control"] button {
+  background: #f7fafd;
+  color: #1565c0;
+  border: 1.5px solid #dde4f1;
+  border-radius: 12px;
+  font-size: 1.01rem;
   font-weight: 500;
-  margin-bottom: 17px;
-  box-shadow: 0 2px 4px var(--sp-shadow);
-  transition: background var(--sp-trans), box-shadow var(--sp-trans);
-  z-index: 50;
-  position: relative;
-}
-button:hover, .logout-btn:hover {
-  background: var(--sp-primary-dark);
-  box-shadow: 0 4px 16px var(--sp-primary-dark);
-}
-.logout-btn {
-  position: absolute;
-  top: 24px;
-  right: 34px;
-  padding: 12px 21px;
-  font-size: 1.1rem;
-  border-radius: 25px;
-  background: #ea3a32;
-  color: #fff;
-  box-shadow: 0 3px 15px #ea3a325c;
-  margin: 0;
-}
-.logout-btn:hover {
-  background: #c62828;
+  padding: 9px 18px;
+  box-shadow: 0 1.5px 5px #1976d229;
+  margin-bottom: 0;
+  transition: background .15s, color .15s, border .15s;
 }
 
-/* Panel & section animation */
+.equip-submenu[data-parent="manage"] button.active, .equip-submenu[data-parent="control"] button.active {
+  background: linear-gradient(90deg, #1976d2 60%, #1565c0 100%);
+  color: #fff;
+  border: 1.5px solid #1565c0;
+}
+.equip-submenu[data-parent="manage"] button:hover:not(.active), .equip-submenu[data-parent="control"] button:hover:not(.active) {
+  background: #e8f1fb;
+  color: #1976d2;
+}
+
+/* Responsive tweak for panel width/positions (optional) */
+@media (max-width: 1200px) {
+  .equip-menu { max-width: 98vw; flex-wrap: wrap; }
+  .equip-menu-group { min-width: 150px; }
+  .equip-submenu[data-parent="dashboard"] {
+    left: 0;
+    top: 92px;
+    width: 140px;
+  }
+}
+/* Smooth fade for nested panels/sections */
 @keyframes fadeInPanel {
   0% { opacity: 0; transform: scale(0.98) translateY(10px);}
   70% { opacity: 0.5; }
   100% { opacity: 1; transform: scale(1) translateY(0);}
 }
-.equip-subsection:not(.hidden), .user-subsection:not(.hidden), .rigging-subsection:not(.hidden), .main-section:not(.hidden) {
+.equip-subsection:not(.hidden),
+.user-subsection:not(.hidden),
+.rigging-subsection:not(.hidden),
+.main-section:not(.hidden) {
   animation: fadeInPanel 0.47s;
-}
-
-/* Scrollbar desktop style */
-::-webkit-scrollbar {
-  width: 13px;
-  background: var(--sp-input-bg);
-}
-::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  background: #bacce3;
 }
