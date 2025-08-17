@@ -271,3 +271,22 @@ button:hover, .logout-btn:hover {
   margin: 0.5rem 0.5rem 0 0;
 }
 .logout-btn:hover { background: #a4262c; }
+
+textarea.description, input.description {
+  outline: none;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  padding: 6px;
+  font-size: 1rem;
+  width: 96%;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+textarea.description:focus, input.description:focus {
+  border-color: #0076ff;
+  box-shadow: 0 0 10px #0076ff66;
+}
+.textarea-error, .input-error {
+  border-color: #ff3a3a !important;
+  box-shadow: 0 0 10px #ff3a3a66 !important;
+  background: #fff6f6;
+}
