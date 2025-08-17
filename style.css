@@ -4,8 +4,8 @@
   --sp-accent-bg: #f7fafd;
   --sp-panel-bg: #fff;
   --sp-border: #c7d0e0;
-  --sp-shadow: rgba(25, 118, 210, 0.12);
-  --sp-radius: 15px;
+  --sp-shadow: rgba(25, 118, 210, 0.10);
+  --sp-radius: 14px;
   --sp-tabs-radius: 9px;
   --sp-input-bg: #f4f7fb;
   --sp-font: 'Segoe UI', Tahoma, Arial, sans-serif;
@@ -24,13 +24,13 @@ html, body {
   background: var(--sp-panel-bg);
   border-radius: var(--sp-radius);
   box-shadow: 0 7px 30px var(--sp-shadow);
-  border: 1.8px solid var(--sp-border);
+  border: 1.6px solid var(--sp-border);
   margin: 2rem auto;
-  padding: 2.1rem 2rem;
+  padding: 2rem 1.5rem;
   max-width: 780px;
   width: 100%;
-  transition: box-shadow var(--sp-trans), border-color var(--sp-trans);
   position: relative;
+  transition: box-shadow var(--sp-trans), border-color var(--sp-trans);
 }
 
 .panel h2, .main-section h2, .main-section h3,
@@ -41,7 +41,7 @@ html, body {
   letter-spacing: 0.02em;
 }
 
-/* Main Tabs, Sub-tabs, and Equipment Submenu: Horizontal, Spacious */
+/* Main Tabs, Sub-tabs, Equipment Submenu: Horizontal row, spaced */
 .main-tab-buttons, .sub-tab-buttons, .equip-submenu {
   display: flex;
   flex-direction: row;
@@ -55,8 +55,7 @@ html, body {
   justify-content: flex-start;
 }
 
-/* Tabs/Sub-Tab/Equip-Submenu Button Styles Consistent Everywhere */
-.main-tab, .user-subtab, .equip-subtab, .rigging-subtab, .equip-submenu button {
+.main-tab, .user-subtab, .equip-subtab, .rigging-subtab, .equip-submenu button, .equip-menu-group {
   background: white;
   color: var(--sp-primary);
   border: 2px solid #dde4f1;
@@ -75,7 +74,7 @@ html, body {
   z-index: 1;
 }
 
-.main-tab.active, .user-subtab.active, .equip-subtab.active, .rigging-subtab.active, .equip-submenu button.active {
+.main-tab.active, .user-subtab.active, .equip-subtab.active, .rigging-subtab.active, .equip-submenu button.active, .equip-menu-group.active {
   background: linear-gradient(90deg, var(--sp-primary) 70%, var(--sp-primary-dark) 100%);
   color: #fff;
   border: 2px solid var(--sp-primary-dark);
@@ -85,20 +84,34 @@ html, body {
 
 .main-tab:hover:not(.active), .user-subtab:hover:not(.active),
 .equip-subtab:hover:not(.active), .rigging-subtab:hover:not(.active),
-.equip-submenu button:hover:not(.active) {
+.equip-submenu button:hover:not(.active), .equip-menu-group:hover:not(.active) {
   background: var(--sp-input-bg);
   color: var(--sp-primary-dark);
   border-color: var(--sp-primary);
   box-shadow: 0 2px 14px var(--sp-shadow);
 }
 
-.main-tab:focus, .user-subtab:focus, .equip-subtab:focus, .rigging-subtab:focus, .equip-submenu button:focus {
+.main-tab:focus, .user-subtab:focus, .equip-subtab:focus, .rigging-subtab:focus, .equip-submenu button:focus, .equip-menu-group:focus {
   outline: none;
   border-color: var(--sp-primary-dark);
   box-shadow: 0 0 0 3px var(--sp-primary-dark);
 }
 
-/* Section fade animation and responsive alignment */
+/* Equipment menu groups as horizontal tabs (fix for your circled area) */
+.equip-menu {
+  display: flex;
+  flex-direction: row !important;
+  gap: 18px;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 18px 0 20px 0;
+  padding: 0 6px;
+  background: #fff;
+  border-radius: 14px;
+  border: none;
+}
+
+/* Panel/Section transitions */
 .equip-subsection, .user-subsection, .rigging-subsection {
   display: none;
   opacity: 0;
@@ -121,7 +134,7 @@ html, body {
   opacity: 0 !important;
 }
 
-/* Form Boxes - Consistent Glow, Width, Padding */
+/* Form Fields - Consistent Glow, Width, Padding */
 input[type="text"], input[type="email"], input[type="password"], input[type="datetime-local"],
 textarea, select {
   border: 1.8px solid #bacce3;
@@ -145,12 +158,10 @@ input::placeholder, textarea::placeholder {
   color: #b3bacb;
   opacity: 0.85;
 }
-
 textarea.description {
   min-height: 56px;
   max-height: 180px;
 }
-
 input[readonly], textarea[readonly] {
   background: #f3f6fc;
   color: #898989;
@@ -167,20 +178,58 @@ input[readonly]:focus, textarea[readonly]:focus {
   background: #fff4f4 !important;
 }
 
-#crane-search-btn, #manlift-search-btn {
-  margin-left: 11px;
-  padding: 12px 22px !important;
-  border-radius: 8px;
-  font-size: 1.06rem;
+/* Reg No Search Field and Button */
+#crane-status-form .reg_no,
+#manlift-status-form .reg_no {
+  width: 68% !important;
+  min-width: 120px;
+  display: inline-block;
+  margin-right: 9px;
+  font-size: 1.08rem;
+}
+
+#crane-search-btn,
+#manlift-search-btn {
+  vertical-align: middle;
+  padding: 12px 20px !important;
+  font-size: 1.05rem;
   margin-bottom: 9px !important;
 }
 
-form label, form input, form textarea, form select, form button {
-  display: block;
-  margin-bottom: 8px;
+@media (max-width: 600px) {
+  #crane-status-form .reg_no,
+  #manlift-status-form .reg_no {
+    width: calc(100% - 110px) !important;
+    min-width: 110px;
+    margin-right: 7px;
+  }
+  #crane-search-btn, #manlift-search-btn {
+    padding: 11px 13px !important;
+    font-size: 1rem;
+  }
+  .panel, .main-section, .equip-subsection, .user-subsection, .rigging-subsection {
+    max-width: 99vw;
+    min-width: 0;
+    padding: 1.1rem 0.2rem;
+  }
+  .logout-btn {
+    top: 10px;
+    right: 8px;
+    padding: 9px 15px;
+    font-size: 0.98rem;
+  }
+  .main-tab-buttons, .sub-tab-buttons, .equip-submenu, .equip-menu {
+    flex-wrap: wrap;
+    padding: 0;
+    margin-bottom: 8px;
+  }
+  .main-tab, .user-subtab, .equip-subtab, .rigging-subtab, .equip-submenu button, .equip-menu-group {
+    font-size: 0.99rem;
+    padding: 10px 14px 8px 14px;
+  }
 }
 
-/* Buttons and logout button top-right, never overlapping tabs */
+/* Buttons: modern, always top right for logout */
 button, .logout-btn {
   border: none;
   border-radius: 8px;
@@ -216,31 +265,7 @@ button:hover, .logout-btn:hover {
   background: #c62828;
 }
 
-/* Responsive for mobile */
-@media (max-width: 1000px) {
-  .panel, .main-section, .equip-subsection, .user-subsection, .rigging-subsection {
-    max-width: 99vw;
-    min-width: 0;
-    padding: 1.1rem 0.2rem;
-  }
-  .logout-btn {
-    top: 10px;
-    right: 8px;
-    padding: 9px 15px;
-    font-size: 0.98rem;
-  }
-  .main-tab-buttons, .sub-tab-buttons, .equip-submenu {
-    flex-wrap: wrap;
-    padding: 0;
-    margin-bottom: 8px;
-  }
-  .main-tab, .user-subtab, .equip-subtab, .rigging-subtab, .equip-submenu button {
-    font-size: 0.99rem;
-    padding: 10px 14px 8px 14px;
-  }
-}
-
-/* Animation for section transitions (slide/fade) */
+/* Fade animation for section transitions */
 @keyframes fadeInPanel {
   0% { opacity: 0; transform: scale(0.98) translateY(10px);}
   70% { opacity: 0.5; }
