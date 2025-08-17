@@ -22,14 +22,12 @@ html, body {
   height: 100%;
 }
 
-/* main dashboard/container always full width */
+/* Main centered, always desktop width */
 body {
   width: 100vw;
   height: 100%;
   overflow-x: auto;
 }
-
-/* Panels always desktop size */
 .panel, .main-section, .equip-subsection, .user-subsection, .rigging-subsection {
   background: var(--sp-panel-bg);
   border-radius: var(--sp-radius);
@@ -44,6 +42,7 @@ body {
   transition: box-shadow var(--sp-trans), border-color var(--sp-trans);
 }
 
+/* Panel headings */
 .panel h2, .main-section h2, .main-section h3,
 .equip-subsection h3, .user-subsection h3, .rigging-subsection h3 {
   color: var(--sp-primary-dark);
@@ -52,8 +51,8 @@ body {
   letter-spacing: 0.02em;
 }
 
-/* Tabs horizontal, spacious, desktop style */
-.main-tab-buttons, .sub-tab-buttons, .equip-submenu {
+/* Main Tabs, Sub-tabs, Equipment Menu Groups: Horizontal + spacious */
+.main-tab-buttons, .sub-tab-buttons, .equip-menu {
   display: flex;
   flex-direction: row;
   gap: 18px;
@@ -64,10 +63,11 @@ body {
   padding: 14px 6px 12px 0;
   box-shadow: none;
   justify-content: flex-start;
+  align-items: flex-end;
 }
 
-/* Tabs, sub-tabs, equipment group, nested buttons - desktop style */
-.main-tab, .user-subtab, .equip-subtab, .rigging-subtab, .equip-submenu button, .equip-menu-group {
+/* Tab, Sub-tab, Equipment Section Group Button */
+.main-tab, .user-subtab, .equip-subtab, .rigging-subtab, .equip-menu-group {
   background: white;
   color: var(--sp-primary);
   border: 2px solid #dde4f1;
@@ -85,60 +85,50 @@ body {
   user-select: none;
   z-index: 1;
 }
-
-.main-tab.active, .user-subtab.active, .equip-subtab.active, .rigging-subtab.active, .equip-submenu button.active, .equip-menu-group.active {
+.main-tab.active, .user-subtab.active, .equip-subtab.active, .rigging-subtab.active, .equip-menu-group.active {
   background: linear-gradient(90deg, var(--sp-primary) 70%, var(--sp-primary-dark) 100%);
   color: #fff;
   border: 2px solid var(--sp-primary-dark);
   font-weight: 600;
   box-shadow: 0 5px 18px var(--sp-shadow);
 }
-
 .main-tab:hover:not(.active), .user-subtab:hover:not(.active),
 .equip-subtab:hover:not(.active), .rigging-subtab:hover:not(.active),
-.equip-submenu button:hover:not(.active), .equip-menu-group:hover:not(.active) {
+.equip-menu-group:hover:not(.active) {
   background: var(--sp-input-bg);
   color: var(--sp-primary-dark);
   border-color: var(--sp-primary);
   box-shadow: 0 2px 14px var(--sp-shadow);
 }
-
-/* Equipment menu groups - horizontal tabs at top */
-.equip-menu {
-  display: flex;
-  flex-direction: row !important;
-  gap: 24px;
-  justify-content: flex-start;
-  align-items: flex-end;
-  margin: 22px 0 0 0;
-  padding: 0 6px;
-  background: #fff;
-  border-radius: 14px;
-  border: none;
+.main-tab:focus, .user-subtab:focus, .equip-subtab:focus, .rigging-subtab:focus, .equip-menu-group:focus {
+  outline: none;
+  border-color: var(--sp-primary-dark);
+  box-shadow: 0 0 0 3px var(--sp-primary-dark);
 }
 
-/* Equipment Submenu (nested under groups): smaller pill buttons, indented */
+/* Equipment Submenus: vertically stacked below their parent, not inline */
 .equip-submenu {
-  display: flex;
-  gap: 14px;
-  margin: 0 0 22px 36px;   /* Indent nested items! */
-  padding-bottom: 5px;
+  display: block;
+  padding-top: 0;
+  padding-bottom: 8px;
+  margin-top: -4px;
+  margin-bottom: 18px;
 }
-
 .equip-submenu button {
   background: #f7fafd;
   color: #1565c0;
   border: 1.5px solid #dde4f1;
   border-radius: 16px;
-  font-size: 1.02rem;
+  font-size: 1.01rem;
   font-weight: 500;
-  padding: 10px 23px;
+  padding: 9px 25px;
   cursor: pointer;
-  transition: background 0.17s, color 0.17s, border 0.17s, box-shadow 0.17s;
+  transition: background 0.18s, color 0.18s, border 0.18s, box-shadow 0.18s;
   box-shadow: 0 1.5px 5px #1976d229;
+  margin-bottom: 7px;
+  display: block;
+  width: auto;
 }
-
-/* Active submenu button: pill gradient */
 .equip-submenu button.active {
   background: linear-gradient(90deg, #1976d2 60%, #1565c0 100%);
   color: #fff;
@@ -146,18 +136,12 @@ body {
   font-weight: 600;
   box-shadow: 0 2px 10px #1976d229;
 }
-
 .equip-submenu button:hover:not(.active) {
   background: #e8f1fb;
   color: #1976d2;
 }
 
-/* More space between submenu and groups */
-.equip-menu-group+.equip-submenu {
-  margin-top: -6px;
-}
-
-/* Panels/sections fade in on display */
+/* Fade in effect for shown subsections */
 .equip-subsection, .user-subsection, .rigging-subsection {
   display: none;
   opacity: 0;
@@ -165,7 +149,6 @@ body {
   transform: scale(0.98) translateY(8px);
   transition: opacity 0.39s, transform 0.32s;
 }
-
 .equip-subsection:not(.hidden),
 .user-subsection:not(.hidden),
 .rigging-subsection:not(.hidden) {
@@ -174,7 +157,6 @@ body {
   pointer-events: auto;
   transform: scale(1) translateY(0px);
 }
-
 .hidden {
   display: none !important;
   opacity: 0 !important;
@@ -198,7 +180,6 @@ textarea, select {
   box-sizing: border-box;
   display: block;
 }
-
 input:focus, textarea:focus, select:focus {
   border-color: var(--sp-primary);
   background: #fff;
@@ -247,7 +228,7 @@ input[readonly]:focus, textarea[readonly]:focus {
   margin-right: 10px;
 }
 
-/* Search button spacing/fix */
+/* Search button alignment */
 #crane-search-btn, #manlift-search-btn {
   vertical-align: middle;
   padding: 12px 20px !important;
@@ -298,7 +279,7 @@ button:hover, .logout-btn:hover {
   background: #c62828;
 }
 
-/* Fade animation for section transitions */
+/* Panel & section animation */
 @keyframes fadeInPanel {
   0% { opacity: 0; transform: scale(0.98) translateY(10px);}
   70% { opacity: 0.5; }
